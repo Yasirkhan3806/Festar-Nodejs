@@ -1,39 +1,31 @@
-// import React from 'react';
-// import logo from '../assets/Pictures/logo_primary_V17oRtSd.png'
-
-// function Navbar() {
-//   return (
-//     <>
-//     <nav className='flex justify-around w-full'>
-
-//       <img src={logo} alt="" />
-//       <ul className='flex space-x-12 space-y-11'>
-//       <li></li>
-//         <li ><a className='font-monts text-base' href="">Services</a></li>
-//         <li><a className='font-monts text-base' href="">About Us</a></li>
-//         <li><a className='font-monts text-base' href="">Pricing</a></li>
-//         <li><a className='font-monts text-base' href="">Contact s</a></li>
-//       </ul>
-//       <ul className='flex space-x-2 space-y-8 w-70'>
-//         <button className='bg-white hover:bg-blue-500 transition duration-300  pl-6 pr-6 pt-3 pb-3 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 mt-8 text-blue-400 hover:text-white leading-normal font-monts shadow-sm '>Get Started</button>
-//         <button className='bg-blue-500  hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 mt-0 text-white hover:text-blue-500 leading-normal font-monts shadow-sm '>Sign In</button>
-//         </ul>
-//       </nav>
-//     </>
-//   )
-// }
-
-// export default Navbar
-
-import React, { useState } from 'react';
+ 
+import React, { useEffect, useState } from 'react';
 import logo from '../assets/Pictures/logo_primary_V17oRtSd.png';
 
 function Navbar() {
+ 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useEffect(() => {
+    const navbar = document.getElementById('nav-bar'); // Move this inside useEffect
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('nav-box-shadow'); // Remove the dot '.'
+      } else {
+        navbar.classList.remove('nav-box-shadow'); // Remove the dot '.'
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); 
+
 
   return (
     <>
-      <nav className='flex flex-wrap justify-around items-center w-full'>
+      <nav id='nav-bar' className='flex flex-wrap justify-around items-center w-full sticky top-0 bg-white '>
         <img src={logo} alt="Logo" className='mt-1' />
 
         {/* Desktop Menu */}

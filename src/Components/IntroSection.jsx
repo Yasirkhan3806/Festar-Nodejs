@@ -26,7 +26,7 @@ export default function IntroSection() {
         </ul>
         </div>
         <div className='w-2/4'>
-        <img className='max-h-25' src={introPicture} alt="" />
+        <img data-aos ="fade-left" data-aos-delay="100" data-aos-duration="2000"  className='max-h-25' src={introPicture} alt="" />
         </div>
     </div>
       
