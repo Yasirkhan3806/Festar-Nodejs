@@ -1,5 +1,7 @@
 import React from "react";
 import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
+// import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
+
 import foundingYear from "../assets/icons/icons8-year-2024-48.png";
 import usersPic from "../assets/icons/icons8-users-30.png";
 import teamMembers from "../assets/icons/icons8-team-30.png";
@@ -33,7 +35,7 @@ export default function MissionVisionSec() {
   ]
   return (
     <>
-    <div className="flex h-full gap-6 p-4">
+    <div className="flex h-full gap-6 p-4 mb-16">
       <div className="w-2/4 h-3/4 mt-14 flex justify-center align-middle ">
         <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
       </div>
