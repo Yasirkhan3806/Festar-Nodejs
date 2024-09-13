@@ -30,7 +30,7 @@ export default function KeyFeatures() {
       <p data-aos = "fade-up" data-aos-duration = "1000" className='text-center mb-12 '>	
 Discover the unique features that make Festar the ideal choice for your meeting planning needs. <br /> Our platform offers seamless integration, user-friendly interfaces, and robust security to ensure your meetings are efficient and secure.
 </p>
-      <div className='flex justify-around'>
+      <div className='flex justify-around mb-16'>
       {data.map((item, index) => (
             <div key={index} className="flex flex-col gap-3 w-[30%] m-1 div-shadow rounded-3xl p-2 cursor-pointer">
                 <img  className="h-2/3 w-full rounded-lg" src={item.image} alt="" />
@@ -38,7 +38,7 @@ Discover the unique features that make Festar the ideal choice for your meeting 
 
               <p className="text-sm">{item.description}</p>
               {/* <img className="max-h-2/4" src={item.image} alt="" /> */}
-        <button className='w-2/5 bg-white hover:bg-blue-500 transition duration-300  pl-6 pr-6 pt-3 pb-3 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12  text-blue-400 hover:text-white leading-normal font-monts shadow-sm mt-4 '>Learn More</button>
+        <button className='w-2/5 bg-white hover:bg-blue-800 font-semibold transition duration-300  pl-6 pr-6 pt-3 pb-3 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12  text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4 '>Learn More</button>
               
             </div>
           ))}

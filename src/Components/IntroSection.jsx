@@ -17,7 +17,7 @@ export default function IntroSection() {
             Plan Your <span className='text-blue-500'>{text}</span> <br />
             with Festar
             </h1>
-            <p className='text-xl font- text-center'>
+            <p className='text-lg font- text-center'>
             Welcome to Festar, your ultimate solution for seamless and efficient meeting planning. Experience the ease of organizing meetings just like Zoom or Google Meet. 
             </p>
             <ul className='flex space-x-3 space-y-8 w-90 justify-center'>

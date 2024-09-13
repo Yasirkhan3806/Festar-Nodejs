@@ -4,6 +4,7 @@ import IntroSection from './Components/IntroSection';
 import MissionVisionSec from './Components/MissionVisionSec';
 import GettingStarted from './Components/gettingStarted';
 import KeyFeatures from './Components/KeyFeatures';
+import ReviewSection from './Components/ReviewSection';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -19,6 +20,7 @@ function App() {
  <MissionVisionSec/>
  <GettingStarted/>
  <KeyFeatures/>
+ <ReviewSection/>
     </>
   )
 }

@@ -36,7 +36,7 @@ export default function MissionVisionSec() {
   return (
     <>
     <div className="flex h-full gap-6 p-4 mb-16">
-      <div className="w-2/4 h-3/4 mt-14 flex justify-center align-middle ">
+      <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
         <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
       </div>
       <div className="w-2/4 flex flex-col gap-6 ">

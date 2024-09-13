@@ -27,4 +27,12 @@ background: #ffffff;
   box-shadow:  20px 2px 47px #f0f0f0,
              -14px -14px 47px #ffffff;
 }
+.hover-shadow{
+  transition: 0.5s ease-in-out;
+  
+}
+.hover-shadow:hover{
+  box-shadow:  6px 6px 12px #656565,
+  -6px -6px 12px #ffffff;
+}
   
