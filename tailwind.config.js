@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -9,4 +8,5 @@ export default {
     extend: {},
   },
   plugins: [],
+  important: true,  // Add the important mode inside the exported object
 }

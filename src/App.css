@@ -5,6 +5,8 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    
 }
 .font-monts {
     font-family: 'Montserrat', sans-serif;
@@ -35,4 +37,45 @@ background: #ffffff;
   box-shadow:  6px 6px 12px #656565,
   -6px -6px 12px #ffffff;
 }
+.custom-card{
+  margin-bottom: 20px !important;
+  border: none !important;
+  outline: none !important;
+}
+.custom-card:focus{
+  background: white !important;
+}
+
+.acc-shadow {
+  box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+}
+
+.acc-before::before {
+  content: "+";
+  margin-right: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.content {
+  transition: max-height 1s ease, padding 0.5s ease;
+  max-height: 0;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+.accordion input[type="radio"]:checked + .acc-before + .content {
+  max-height: 400px; /* Adjust as needed */
+  padding: 10px 10px 20px;
+}
+
+.accordion input[type="radio"]:checked + .acc-before {
+  color: #007bff;
+}
+
+.accordion input[type="radio"]:checked + .acc-before::before {
+  content: "-";
+}
+
+
   

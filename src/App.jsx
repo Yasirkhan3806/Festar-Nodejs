@@ -5,8 +5,11 @@ import MissionVisionSec from './Components/MissionVisionSec';
 import GettingStarted from './Components/gettingStarted';
 import KeyFeatures from './Components/KeyFeatures';
 import ReviewSection from './Components/ReviewSection';
+import FAQ from './Components/FAQ';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   AOS.init({
@@ -21,6 +24,7 @@ function App() {
  <GettingStarted/>
  <KeyFeatures/>
  <ReviewSection/>
+ <FAQ/>
     </>
   )
 }
