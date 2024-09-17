@@ -54,6 +54,7 @@ export default function ReviewSection() {
       
     return (
       <>
+      <div className='mt-36'>
         <h1 className='text-center text-5xl font-bold'>What Our <span className='text-blue-500'>Users</span> Say</h1>
         <p className='text-center text-lg mt-2'><span className='font-bold'>Discover how Festar</span> has transformed the way people connect and collaborate through meetings.</p>
         <div className='flex flex-wrap justify-around gap-5 m-10'>
@@ -77,6 +78,7 @@ export default function ReviewSection() {
               );
             })
           }
+        </div>
         </div>
       </>
     );

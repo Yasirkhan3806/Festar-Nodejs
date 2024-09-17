@@ -38,7 +38,7 @@ Discover the unique features that make Festar the ideal choice for your meeting 
 
               <p className="text-sm">{item.description}</p>
               {/* <img className="max-h-2/4" src={item.image} alt="" /> */}
-        <button className='w-2/5 bg-white hover:bg-blue-800 font-semibold transition duration-300  pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12  text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4 '>Learn More</button>
+        <button className='w-2/5 bg-white hover:bg-blue-500 font-semibold transition duration-300  pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12  text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4 '>Learn More</button>
               
             </div>
           ))}
