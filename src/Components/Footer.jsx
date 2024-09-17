@@ -15,10 +15,9 @@ export default function Footer() {
         </div>
 
         {/* Navigation Links */}
-        <div className="flex space-x-12 text-sm">
+        <div className="flex space-x-14 text-sm">
+        <a href="#about" className="transition-all duration-2000 hover:underline text-[16px] ">Services</a>
           <a href="#about" className="transition-all duration-2000 hover:underline text-[16px] ">About Us</a>
-          <a href="#pricing" className="hover:underline text-[16px]">Pricing</a>
-          <a href="#faqs" className="hover:underline text-[16px]">FAQs</a>
           <a href="#contact" className="hover:underline text-[16px]">Contact Us</a>
         </div>
 

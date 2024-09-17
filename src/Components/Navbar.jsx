@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/Pictures/logo_primary_V17oRtSd.png";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,27 +30,22 @@ function Navbar() {
         <img src={logo} alt="Logo" className="mt-0" />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-12 space-y-3">
+        <ul className="hidden md:flex space-x-14 space-y-3">
           <li></li>
           <li>
-            <a className="font-monts text-base" href="#">
+            <Link to="/" className="font-monts text-base active:text-blue-500" href="#">
               Services
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="font-monts text-base" href="#">
+            <Link to = "/about" className="font-monts text-base" href="#">
               About Us
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="font-monts text-base" href="#">
-              Pricing
-            </a>
-          </li>
-          <li>
-            <a className="font-monts text-base" href="#">
+            <Link to="/contact" className="font-monts text-base" href="#">
               Contact Us
-            </a>
+            </Link>
           </li>
         </ul>
 
@@ -89,11 +85,6 @@ function Navbar() {
             <li>
               <a className="font-monts text-base" href="#">
                 About Us
-              </a>
-            </li>
-            <li>
-              <a className="font-monts text-base" href="#">
-                Pricing
               </a>
             </li>
             <li>

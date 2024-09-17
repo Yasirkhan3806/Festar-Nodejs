@@ -1,34 +1,38 @@
-import './App.css'
-import Navbar from './Components/Navbar';
-import IntroSection from './Components/IntroSection';
-import MissionVisionSec from './Components/MissionVisionSec';
-import GettingStarted from './Components/gettingStarted';
-import KeyFeatures from './Components/KeyFeatures';
-import ReviewSection from './Components/ReviewSection';
-import FAQ from './Components/FAQ';
-import Footer from './Components/Footer';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Services from './Components/Services';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Import other components/pages here
+import About from './Components/About page/About';
+import Contact from './Components/Contact us page/Contact';
 
 function App() {
+  // Initialize AOS animations
   AOS.init({
-    duration : 1500,
-  }
-  );
+    duration: 1500,
+  });
+
   return (
-    <>
- <Navbar/>
- <IntroSection/>
- <MissionVisionSec/>
- <GettingStarted/>
- <KeyFeatures/>
- <ReviewSection/>
- <FAQ/>
- <Footer/>
-    </>
-  )
+    <Router>
+      <>
+        {/* Define your routes inside <Routes> */}
+        <Routes>
+          {/* Route for Home page */}
+          <Route path="/" element={<Services />} />
+
+          {/* Route for About page */}
+          <Route path="/about" element={<About />} />
+
+          {/* Route for Contact page */}
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </>
+    </Router>
+  );
 }
 
-export default App
+export default App;
