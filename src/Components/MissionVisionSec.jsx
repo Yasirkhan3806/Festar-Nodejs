@@ -1,14 +1,9 @@
 import React from "react";
 import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
-// import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
-
 import foundingYear from "../assets/icons/icons8-year-2024-48.png";
 import usersPic from "../assets/icons/icons8-users-30.png";
 import teamMembers from "../assets/icons/icons8-team-30.png";
 import meetingPic from "../assets/icons/icons8-meeting-50.png";
-// import meetingPic from "../assets/Pictures/meetingPic.webp";
-// import teamMembers from "../assets/Pictures/teamMembers.jpg";
-// import foundingYear from "../assets/Pictures/2024.jpg";
 
 export default function MissionVisionSec() {
  const data = [
@@ -35,11 +30,11 @@ export default function MissionVisionSec() {
   ]
   return (
     <>
-    <div className="flex h-full gap-6 p-4 mb-16">
+    <div className="flex h-full gap-4 p-4 mb-16">
       <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
         <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
       </div>
-      <div className="w-2/4 flex flex-col gap-6 ">
+      <div className="w-2/4 flex flex-col gap-2 ">
       <div>
         <h1 data-aos = "fade-up" className="text-6xl font-bold leading-snug ">Our Mission <span className="text-blue-500">&</span> Vision</h1>
         <p data-aos = "fade-up" className="mb-3">At Festar, we strive to simplify virtual meeting arrangements making them accessible for everyone. Our vision is to create engaging and productive online gatherings that foster collaboration across borders.</p>

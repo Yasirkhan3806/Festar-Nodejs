@@ -25,7 +25,7 @@ function Navbar() {
     <>
       <nav
         id="nav-bar"
-        className="flex flex-wrap justify-around items-center w-full sticky top-0 bg-white h-20 "
+        className="flex flex-wrap justify-around items-center w-full sticky top-0 bg-white h-20 z-[2] "
       >
         <img src={logo} alt="Logo" className="mt-0" />
 

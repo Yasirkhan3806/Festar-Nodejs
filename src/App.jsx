@@ -7,7 +7,7 @@ import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Import other components/pages here
-import About from './Components/About page/About';
+import About from './Components/About-page/About';
 import Contact from './Components/Contact us page/Contact';
 
 function App() {
