@@ -30,12 +30,12 @@ export default function MissionVisionSec() {
   ]
   return (
     <>
-    <div className="flex h-full gap-4 p-4 mb-16">
+    <div className="flex h-full gap-4 p-2 mb-16">
       <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
         <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
       </div>
       <div className="w-2/4 flex flex-col gap-2 ">
-      <div>
+      <div className="w-full">
         <h1 data-aos = "fade-up" className="text-6xl font-bold leading-snug ">Our Mission <span className="text-blue-500">&</span> Vision</h1>
         <p data-aos = "fade-up" className="mb-3">At Festar, we strive to simplify virtual meeting arrangements making them accessible for everyone. Our vision is to create engaging and productive online gatherings that foster collaboration across borders.</p>
         </div>

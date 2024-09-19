@@ -9,11 +9,13 @@ export default function About() {
   return (
     <>
       <Navbar/>
-      <main className='mt-16'>
+      <main className='mt-16 space-y-24'>
+        <div>
       <h1 className='text-center font-bold text-[42px] leading-[52px]'>Welcome To Fester</h1>
       <p className='text-center text-lg leading-[27px]'>At Festar, we simplify virtual meeting planning, integrating the best features of <br />  Zoom and Google Meet. Our mission is to make virtual meetings accessible and <br />user-friendly for everyone. </p>
-      <Robustsecurity/>
+      </div>
       <MissionVisionSec/>
+      <Robustsecurity/>
       <ReviewSection/>
       <div className='ml-11'>
       <h2 className='text-4xl font-bold mt-28'>Need More Help?</h2>

@@ -1,38 +1,41 @@
 import React from 'react';
-import security from './security.jpg';
+import security from './pictures/security.jpg';
+import dataEncryption from './icons/dataencryption.png';
+import securityChecks from './icons/securityChecks.png';
+import secureAuth from './icons/Secureauth.png';
+import securityStandards from './icons/securityStandards.png';
+
 
 export default function Robustsecurity() {
     const data = [
         {
           title: "Data Encryption",
           description: "We utilize cutting-edge encryption algorithms, such as AES-256, to scramble your data, making it unintelligible to unauthorized parties. Your data is transmitted over secure channels using protocols like HTTPS, ensuring its confidentiality.",
-          // image: usersPic,
+          image: dataEncryption,
         },
         {
-          title: "Regular Security Audits",
+          title: "Security checks",
           description: "Our security experts conduct comprehensive vulnerability assessments to identify potential weaknesses in our systems and applications. We simulate attacks on our systems to uncover vulnerabilities that could be exploited by malicious actors",
-          // image: meetingPic,
+          image: securityChecks,
         },
         {
-          title: "Secure Authentication",
+          title: "Secure Validation",
           description: "We have implemented a robust firewall system with multiple layers of protection to block unauthorized access attempts. Our firewalls are equipped with intrusion detection systems to monitor network traffic for signs of malicious activity.",
-          // image: teamMembers,
+          image: secureAuth,
         },
         {
           title: "Security Standards",
           description: "We enforce strict password policies, requiring users to create complex passwords that are difficult to guess or crack. We encourage users to enable Multi-Factor Authentication (MFA), requiring them to provide additional forms of verification, such as a code sent to their phone or email, in addition to their password.",
-          // image: foundingYear,
+          image: securityStandards,
         },
       ]
   return (
     <>
        <div className="flex h-full gap-4 p-4 mb-16">
-      <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
-        <img data-aos ="fade-right"  className="" src={security} alt="" />
-      </div>
+   
       <div className="w-2/4 flex flex-col gap-2 ">
       <div>
-        <h1 data-aos = "fade-up" className="text-6xl font-bold leading-snug ">Robust Security At <span className="text-blue-500">Fester</span></h1>
+        <h1 data-aos = "fade-up" className="text-6xl font-bold leading-snug ">Robust<span className="text-blue-500"> Security</span></h1>
         <p data-aos = "fade-up" className="mb-3">At Festar, we prioritize the security of your data and online interactions. We employ state-of-the-art security measures to safeguard your privacy and protect your sensitive information</p>
         </div>
         {/* <img className="max-h-2/4" src={missionpic} alt="" /> */}
@@ -48,6 +51,9 @@ export default function Robustsecurity() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
+        <img data-aos ="fade-left"  className="" src={security} alt="" />
       </div>
       </div> 
     </>
