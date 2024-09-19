@@ -107,9 +107,9 @@ function Navbar() {
           <button className="bg-white hover:bg-blue-500 transition duration-300 pl-6 pr-6 pt-2 pb-1 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 mt-1 text-blue-400 hover:text-white leading-normal font-monts shadow-sm">
             Get Started
           </button>
-          <button className="bg-blue-500 hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 mt-0 text-white hover:text-blue-500 leading-normal font-monts shadow-sm">
+          <Link to="/Log-In" className="bg-blue-500 hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 mt-0 text-white hover:text-blue-500 leading-normal font-monts shadow-sm">
             Sign In
-          </button>
+          </Link>
         </ul>
       </nav>
     </>

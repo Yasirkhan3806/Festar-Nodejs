@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Import other components/pages here
 import About from './Components/About-page/About';
 import Contact from './Components/Contact us page/Contact';
+import LoginForm from './Components/LoginForm';
 
 function App() {
   // Initialize AOS animations
@@ -29,6 +30,8 @@ function App() {
 
           {/* Route for Contact page */}
           <Route path="/contact" element={<Contact />} />
+          {/* Route for Login page */}
+          <Route path="/Log-In" element={<LoginForm />} />
         </Routes>
       </>
     </Router>
