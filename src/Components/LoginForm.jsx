@@ -1,102 +1,199 @@
-import React from "react";
-import teamMember from '../assets/Pictures/L-companion.avif';
-import google from '../assets/icons/google.svg';
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import teamMember from "../assets/Pictures/L-companion.avif";
+import google from "../assets/icons/google.svg";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  getRedirectResult,
+} from "firebase/auth";
+import { auth, googleProvider } from "../Config/firebase";
 
 export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+ 
+
+
+  useEffect(() => {
+    const fetchRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          console.log("User logged in:", result.user);
+          navigate("/Dashboard");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchRedirectResult();
+  }, [navigate]);
+
+  // Handle email/password sign-up
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("User created successfully:", userCredential.user);
+      navigate("/Dashboard"); // Redirect to the dashboard after successful sign-up
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Handle Google sign-in
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("Signed in with Google:", result.user);
+      navigate("/Dashboard"); // Redirect to the dashboard after successful Google sign-in
+    } catch (error) {
+      console.error("Error with Google sign-in:", error);
+    }
+  };
+  
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const currentUser = auth.currentUser
+  console.log(currentUser)
+
+  const slidingLeft = () => {
+    document.getElementById("Login-Picture").classList.add("L-animation-left");
+    document.getElementById("sign-up").classList.remove("hidden");
+  };
+  const slidingRight = () => {
+    document.getElementById("Login-Picture").classList.remove("L-animation-left");
+    setTimeout(function () {
+      document.getElementById("sign-up").classList.add("hidden");
+    }, 1500);
+    document.getElementById("L-m-cont").classList.add("L-D-animation");
+  };
+
   return (
     <>
-     <div className="flex min-h-screen">
-      {/* Left Side */}
-      <div className="w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12">
-     
-      </div>
-<div className="flex absolute top-20 left-[10.6rem] w-3/4 bg-white rounded-lg shadow-slate-600 shadow-xl">
-    {/* left side */}
-    <div className="w-2/4 flex flex-col justify-center items-center ">
-    <div className="max-w-sm mx-auto">
-          {/* Logo */}
-          <h1 className="text-4xl font-bold text-blue-700 mb-6">Fester</h1>
+      <div className="flex min-h-screen">
+        {/* Left Side */}
+        <div className="w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12"></div>
+        <div id="Login-Picture" className="w-[514px] h-[506px] z-[2] rounded-r-lg bg-blue-500  L-animation ">
+          <img src={teamMember} alt="Illustration" className="w-full h-full object-cover rounded-lg" />
+        </div>
+        <div id="L-m-cont" className="flex absolute top-20 left-[10.6rem]  bg-white rounded-lg shadow-slate-600 shadow-xl L-D-animation">
+          {/* left side */}
+          <div className="w-2/4 flex flex-col justify-center items-center L-F-animation">
+            <div className="max-w-sm mx-auto">
+              {/* Logo */}
+              <h1 className="text-4xl font-bold text-blue-700 mb-6">Fester</h1>
 
-          {/* Welcome Text */}
-          <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
+              {/* Welcome Text */}
+              <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
 
-          {/* Google Login Button */}
-          <button className="w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4">
-            <img
-              src={google}
-              alt="Google Logo"
-              className="inline-block h-6 mr-2"
-            />
-            Log in with Google
-          </button>
+              {/* Google Login Button */}
+              <button className="w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4" onClick={handleGoogleSignIn}>
+                <img src={google} alt="Google Logo" className="inline-block h-6 mr-2" />
+                Log in with Google
+              </button>
 
-          {/* Divider */}
-          <div className="flex items-center mb-4">
-            <hr className="flex-grow border-t border-gray-300" />
-            <span className="mx-2 text-sm text-gray-500">or log in with email</span>
-            <hr className="flex-grow border-t border-gray-300" />
+              {/* Divider */}
+              <div className="flex items-center mb-4">
+                <hr className="flex-grow border-t border-gray-300" />
+                <span className="mx-2 text-sm text-gray-500">or log in with email</span>
+                <hr className="flex-grow border-t border-gray-300" />
+              </div>
+
+              {/* Email and Password Inputs */}
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Your Password"
+                  className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <div className="flex items-center justify-between text-sm">
+                  <label className="inline-flex items-center">
+                    <input type="checkbox" className="form-checkbox text-blue-600" />
+                    <span className="ml-2">Keep me logged in</span>
+                  </label>
+                  <a href="#" className="text-blue-600">Forgot password?</a>
+                </div>
+                <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-white text-white hover:text-blue-500 transition duration-500 rounded-md font-semibold">
+                  Log in
+                </button>
+              </form>
+
+              {/* Sign Up Link */}
+              <p className="text-sm text-center mt-4">
+                Don't have an account?{" "}
+                <button onClick={slidingLeft} className="text-blue-600">Sign up</button>
+              </p>
+            </div>
           </div>
 
-          {/* Email and Password Inputs */}
-          <form className="space-y-4">
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <input
-              type="password"
-              placeholder="Your Password"
-              className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <div className="flex items-center justify-between text-sm">
-              <label className="inline-flex items-center">
-                <input type="checkbox" className="form-checkbox text-blue-600" />
-                <span className="ml-2">Keep me logged in</span>
-              </label>
-              <a href="#" className="text-blue-600">Forgot password?</a>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 bg-blue-600 text-white rounded-md font-semibold"
-            >
-              Log in
+          {/* Right Side - Sign up */}
+          <div id="sign-up" className="w-2/4 bg-white flex flex-col justify-center items-center p-16 hidden">
+            <h1 className="text-4xl font-bold mb-2 text-blue-800">Fester</h1>
+            <h2 className="text-2xl font-semibold mb-2">Create an Account</h2>
+
+            <button className="bg-gray-100 text-black border-2 border-gray-200 rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center" onClick={handleGoogleSignIn}>
+              <img src={google} alt="Google" className="w-6 h-6 mr-2" />
+              Sign up with Google
             </button>
-          </form>
+            <form className="w-full" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="border-2 border-gray-300 rounded-lg w-full py-2 px-4 mb-4"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="border-2 border-gray-300 rounded-lg w-full py-2 px-4 mb-4"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Your Password"
+                className="border-2 border-gray-300 rounded-lg w-full py-2 px-4 mb-4"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="flex items-center mb-4">
+                <input type="checkbox" className="mr-2" />
+                <span>Keep me logged in</span>
+              </div>
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-white text-white hover:text-blue-500 font-semibold rounded-lg py-2 px-4 w-full transition duration-500"
+              >
+                Sign up
+              </button>
+            </form>
 
-          {/* Sign Up Link */}
-          <p className="text-sm text-center mt-4">
-            Don't have an account? <a href="#" className="text-blue-600">Sign up</a>
-          </p>
+            <p className="text-gray-600 mt-4">
+              Already have an account?{" "}
+              <button onClick={slidingRight} className="text-blue-600 font-semibold">Log in</button>
+            </p>
+          </div>
         </div>
-    </div>
-    {/* rightside */}
-    <div className="w-2/4 h-full rounded-r-lg bg-blue-500 p-8">
-  <img
-    src={teamMember}
-    alt="Illustration"
-    className="w-full h-full object-cover rounded-lg"
-  />
-</div>
-
-</div>
-      {/* Right Side */}
-      <div className="w-1/2 bg-white flex flex-col justify-center items-center text-white p-12">
-        {/* <div className="max-w-xs text-center">
-          <h3 className="text-xl font-semibold mb-4">New Update Available</h3>
-          <p className="text-sm mb-4">
-            You have updated new features in your account. Check them out now.
-          </p>
-          <button className="py-2 px-4 bg-white text-blue-900 rounded-md font-semibold">
-            Learn More
-          </button>
-        </div> */}
-
-        {/* Illustration (Insert Image URL below) */}
-     
       </div>
-    </div>
     </>
   );
 }

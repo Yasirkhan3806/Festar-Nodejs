@@ -84,4 +84,76 @@ background: #ffffff;
   transform: scale(1.1);
 }
 
+.L-animation {
+  position: absolute;
+  top: 80px;
+  right: 682px;
+  padding: 0px;
+  animation: slide-right 1s 0.8s 1 forwards, pad-animation 1s 0.3s 1 forwards;
+}
+
+@keyframes slide-right {
+  from {
+    right: 682px;
+
+  }
+  to {
+    right: 170px;
+  }
+}
+@keyframes pad-animation {
+  from {
+    padding: 0px;
+  }
+  to {
+    padding: 30px;
+  }
+}
+.L-animation-left{
+  position: absolute;
+  top: 80px;
+  right: 682px;
+  padding: 0px;
+  animation: slide-left 1s 1 forwards;
+}
+@keyframes slide-left {
+  from {
+    right:170px ;
+
+  }
+  to {
+    right:  682px;
+  }
+}
+.L-D-animation{
+  width: 38%;
+  height: 505px;
+  animation: inc-width 1s 0.8s 1 forwards;
+}
+@keyframes inc-width {
+  from {
+    width: 38%;
+    height: 505px;
+  }
+  to {
+    width: 75%;
+    height: 505px;
+  }
+}
+
+.L-F-animation{
+  opacity: 0;
+  animation: displaying 0.6s 0.2s 1 forwards;
+}
+@keyframes displaying {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
   
