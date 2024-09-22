@@ -6,24 +6,34 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   getRedirectResult,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import { auth, googleProvider } from "../Config/firebase";
+import { db } from "../Config/firebase";
+import {
+  collection,
+  addDoc,
+  doc,
+} from "firebase/firestore";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userName, setUserName] = useState("");
+  const getCrediantials = collection(db, "userData");
   const navigate = useNavigate();
- 
-
 
   useEffect(() => {
     const fetchRedirectResult = async () => {
       try {
         const result = await getRedirectResult(auth);
         if (result?.user) {
-          console.log("User logged in:", result.user);
-          navigate("/Dashboard");
+          // User logged in via redirect
+          const userId = result.user.uid;
+          // Check if user document already exists
+          const userDocRef = doc(db, "userData", userId);
+          // Fetch user data (if needed)
+          // navigate("/Dashboard"); // Uncomment if needed
         }
       } catch (error) {
         console.error(error);
@@ -37,6 +47,15 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userId = userCredential.user.uid; // Get the unique user ID
+
+      // Create a document for the user in Firestore using their UID as the document ID
+      await addDoc(getCrediantials, {
+        userId: userId,
+        email: userCredential.user.email,
+        userName: userName,
+      });
+
       console.log("User created successfully:", userCredential.user);
       navigate("/Dashboard"); // Redirect to the dashboard after successful sign-up
     } catch (e) {
@@ -48,28 +67,40 @@ export default function LoginForm() {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      const userId = result.user.uid; // Get the unique user ID
+
+      // Create a document for the user in Firestore using their UID as the document ID
+      await addDoc(getCrediantials, {
+        userId: userId,
+        email: result.user.email,
+        userName: result.user.displayName || "", // Optional: Get display name if available
+      });
+
       console.log("Signed in with Google:", result.user);
       navigate("/Dashboard"); // Redirect to the dashboard after successful Google sign-in
     } catch (error) {
       console.error("Error with Google sign-in:", error);
     }
   };
-  
-  const logout = async () => {
+
+  // Handle email/password sign-in
+  const handleEmailSignIn = async (e) => {
+    e.preventDefault();
     try {
-      await signOut(auth);
-      setUser(null);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("User signed in successfully:", userCredential.user);
+      navigate("/Dashboard"); // Redirect to the dashboard after successful sign-in
     } catch (e) {
       console.error(e);
     }
   };
-  const currentUser = auth.currentUser
-  console.log(currentUser)
 
+  // Animation handlers for sliding
   const slidingLeft = () => {
     document.getElementById("Login-Picture").classList.add("L-animation-left");
     document.getElementById("sign-up").classList.remove("hidden");
   };
+
   const slidingRight = () => {
     document.getElementById("Login-Picture").classList.remove("L-animation-left");
     setTimeout(function () {
@@ -132,7 +163,7 @@ export default function LoginForm() {
                   </label>
                   <a href="#" className="text-blue-600">Forgot password?</a>
                 </div>
-                <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-white text-white hover:text-blue-500 transition duration-500 rounded-md font-semibold">
+                <button onClick={handleEmailSignIn} type="submit" className="w-full py-2 bg-blue-600 hover:bg-white text-white hover:text-blue-500 transition duration-500 rounded-md font-semibold">
                   Log in
                 </button>
               </form>
@@ -157,6 +188,7 @@ export default function LoginForm() {
             <form className="w-full" onSubmit={handleSubmit}>
               <input
                 type="text"
+                onChange={(e) => setUserName(e.target.value)}
                 placeholder="Your Name"
                 className="border-2 border-gray-300 rounded-lg w-full py-2 px-4 mb-4"
                 required

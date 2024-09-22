@@ -1,32 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../../Config/firebase";
 import { signOut } from "firebase/auth";
 
-function UserProfile() {
-  const currentUser = auth.currentUser;
+function UserProfile({ setUser }) {
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       console.log("User Email:", user.email);
       console.log("User Display Name:", user.displayName);
+      setUser(user.email || "User"); // Set the user name or default to "User"
     }
-  }, []);
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  }, [setUser]);
+
+  return null; // Or you can return some loading indicator if needed
 }
-console.log(currentUser);
 
 export default function MainDashboard() {
+  const [user, setUser] = useState("Guest");
+
   return (
     <>
-      <h1>Hellow World</h1>
-      <button onClick={logout}></button>
+      <UserProfile setUser={setUser} />
+      <h1>Hello {user}</h1>
     </>
   );
 }
