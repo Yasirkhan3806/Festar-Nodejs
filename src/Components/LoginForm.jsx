@@ -14,13 +14,14 @@ import {
   collection,
   addDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
-  const getCrediantials = collection(db, "userData");
+  const userCollectionRef = collection(db, "userData");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,10 +31,8 @@ export default function LoginForm() {
         if (result?.user) {
           // User logged in via redirect
           const userId = result.user.uid;
-          // Check if user document already exists
-          const userDocRef = doc(db, "userData", userId);
-          // Fetch user data (if needed)
-          // navigate("/Dashboard"); // Uncomment if needed
+          await fetchUserData(userId); // Fetch user data
+          navigate("/Dashboard"); // Navigate after fetching user data
         }
       } catch (error) {
         console.error(error);
@@ -42,54 +41,70 @@ export default function LoginForm() {
     fetchRedirectResult();
   }, [navigate]);
 
-  // Handle email/password sign-up
+  // const fetchUserData = async (userId) => {
+  //   const userDocRef = doc(db, "userData", userId);
+  //   const userDoc = await getDoc(userDocRef);
+  //   if (userDoc.exists()) {
+  //     const userData = userDoc.data();
+  //     setUserName(userData.userName || "Guest");
+  //     console.log("User data fetched:", userData);
+  //   } else {
+  //     console.log("No user data found for this user ID.");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const userId = userCredential.user.uid; // Get the unique user ID
+      const userId = userCredential.user.uid;
 
-      // Create a document for the user in Firestore using their UID as the document ID
-      await addDoc(getCrediantials, {
+      // Create a document for the user in Firestore
+      await addDoc(userCollectionRef, {
         userId: userId,
         email: userCredential.user.email,
-        userName: userName,
+        userName: result.user.displayName,
       });
 
-      console.log("User created successfully:", userCredential.user);
-      navigate("/Dashboard"); // Redirect to the dashboard after successful sign-up
+      console.log("User created successfully:", user.displayName);
+      navigate("/Dashboard"); // Redirect after successful sign-up
     } catch (e) {
       console.error(e);
     }
   };
 
-  // Handle Google sign-in
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      const userId = result.user.uid; // Get the unique user ID
+      const userId = result.user.uid;
 
-      // Create a document for the user in Firestore using their UID as the document ID
-      await addDoc(getCrediantials, {
+      // Create a document for the user in Firestore
+      await addDoc(userCollectionRef, {
         userId: userId,
         email: result.user.email,
-        userName: result.user.displayName || "", // Optional: Get display name if available
+        userName: result.user.displayName || "", 
       });
 
       console.log("Signed in with Google:", result.user);
-      navigate("/Dashboard"); // Redirect to the dashboard after successful Google sign-in
+      navigate("/Dashboard"); // Redirect after successful Google sign-in
+      console.log(setUser);
     } catch (error) {
       console.error("Error with Google sign-in:", error);
     }
   };
 
-  // Handle email/password sign-in
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await addDoc(userCollectionRef, {
+        userId: userId,
+        email: result.user.email,
+        userName: result.user.displayName || "", 
+      });
+      await fetchUserData(userCredential.user.uid); // Fetch user data after signing in
       console.log("User signed in successfully:", userCredential.user);
-      navigate("/Dashboard"); // Redirect to the dashboard after successful sign-in
+      navigate("/Dashboard"); // Redirect after successful sign-in
     } catch (e) {
       console.error(e);
     }
