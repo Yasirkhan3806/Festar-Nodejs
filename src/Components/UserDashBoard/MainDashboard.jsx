@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "../../Config/firebase";
-import { signOut } from "firebase/auth";
+import DashNav from "./DashNav";
+import DashSide from "./DashSide";
+import Calendar from "./Calender";
 
 function UserProfile({ setUser }) {
   useEffect(() => {
@@ -21,7 +23,15 @@ export default function MainDashboard() {
   return (
     <>
       <UserProfile setUser={setUser} />
-      <h1>Hello {user}</h1>
+      <div className="flex">
+        <div className="w-[15%] h-[100%]">
+<DashSide/>
+        </div>
+        <div className="flex flex-col w-full">
+      <DashNav userEmail = {user}/>
+      <Calendar/>
+      </div>
+      </div>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Services from './Components/Services';
@@ -11,17 +11,19 @@ import About from './Components/About-page/About';
 import Contact from './Components/Contact us page/Contact';
 import LoginForm from './Components/LoginForm';
 import MainDashboard from './Components/UserDashBoard/MainDashboard';
+import { UserProvider } from './userContext';// Import UserProvider
 
 function App() {
   // Initialize AOS animations
-  AOS.init({
-    duration: 1500,
-  });
+  useEffect(() => {
+    AOS.init({
+      duration: 1500,
+    });
+  }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
-    <Router>
-      <>
-        {/* Define your routes inside <Routes> */}
+    <UserProvider> {/* Wrap the entire app with UserProvider */}
+      <Router>
         <Routes>
           {/* Route for Home page */}
           <Route path="/" element={<Services />} />
@@ -31,13 +33,15 @@ function App() {
 
           {/* Route for Contact page */}
           <Route path="/contact" element={<Contact />} />
+
           {/* Route for Login page */}
           <Route path="/Log-In" element={<LoginForm />} />
+
           {/* Route for Main Dashboard */}
           <Route path="/Dashboard" element={<MainDashboard />} />
         </Routes>
-      </>
-    </Router>
+      </Router>
+    </UserProvider>
   );
 }
 

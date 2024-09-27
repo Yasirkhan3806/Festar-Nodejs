@@ -154,6 +154,13 @@ background: #ffffff;
   }
 }
 
+.flex-gap-pointer {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer; /* 'cursor' is lowercase */
+}
+
+
 
 
   
