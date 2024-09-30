@@ -6,16 +6,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   getRedirectResult,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, googleProvider } from "../Config/firebase";
 import { db } from "../Config/firebase";
-import {
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -56,7 +51,11 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const userId = userCredential.user.uid;
 
       // Create a document for the user in Firestore
@@ -82,7 +81,7 @@ export default function LoginForm() {
       await addDoc(userCollectionRef, {
         userId: userId,
         email: result.user.email,
-        userName: result.user.displayName || "", 
+        userName: result.user.displayName || "",
       });
 
       console.log("Signed in with Google:", result.user);
@@ -96,11 +95,15 @@ export default function LoginForm() {
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       await addDoc(userCollectionRef, {
         userId: userId,
         email: result.user.email,
-        userName: result.user.displayName || "", 
+        userName: result.user.displayName || "",
       });
       await fetchUserData(userCredential.user.uid); // Fetch user data after signing in
       console.log("User signed in successfully:", userCredential.user);
@@ -117,7 +120,9 @@ export default function LoginForm() {
   };
 
   const slidingRight = () => {
-    document.getElementById("Login-Picture").classList.remove("L-animation-left");
+    document
+      .getElementById("Login-Picture")
+      .classList.remove("L-animation-left");
     setTimeout(function () {
       document.getElementById("sign-up").classList.add("hidden");
     }, 1500);
@@ -129,10 +134,20 @@ export default function LoginForm() {
       <div className="flex min-h-screen">
         {/* Left Side */}
         <div className="w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12"></div>
-        <div id="Login-Picture" className="w-[514px] h-[506px] z-[2] rounded-r-lg bg-blue-500  L-animation ">
-          <img src={teamMember} alt="Illustration" className="w-full h-full object-cover rounded-lg" />
+        <div
+          id="Login-Picture"
+          className="w-[514px] h-[506px] z-[2] rounded-r-lg bg-blue-500  L-animation "
+        >
+          <img
+            src={teamMember}
+            alt="Illustration"
+            className="w-full h-full object-cover rounded-lg"
+          />
         </div>
-        <div id="L-m-cont" className="flex absolute top-20 left-[10.6rem]  bg-white rounded-lg shadow-slate-600 shadow-xl L-D-animation">
+        <div
+          id="L-m-cont"
+          className="flex absolute top-20 left-[10.6rem]  bg-white rounded-lg shadow-slate-600 shadow-xl L-D-animation"
+        >
           {/* left side */}
           <div className="w-2/4 flex flex-col justify-center items-center L-F-animation">
             <div className="max-w-sm mx-auto">
@@ -143,15 +158,24 @@ export default function LoginForm() {
               <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
 
               {/* Google Login Button */}
-              <button className="w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4" onClick={handleGoogleSignIn}>
-                <img src={google} alt="Google Logo" className="inline-block h-6 mr-2" />
+              <button
+                className="w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4"
+                onClick={handleGoogleSignIn}
+              >
+                <img
+                  src={google}
+                  alt="Google Logo"
+                  className="inline-block h-6 mr-2"
+                />
                 Log in with Google
               </button>
 
               {/* Divider */}
               <div className="flex items-center mb-4">
                 <hr className="flex-grow border-t border-gray-300" />
-                <span className="mx-2 text-sm text-gray-500">or log in with email</span>
+                <span className="mx-2 text-sm text-gray-500">
+                  or log in with email
+                </span>
                 <hr className="flex-grow border-t border-gray-300" />
               </div>
 
@@ -173,12 +197,21 @@ export default function LoginForm() {
                 />
                 <div className="flex items-center justify-between text-sm">
                   <label className="inline-flex items-center">
-                    <input type="checkbox" className="form-checkbox text-blue-600" />
+                    <input
+                      type="checkbox"
+                      className="form-checkbox text-blue-600"
+                    />
                     <span className="ml-2">Keep me logged in</span>
                   </label>
-                  <a href="#" className="text-blue-600">Forgot password?</a>
+                  <a href="#" className="text-blue-600">
+                    Forgot password?
+                  </a>
                 </div>
-                <button onClick={handleEmailSignIn} type="submit" className="w-full py-2 bg-blue-600 hover:bg-white text-white hover:text-blue-500 transition duration-500 rounded-md font-semibold">
+                <button
+                  onClick={handleEmailSignIn}
+                  type="submit"
+                  className="w-full py-2 bg-blue-600 hover:bg-white text-white hover:text-blue-500 transition duration-500 rounded-md font-semibold"
+                >
                   Log in
                 </button>
               </form>
@@ -186,17 +219,25 @@ export default function LoginForm() {
               {/* Sign Up Link */}
               <p className="text-sm text-center mt-4">
                 Don't have an account?{" "}
-                <button onClick={slidingLeft} className="text-blue-600">Sign up</button>
+                <button onClick={slidingLeft} className="text-blue-600">
+                  Sign up
+                </button>
               </p>
             </div>
           </div>
 
           {/* Right Side - Sign up */}
-          <div id="sign-up" className="w-2/4 bg-white flex flex-col justify-center items-center p-16 hidden">
+          <div
+            id="sign-up"
+            className="w-2/4 bg-white flex flex-col justify-center items-center p-16 hidden"
+          >
             <h1 className="text-4xl font-bold mb-2 text-blue-800">Fester</h1>
             <h2 className="text-2xl font-semibold mb-2">Create an Account</h2>
 
-            <button className="bg-gray-100 text-black border-2 border-gray-200 rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center" onClick={handleGoogleSignIn}>
+            <button
+              className="bg-gray-100 text-black border-2 border-gray-200 rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center"
+              onClick={handleGoogleSignIn}
+            >
               <img src={google} alt="Google" className="w-6 h-6 mr-2" />
               Sign up with Google
             </button>
@@ -236,7 +277,12 @@ export default function LoginForm() {
 
             <p className="text-gray-600 mt-4">
               Already have an account?{" "}
-              <button onClick={slidingRight} className="text-blue-600 font-semibold">Log in</button>
+              <button
+                onClick={slidingRight}
+                className="text-blue-600 font-semibold"
+              >
+                Log in
+              </button>
             </p>
           </div>
         </div>

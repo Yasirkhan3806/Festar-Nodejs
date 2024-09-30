@@ -25,12 +25,12 @@ export default function MainDashboard() {
       <UserProfile setUser={setUser} />
       <div className="flex">
         <div className="w-[15%] h-[100%]">
-<DashSide/>
+          <DashSide />
         </div>
         <div className="flex flex-col w-full">
-      <DashNav userEmail = {user}/>
-      <Calendar/>
-      </div>
+          <DashNav userEmail={user} />
+          <Calendar />
+        </div>
       </div>
     </>
   );

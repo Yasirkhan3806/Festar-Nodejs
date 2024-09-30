@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { db, auth } from "./Config/firebase"; 
+import { db, auth } from "./Config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth"; 
+import { onAuthStateChanged } from "firebase/auth";
 
 // Create a context
 const UserContext = createContext();
@@ -40,8 +40,6 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userName }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ userName }}>{children}</UserContext.Provider>
   );
 };
