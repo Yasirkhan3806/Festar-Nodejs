@@ -11,6 +11,7 @@ import About from './Components/About-page/About';
 import Contact from './Components/Contact us page/Contact';
 import LoginForm from './Components/LoginForm';
 import MainDashboard from './Components/UserDashBoard/MainDashboard';
+import MainCalendar from './Components/UserDashBoard/MainCalender';
 import { UserProvider } from './userContext';// Import UserProvider
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
 
           {/* Route for Main Dashboard */}
           <Route path="/Dashboard" element={<MainDashboard />} />
+           {/* Route for MainCalender */}
+           <Route path="/Register-event" element={<MainCalendar />} />
         </Routes>
       </Router>
     </UserProvider>

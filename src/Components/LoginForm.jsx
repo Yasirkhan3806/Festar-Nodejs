@@ -36,17 +36,17 @@ export default function LoginForm() {
     fetchRedirectResult();
   }, [navigate]);
 
-  // const fetchUserData = async (userId) => {
-  //   const userDocRef = doc(db, "userData", userId);
-  //   const userDoc = await getDoc(userDocRef);
-  //   if (userDoc.exists()) {
-  //     const userData = userDoc.data();
-  //     setUserName(userData.userName || "Guest");
-  //     console.log("User data fetched:", userData);
-  //   } else {
-  //     console.log("No user data found for this user ID.");
-  //   }
-  // };
+  const fetchUserData = async (userId) => {
+    const userDocRef = doc(db, "userData", userId);
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      setUserName(userData.userName || "Guest");
+      console.log("User data fetched:", userData);
+    } else {
+      console.log("No user data found for this user ID.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ export default function LoginForm() {
       await addDoc(userCollectionRef, {
         userId: userId,
         email: userCredential.user.email,
-        userName: result.user.displayName,
+        userName: userCredential.user.displayName,
       });
 
       console.log("User created successfully:", user.displayName);
@@ -101,9 +101,9 @@ export default function LoginForm() {
         password
       );
       await addDoc(userCollectionRef, {
-        userId: userId,
-        email: result.user.email,
-        userName: result.user.displayName || "",
+        userId:userCredential.user.uid,
+        email:userCredential.user.email,
+        userName: userCredential.user.displayName || "",
       });
       await fetchUserData(userCredential.user.uid); // Fetch user data after signing in
       console.log("User signed in successfully:", userCredential.user);
