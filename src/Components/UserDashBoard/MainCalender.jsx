@@ -37,7 +37,7 @@ export default function MainCalendar() {
       </button>
 
       {/* Popup Form */}
-      {showForm && <RegisterEventForm onClose={handleCloseForm} />}
+      {showForm && <RegisterEventForm onClose={handleCloseForm}  />}
       </div>
 
       {/* Main Calendar View */}

@@ -1,22 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { CalendarHeader } from './ReusableCalender';
+import { db } from '../../Config/firebase'; // Ensure you import your Firebase config properly
+import { collection, getDocs } from 'firebase/firestore'; // Make sure to use getDocs instead of getDoc
 
 export default function EventsDates() {
+  const [events, setEvents] = useState([]); // State to store fetched events
+   // Fetch events from Firestore
+   const fetchEvents = async () => {
+    try {
+        const snapshot = await getDocs(collection(db, 'UserEvents')); // Use getDocs to get all documents
+        const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Include doc ID if needed
+        setEvents(eventsData); // Set events state
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        setEvents([]); // Set to empty array on error
+    }
+};
+
+useEffect(() => {
+    fetchEvents(); // Fetch events when the component mounts
+}, []);
     // Calendar Grid Component
     const CalendarGrid = ({ dates, onDateClick }) => (
         <>
           <div className="flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800">
-            {dates.map((date, index) => (
-              <div
-                key={index}
-                onClick={() => date && onDateClick(date)}
-                className={`p-2 mt-1 border-blue-400 border-2 rounded-lg ${
-                  !date ? 'text-gray-400' : 'cursor-pointer'
-                }`}
-              >
-                {date || ""}
+          {dates.map((date, index) => {
+  // Find events that match the current date
+  const eventsForDate = events.filter(event => new Date(event.eventDate).getDate() === date);
+  return (
+      <div
+          key={index}
+          onClick={() => date && onDateClick(date)}
+          className={`p-2 mt-1 border-blue-400 border-2 rounded-lg ${
+            !date ? 'text-gray-400' : 'cursor-pointer'
+          } ${events} flex gap-2`}
+      >
+          {date || ""}
+          {/* Display events next to the date */}
+          {eventsForDate.map(event => (
+              <div key={event.id} className="text-[15px] font-semibold font-monts text-blue-500">
+                  {`${event.eventName} (${event.startTime} - ${event.endTime})`}
               </div>
-            ))}
+          ))}
+      </div>
+  );
+})}
+
           </div>
         </>
       );

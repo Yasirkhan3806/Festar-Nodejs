@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { auth, googleProvider } from "../Config/firebase";
 import { db } from "../Config/firebase";
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc,setDoc } from "firebase/firestore";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function LoginForm() {
   const userCollectionRef = collection(db, "userData");
   const navigate = useNavigate();
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchRedirectResult = async () => {
       try {
         const result = await getRedirectResult(auth);
@@ -34,7 +34,7 @@ export default function LoginForm() {
       }
     };
     fetchRedirectResult();
-  }, [navigate]);
+  }, [navigate]); 
 
   const fetchUserData = async (userId) => {
     const userDocRef = doc(db, "userData", userId);
@@ -76,43 +76,65 @@ export default function LoginForm() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const userId = result.user.uid;
-
-      // Create a document for the user in Firestore
-      await addDoc(userCollectionRef, {
-        userId: userId,
-        email: result.user.email,
-        userName: result.user.displayName || "",
-      });
-
-      console.log("Signed in with Google:", result.user);
+  
+      // Reference to the user's document in Firestore
+      const userDocRef = doc(db, "userData", email);
+      
+      // Check if the document already exists
+      const userDoc = await getDoc(userDocRef);
+  
+      if (!userDoc.exists()) {
+        // If it doesn't exist, create a new document
+        await setDoc(userDocRef, {
+          userId: userId,
+          email: result.user.email,
+          userName: result.user.displayName || "", // You can update this field accordingly
+        });
+        console.log("User created successfully:", result.user.displayName);
+      } else {
+        console.log("User already exists:", userDoc.data());
+      }
+  
+      // Fetch user data
+      await fetchUserData(userId);
+  
       navigate("/Dashboard"); // Redirect after successful Google sign-in
-      console.log(setUser);
     } catch (error) {
       console.error("Error with Google sign-in:", error);
     }
   };
-
+  
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await addDoc(userCollectionRef, {
-        userId:userCredential.user.uid,
-        email:userCredential.user.email,
-        userName: userCredential.user.displayName || "",
-      });
-      await fetchUserData(userCredential.user.uid); // Fetch user data after signing in
-      console.log("User signed in successfully:", userCredential.user);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userId = userCredential.user.uid;
+  
+      // Reference to the user's document in Firestore
+      const userDocRef = doc(db, "userData", userId);
+      
+      // Check if the document already exists
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        // If the document doesn't exist, create it
+        await setDoc(userDocRef, {
+          userId: userId,
+          email: userCredential.user.email,
+          userName: userCredential.user.displayName || "", // You can update this field accordingly
+        });
+        console.log("User document created for:", userCredential.user.displayName);
+      } else {
+        console.log("User already exists:", userDoc.data());
+      }
+  
+      await fetchUserData(userId); // Fetch user data after signing in
       navigate("/Dashboard"); // Redirect after successful sign-in
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Error during email sign-in:", error);
     }
   };
-
+  
   // Animation handlers for sliding
   const slidingLeft = () => {
     document.getElementById("Login-Picture").classList.add("L-animation-left");
