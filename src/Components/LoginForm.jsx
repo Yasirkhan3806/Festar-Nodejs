@@ -78,7 +78,7 @@ export default function LoginForm() {
       const userId = result.user.uid;
   
       // Reference to the user's document in Firestore
-      const userDocRef = doc(db, "userData", email);
+      const userDocRef = doc(db, "userData", userId);
       
       // Check if the document already exists
       const userDoc = await getDoc(userDocRef);

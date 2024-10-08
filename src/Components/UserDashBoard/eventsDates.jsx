@@ -1,54 +1,74 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CalendarHeader } from './ReusableCalender';
-import { db } from '../../Config/firebase'; // Ensure you import your Firebase config properly
-import { collection, getDocs } from 'firebase/firestore'; // Make sure to use getDocs instead of getDoc
+import { db } from '../../Config/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function EventsDates() {
   const [events, setEvents] = useState([]); // State to store fetched events
-   // Fetch events from Firestore
-   const fetchEvents = async () => {
+
+  // Fetch events from Firestore
+  const fetchEvents = async () => {
     try {
-        const snapshot = await getDocs(collection(db, 'UserEvents')); // Use getDocs to get all documents
-        const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Include doc ID if needed
-        setEvents(eventsData); // Set events state
+      const snapshot = await getDocs(collection(db, 'UserEvents')); // Use getDocs to get all documents
+      const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Include doc ID if needed
+      setEvents(eventsData); // Set events state
     } catch (error) {
-        console.error('Error fetching events:', error);
-        setEvents([]); // Set to empty array on error
+      console.error('Error fetching events:', error);
+      setEvents([]); // Set to empty array on error
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     fetchEvents(); // Fetch events when the component mounts
-}, []);
-    // Calendar Grid Component
-    const CalendarGrid = ({ dates, onDateClick }) => (
-        <>
-          <div className="flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800">
-          {dates.map((date, index) => {
-  // Find events that match the current date
-  const eventsForDate = events.filter(event => new Date(event.eventDate).getDate() === date);
-  return (
-      <div
-          key={index}
-          onClick={() => date && onDateClick(date)}
-          className={`p-2 mt-1 border-blue-400 border-2 rounded-lg ${
-            !date ? 'text-gray-400' : 'cursor-pointer'
-          } ${events} flex gap-2`}
-      >
-          {date || ""}
-          {/* Display events next to the date */}
-          {eventsForDate.map(event => (
-              <div key={event.id} className="text-[15px] font-semibold font-monts text-blue-500">
-                  {`${event.eventName} (${event.startTime} - ${event.endTime})`}
-              </div>
-          ))}
-      </div>
-  );
-})}
+  }, []);
 
-          </div>
-        </>
-      );
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  // Calendar Grid Component
+  const CalendarGrid = ({ dates, onDateClick }) => (
+    <>
+      <div className="flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800">
+        <div className="flex flex-col gap-1">
+          {dates.map((dateObj, index) => {
+            // Find events that match the current date
+            const eventsForDate = events.filter(event => {
+              const eventDate = new Date(event.eventDate); // Convert event date string to a Date object
+              return (
+                eventDate.getDate() === dateObj.date && // Match the day
+                eventDate.getMonth() === currentMonthIndex && // Match the month
+                eventDate.getFullYear() === currentYear // Match the year
+              );
+            });
+            
+            
+            return (
+              <div
+                key={index}
+                onClick={() => dateObj.date && onDateClick(dateObj.date)}
+                className={`p-2 mt-1  border-b-2 ${
+                  !dateObj.date ? 'text-gray-400' : 'cursor-pointer'
+                } flex gap-3 `}
+              >
+                {/* Display day name and date */}
+                <div className='ml-2'>
+                  <div className='flex justify-center font-semibold text-xl'> {` ${dateObj.date}` || ""}  </div>
+                  <div className='font-bold'> {dateObj.day && `${dateObj.day}`}</div>
+                </div>
+                
+                {/* Display events next to the date */}
+                {eventsForDate.map(event => (
+                  <div key={event.id} className="text-[15px] font-semibold font-monts text-blue-500 flex items-end">
+                    {`${event.eventName} (${event.startTime} - ${event.endTime})`}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+
   // Helper function to get the number of days in a month
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
@@ -90,18 +110,22 @@ useEffect(() => {
   };
 
   // Function to generate calendar dates
-  const generateCalendarDates = () => {
-    const daysInMonth = getDaysInMonth(currentMonthIndex, currentYear);
-    const datesArray = [];
+ // Function to generate calendar dates
+const generateCalendarDates = () => {
+  const daysInMonth = getDaysInMonth(currentMonthIndex, currentYear);
+  const firstDayOfMonth = getFirstDayOfMonth(currentMonthIndex, currentYear);
+
+  const datesArray = [];
   
-    // Fill in actual dates
-    for (let day = 1; day <= daysInMonth; day++) {
-      datesArray.push(day);
-    }
-  
-    return datesArray;
-  };
-  
+  // Fill in actual dates with day names (no empty slots)
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayOfWeek = (firstDayOfMonth + day - 1) % 7; // Get day of the week
+    datesArray.push({ day: daysOfWeek[dayOfWeek], date: day });
+  }
+
+  return datesArray;
+};
+
 
   const calendarDates = generateCalendarDates(); // Call generateCalendarDates on every render
 
@@ -118,7 +142,7 @@ useEffect(() => {
       {/* Calendar Grid */}
       <CalendarGrid
         dates={calendarDates}
-        onDateClick={handleDateClick} // Just an example
+        onDateClick={handleDateClick}
       />
     </>
   );

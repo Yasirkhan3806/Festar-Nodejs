@@ -23,10 +23,7 @@ export default function MainCalendar() {
       {/* Sidebar */}
       <div className='flex flex-col bg-blue-500'>
       <ReusableCalendar
-        selectedDate={new Date()} // For initial selection, if any
-        highlightDate={14} // Example of highlighting a specific date
-        // onDateClick={handleDateClick}
-        // backgroundColor={"bg-blue-500"}
+        selectedDate={new Date()} 
         weekLetterColor={"text-white"}
       />
             <button
