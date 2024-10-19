@@ -54,7 +54,7 @@ export default function LoginForm() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       const userId = userCredential.user.uid;
 
@@ -62,10 +62,10 @@ export default function LoginForm() {
       await addDoc(userCollectionRef, {
         userId: userId,
         email: userCredential.user.email,
-        userName: userCredential.user.displayName,
+        userName: userName,
       });
 
-      console.log("User created successfully:", user.displayName);
+      // console.log("User created successfully:", user.displayName);
       navigate("/Dashboard"); // Redirect after successful sign-up
     } catch (e) {
       console.error(e);
