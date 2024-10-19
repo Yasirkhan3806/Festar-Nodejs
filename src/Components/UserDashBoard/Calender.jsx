@@ -40,7 +40,7 @@ export default function Calendar() {
       />
 
       {/* Create Event Button */}
-      <Link to="/Register-event" className="mt-6 flex w-[20%] bg-blue-500 text-white font-bold py-2 px-4 rounded-full shadow-md">
+      <Link to="/Register-event" className="mt-6 flex w-[25%] bg-blue-500 text-white font-bold py-2 px-4 rounded-full shadow-md">
         <BsPlus className="text-2xl mr-2" /> Create Event
       </Link>
     </div>

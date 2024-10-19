@@ -3,7 +3,7 @@ import { auth } from "../../Config/firebase";
 import DashNav from "./DashNav";
 import DashSide from "./DashSide";
 import Calendar from "./Calender";
-import Notification from "./Notification";
+// import Notification from "./Notification";
 
 function UserProfile({ setUser }) {
   useEffect(() => {
@@ -20,14 +20,14 @@ function UserProfile({ setUser }) {
 
 export default function MainDashboard() {
   const [user, setUser] = useState("Guest");
-  const [notification, setNotification] = useState(null);
+  // const [notification, setNotification] = useState(null);
 
-  const handleShowNotification = () => {
-    setNotification({
-      message: 'You have a new event scheduled!',
-      type: 'info',
-    });
-  };
+  // const handleShowNotification = () => {
+  //   setNotification({
+  //     message: 'You have a new event scheduled!',
+  //     type: 'info',
+  //   });
+  // };
 
   return (
     <>
@@ -36,16 +36,22 @@ export default function MainDashboard() {
         <div className="w-[15%] h-[100%]">
           <DashSide />
         </div>
+        
         <div className="flex flex-col w-full">
           <DashNav userEmail={user} />
+          <div className="flex w-full">
+            <div className="w-[70%]">
           <Calendar />
-        </div>
-        <div>
-        <Notification
+          </div>
+          <div className="w-[30%]" >
+        {/* <Notification
           message={'You have a new event scheduled!'}
           type={"info"}
-          // onClose={handleCloseNotification}
-        />
+          onClose={handleShowNotification}
+        /> */}
+        </div>
+        </div>
+      
         </div>
       </div>
     </>

@@ -3,24 +3,26 @@ import { CalendarHeader } from './ReusableCalender';
 import { db } from '../../Config/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
+export const fetchEvents = async (setEvents) => {
+  try {
+    const snapshot = await getDocs(collection(db, 'UserEvents')); // Use getDocs to get all documents
+    const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Include doc ID if needed
+    setEvents(eventsData); // Set events state
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    setEvents([]); // Set to empty array on error
+  }
+};
+
+
 export default function EventsDates() {
   const [events, setEvents] = useState([]); // State to store fetched events
 
   // Fetch events from Firestore
-  const fetchEvents = async () => {
-    try {
-      const snapshot = await getDocs(collection(db, 'UserEvents')); // Use getDocs to get all documents
-      const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Include doc ID if needed
-      setEvents(eventsData); // Set events state
-    } catch (error) {
-      console.error('Error fetching events:', error);
-      setEvents([]); // Set to empty array on error
-    }
-  };
-
   useEffect(() => {
-    fetchEvents(); // Fetch events when the component mounts
+    fetchEvents(setEvents); // Fetch events when the component mounts
   }, []);
+  
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -58,7 +60,9 @@ export default function EventsDates() {
                 {/* Display events next to the date */}
                 {eventsForDate.map(event => (
                   <div key={event.id} className="text-[15px] font-semibold font-monts text-blue-500 flex items-end">
-                    {`${event.eventName} (${event.startTime} - ${event.endTime})`}
+                    {`${event.eventName}`}
+                    <br />
+                    {`(${event.startTime} - ${event.endTime})`}
                   </div>
                 ))}
               </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import security from './pictures/security.jpg';
 import dataEncryption from './icons/dataencryption.png';
-import securityChecks from './icons/securityChecks.png';
+import securityChecks from './icons/SecurityChecks.png';
 import secureAuth from './icons/Secureauth.png';
 import securityStandards from './icons/securityStandards.png';
 
