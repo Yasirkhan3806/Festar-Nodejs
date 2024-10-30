@@ -8,9 +8,9 @@ function Navbar() {
     const navbar = document.getElementById("nav-bar"); // Move this inside useEffect
     const handleScroll = () => {
       if (window.scrollY > 0) {
-        navbar.classList.add("nav-box-shadow"); // Remove the dot '.'
+        navbar.classList.add("nav-box-shadow"); 
       } else {
-        navbar.classList.remove("nav-box-shadow"); // Remove the dot '.'
+        navbar.classList.remove("nav-box-shadow"); 
       }
     };
 
@@ -25,7 +25,7 @@ function Navbar() {
     <>
       <nav
         id="nav-bar"
-        className="flex flex-wrap justify-around items-center w-full sticky top-0 bg-white h-20 z-[2] "
+        className="justify-between flex flex-wrap pl-2 pr-2 md:justify-around items-center w-full sticky top-0 bg-white h-20 z-[2] "
       >
         <img src={logo} alt="Logo" className="mt-0" />
 
@@ -87,22 +87,22 @@ function Navbar() {
               </a>
             </li>
             <li>
-              <a className="font-monts text-base" href="#">
+              <Link to="/about" className="font-monts text-base" href="#">
                 About Us
-              </a>
+              </Link>
             </li>
             <li>
-              <a className="font-monts text-base" href="#">
+              <Link to="/contact" className="font-monts text-base" href="#">
                 Contact Us
-              </a>
+              </Link>
             </li>
             <button className="bg-white hover:bg-blue-500 transition duration-300 pl-6 pr-6 pt-3 pb-3 border-2 border-black border-opacity-10 rounded-md h-12 mt-8 text-blue-400 hover:text-white font-monts shadow-sm">
               Get Started
             </button>
 
-            <button className="bg-blue-500 hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 mt-0 text-white hover:text-blue-500 leading-normal font-monts shadow-sm">
+            <Link to = "/Log-In"  className="bg-blue-500 hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 mt-0 text-white hover:text-blue-500 leading-normal font-monts shadow-sm">
               Sign In
-            </button>
+            </Link>
           </ul>
         </div>
 
