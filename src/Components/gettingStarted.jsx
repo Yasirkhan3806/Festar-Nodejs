@@ -5,18 +5,18 @@ import host from '../assets/icons/icons8-video-call-50.png';
 export default function GettingStarted() {
   return (
     <>
-      <div className='flex justify-around mb-24'>
-        <div className='w-[30%] flex flex-col justify-center items-center gap-2'>
+      <div className='flex flex-col gap-5 justify-around mb-24 md:flex-row lg:flex-row '>
+        <div className='w-[100%] flex flex-col justify-center items-center gap-2 md:w-[30%] lg:w-[30%]'>
             <img className = 'h-2/6' src={signin} alt="" />
             <h2 className='font-bold text-3xl'>Sign Up</h2>
             <p className='text-sm text-center'>Create your account on Festar to get started with planning your meetings. </p>
         </div>
-        <div className='w-[30%] flex flex-col justify-center items-center gap-2'>
+        <div className='w-[100%] flex flex-col justify-center items-center gap-2 md:w-[30%] lg:w-[30%]'>
             <img className = 'h-2/4' src={schedule} alt="" />
             <h2 className='font-bold text-3xl'>Schedule</h2>
             <p className='text-sm text-center'>Choose a date and time for your meeting and send out invitations to participants.  </p>
         </div>
-        <div className='w-[30%] flex flex-col justify-center items-center gap-2'>
+        <div className='w-[100%] flex flex-col justify-center items-center gap-2 md:w-[30%] lg:w-[30%]'>
             <img className = 'h-2/4' src={host} alt="" />
             <h2 className='font-bold text-3xl'>Host</h2>
             <p className='text-sm text-center'>Start your meeting with a single click and enjoy seamless video conferencing.   </p>
