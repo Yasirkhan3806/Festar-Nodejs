@@ -30,7 +30,7 @@ function Navbar() {
         <img src={logo} alt="Logo" className="mt-0" />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-14 space-y-3">
+        <ul className="hidden md:flex md:space-x-8 space-x-14 space-y-3">
           <li></li>
           <li>
             <Link

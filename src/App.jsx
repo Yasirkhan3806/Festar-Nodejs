@@ -4,7 +4,7 @@ import './App.css';
 import Services from './Components/Services';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Import other components/pages here
 import About from './Components/About-page/About';

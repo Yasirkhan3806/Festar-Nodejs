@@ -30,15 +30,18 @@ export default function MissionVisionSec() {
   ]
   return (
     <>
-    <div className="flex h-full gap-4 p-2 mb-16">
-      <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle ">
+    <div className="flex flex-col w-full h-full gap-4 p-2 mb-16 lg:flex-row">
+      <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle hidden lg:block">
         <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
       </div>
-      <div className="w-2/4 flex flex-col gap-2 ">
+      <div className="w-full sm:p-3  flex flex-col gap-2 lg:w-2/4 p-0 ">
       <div className="w-full">
-        <h1 data-aos = "fade-up" className="text-6xl font-bold leading-snug ">Our Mission <span className="text-blue-500">&</span> Vision</h1>
-        <p data-aos = "fade-up" className="mb-3">At Festar, we strive to simplify virtual meeting arrangements making them accessible for everyone. Our vision is to create engaging and productive online gatherings that foster collaboration across borders.</p>
+        <h1 data-aos = "fade-up" className="text-5xl font-bold leading-snug lg:text-6xl sm:text-center">Our Mission <span className="text-blue-500">&</span> Vision</h1>
+        <p data-aos = "fade-up" className="mb-3 sm:text-center sm:mb-1">At Festar, we strive to simplify virtual meeting arrangements making them accessible for everyone. Our vision is to create engaging and productive online gatherings that foster collaboration across borders.</p>
         </div>
+        <div className="w-full h-3/4 mt-16 flex justify-center align-middle block lg:hidden lg:w-2/4 lg:mt-34 ">
+        <img data-aos ="fade-up"  className="" src={missionpic} alt="" />
+      </div>
         {/* <img className="max-h-2/4" src={missionpic} alt="" /> */}
         <div className="flex flex-row flex-wrap gap-2">
           {data.map((item, index) => (
