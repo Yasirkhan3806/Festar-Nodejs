@@ -57,11 +57,11 @@ export default function ReviewSection() {
       <div className='mt-36'>
         <h1 data-aos = "fade-up" className='text-center text-5xl font-bold'>What Our <span className='text-blue-500'>Users</span> Say</h1>
         <p data-aos = "fade-up" className='text-center text-lg mt-2'><span className='font-bold'>Discover how Festar</span> has transformed the way people connect and collaborate through meetings.</p>
-        <div className='flex flex-wrap justify-around gap-5 m-10'>
+        <div className='flex flex-col md:flex-row flex-wrap justify-around gap-5 m-10'>
           {
             reviews.map((Element, index) => {
               return (
-                <div key={index} className='w-[30%] h-56 bg-black p-6 rounded-lg hover-shadow'>
+                <div key={index} className='w-full md:w-[45%] lg:w-[30%] h-62 md:h-56 bg-black p-6 rounded-lg hover-shadow'>
                         {[...Array(Element.rating)].map((_, starIndex) => (
                         <span key={starIndex} className='text-yellow-500 text-2xl'>★</span> // Display star
                       ))}
