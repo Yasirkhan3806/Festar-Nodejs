@@ -78,7 +78,7 @@ function Navbar() {
         <div
           className={`md:hidden ${
             isMenuOpen ? "block" : "hidden"
-          } absolute top-16 right-0 w-2/4 h-2/6 bg-white shadow-lg`}
+          } absolute top-16 right-0 w-2/4 h-[312%] bg-white shadow-lg`}
         >
           <ul className="flex flex-col items-center space-y-4 ">
             <li>

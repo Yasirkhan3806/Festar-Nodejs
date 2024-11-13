@@ -10,8 +10,6 @@ export function UserProfile({ setUser }) {
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
-      console.log("User Email:", user.email);
-      console.log("User Display Name:", user.displayName);
       setUser(user.displayName || "User"); // Set the user name or default to "User"
     }
   }, [setUser]);
