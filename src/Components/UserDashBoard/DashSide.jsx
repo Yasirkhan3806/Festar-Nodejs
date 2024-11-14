@@ -1,7 +1,7 @@
 import React from "react";
 import eventIcon from "./icons/eventIcon2.png";
 import meetingIcon from "./icons/meetings.png";
-import groupChatsIcon from "./icons/groupChatsiIcon.png";
+import goalsIcon from "./icons/goalsIcon.png";
 import chatsIcon from "./icons/chatsIcon.png";
 import callsIcon from "./icons/callsIcon.png";
 import registerEventsIcon from "./icons/registerEventsIcon.png";
@@ -9,70 +9,44 @@ import notificationsIcon from "./icons/notificationsIcon.png";
 import settingsIcon from "./icons/settingsIcon.png";
 import userIcon from "./icons/sideUserIcon.png";
 import { useUser } from "../../userContext";
-import { Cursor } from "react-simple-typewriter";
 
-export default function DashSide() {
+export default function DashSide({ activeItem, setActiveItem }) {
   const { userName } = useUser();
-  const style = {
-    display: "flex",
-    gap: "0.5rem",
-    Cursor: "pointer",
-  };
+
+  const sidebarItems = [
+    { name: "Events", icon: eventIcon },
+    { name: "Meetings", icon: meetingIcon },
+    { name: "Goals", icon: goalsIcon },
+    { name: "Chats", icon: chatsIcon },
+    { name: "Calls", icon: callsIcon },
+    { name: "RegisterEvents", icon: registerEventsIcon },
+    { name: "Notifications", icon: notificationsIcon },
+    { name: "Settings", icon: settingsIcon },
+  ];
+
   return (
-    <>
-      <div className="bg-blue-500 p-6 py-9 flex flex-col gap-16">
-        <h1 className="text-white font-bold hover:border-b-2 text-2xl">
-          DashBoard
-        </h1>
-        <ul className="flex flex-col justify-center  text-white gap-6">
-          <li className="flex-gap-pointer ">
-            <img className="h-6" src={eventIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Events</p>
+    <div className="bg-blue-500 font-monts font-bold p-6 py-9 flex flex-col gap-16 w-full">
+      <h1 className="text-white font-bold hover:border-b-2 text-2xl">
+        Dashboard
+      </h1>
+      <ul className="flex flex-col justify-center text-white gap-2">
+        {sidebarItems.map((item) => (
+          <li
+            key={item.name}
+            onClick={() => setActiveItem(item.name)}
+            className='flex items-center gap-2 cursor-pointer p-2'
+          >
+            <img className="h-6" src={item.icon} alt={`${item.name} icon`} />
+            <p className={`hover:border-b-2 ${activeItem === item.name ? "border-b-2 border-white" : ""}`}>{item.name}</p>
           </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={meetingIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Meetings</p>
-          </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={groupChatsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">GroupChats</p>
-          </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={chatsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Chats</p>
-          </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={callsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Calls</p>
-          </li>
-          <li className="flex-gap-pointer  w-[12.3rem]">
-            {" "}
-            <img className="h-6" src={registerEventsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Register Events</p>
-          </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={notificationsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Notifications</p>
-          </li>
-          <li className="flex-gap-pointer ">
-            {" "}
-            <img className="h-6" src={settingsIcon} alt="" />
-            <p className="font-bold hover:border-b-2">Settings</p>
-          </li>
-          <li></li>
-        </ul>
-        <div className="flex-gap-pointer ">
-          <img className="h-8" src={userIcon} alt="" />
-          <h3 className="text-white font-bold hover:border-b-2 text-lg mt-1">
-            {userName}
-          </h3>
-        </div>
+        ))}
+      </ul>
+      <div className="flex items-center gap-2 cursor-pointer p-1">
+        <img className="h-8" src={userIcon} alt="User Icon" />
+        <h3 className="text-white font-bold hover:border-b-2 text-lg">
+          {userName}
+        </h3>
       </div>
-    </>
+    </div>
   );
 }

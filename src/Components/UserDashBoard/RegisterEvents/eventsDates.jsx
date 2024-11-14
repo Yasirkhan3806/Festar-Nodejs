@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "./ReusableCalender";
-import { db } from "../../Config/firebase";
+import { db } from "../../../Config/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 export const fetchEvents = async (setEvents) => {

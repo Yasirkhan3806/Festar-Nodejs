@@ -1,11 +1,6 @@
 import React,{useState} from 'react';
-import { Link } from 'react-router-dom';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { BsPlus } from 'react-icons/bs';
-import generateCalendarDates from '../UserDashBoard/Calender'
 import ReusableCalendar from './ReusableCalender';
-import { CalendarHeader } from './ReusableCalender';
-import CalendarWeek from './MainCalWeekView';
 import EventsDates from './eventsDates';
 import RegisterEventForm from './RegisterEventForm';
 
@@ -15,7 +10,7 @@ export default function MainCalendar() {
     setShowForm(true);
   };
 
-  const handleCloseForm = () => {
+  const handleCloseForm = () => { 
     setShowForm(false);
   };
   return (

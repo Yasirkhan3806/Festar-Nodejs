@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { db } from '../../Config/firebase'; // Adjust the import based on your Firebase setup
+import { db } from '../../../Config/firebase'; // Adjust the import based on your Firebase setup
 import { doc,setDoc,collection } from 'firebase/firestore';
-import { auth } from '../../Config/firebase'; // Import Firestore methods
+import { auth } from '../../../Config/firebase'; // Import Firestore methods
 
 export default function RegisterEventForm({  onClose }) {
   const [eventName, setEventName] = useState('');

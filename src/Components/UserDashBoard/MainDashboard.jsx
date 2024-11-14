@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { auth } from "../../Config/firebase";
 import DashNav from "./DashNav";
 import DashSide from "./DashSide";
-import Calendar from "./Calender";
-import Notification from "./Notification";
+import RegEventsOption from "./RegisterEvents/RegEventsOption";
+import Meetings from "./Meetings";
+import Goals from "./Goals";
+import Chats from "./Chats/Chats";
+import Events from "./Events";
+import CallsHistory from "./CallsHistory";
+import NotificationsMain from "./NotificationsMain";
+import Settings from "./settings/Settings";
 
 function UserProfile({ setUser }) {
   useEffect(() => {
@@ -20,27 +26,45 @@ function UserProfile({ setUser }) {
 
 export default function MainDashboard() {
   const [user, setUser] = useState("Guest");
-  const [notification, setNotification] = useState(null);
+  const [activeItem, setActiveItem] = useState("Events"); // Track the active item
 
-  // const handleShowNotification = () => {
-  //   setNotification({
-  //     message: 'You have a new event scheduled!',
-  //     type: 'info',
-  //   });
-  // };
+  // Function to render content based on active item
+  const renderContent = () => {
+    switch (activeItem) {
+      case "Events":
+        return <Events />;
+      case "Meetings":
+        return <Meetings />;
+      case "Goals":
+        return <Goals />;
+      case "Chats":
+        return <Chats />;
+      case "Calls":
+        return <CallsHistory />;
+      case "RegisterEvents":
+        return <RegEventsOption />;
+      case "Notifications":
+        return <NotificationsMain />;
+      case "Settings":
+        return <Settings />;
+      default:
+        return <RegEventsOption />;
+    }
+  };
 
   return (
     <>
       <UserProfile setUser={setUser} />
       <div className="flex">
-        <div className="w-[15%] h-[100%]">
-          <DashSide />
+        <div className="w-[15%] h-[100%] z-10">
+          <DashSide activeItem={activeItem}  setActiveItem={setActiveItem} />
         </div>
         
         <div className="flex flex-col w-full">
           <DashNav userEmail={user} />
-          <div className="flex w-full">
-            <div className="w-[50%]">
+          <div className="w-full">
+          {renderContent()}
+            {/* <div className="w-[50%]">
           <Calendar />
           </div>
           <div className="w-[50%] pr-6" >
@@ -48,8 +72,8 @@ export default function MainDashboard() {
           message={'You have a new event scheduled!'}
           type={"info"}
           // onClose={handleShowNotification}
-        />
-        </div>
+        /> */}
+        {/* </div> */}
         </div>
       
         </div>

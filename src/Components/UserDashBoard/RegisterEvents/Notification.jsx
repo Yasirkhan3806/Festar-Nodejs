@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchEvents } from './eventsDates';
-import crossIcon from './icons/crossIcon.png';
-import notificationIcon from './icons/notificationsIcon.png';
-import conferenceImage from './pictures/conferenceImage.png'
+import crossIcon from '../icons/crossIcon.png';
+import notificationIcon from '../icons/notificationsIcon.png';
+import conferenceImage from '../pictures/conferenceImage.png'
 
 export default function Notification({ onClose }) {
   const [events, setEvents] = useState([]);

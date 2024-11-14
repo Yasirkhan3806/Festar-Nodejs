@@ -3,7 +3,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import ReusableCalendar from './ReusableCalender';
-import { auth } from '../../Config/firebase';
+import { auth } from '../../../Config/firebase';
 
 export function UserProfile({ setUser }) {
 
