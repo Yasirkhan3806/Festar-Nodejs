@@ -14,12 +14,11 @@ export default function DashSide({ activeItem, setActiveItem }) {
   const { userName } = useUser();
 
   const sidebarItems = [
-    { name: "Events", icon: eventIcon },
+    { name: "RegisterEvents", icon: registerEventsIcon },
     { name: "Meetings", icon: meetingIcon },
     { name: "Goals", icon: goalsIcon },
     { name: "Chats", icon: chatsIcon },
     { name: "Calls", icon: callsIcon },
-    { name: "RegisterEvents", icon: registerEventsIcon },
     { name: "Notifications", icon: notificationsIcon },
     { name: "Settings", icon: settingsIcon },
   ];
@@ -29,7 +28,7 @@ export default function DashSide({ activeItem, setActiveItem }) {
       <h1 className="text-white font-bold hover:border-b-2 text-2xl">
         Dashboard
       </h1>
-      <ul className="flex flex-col justify-center text-white gap-2">
+      <ul className="flex flex-col justify-center text-white gap-4">
         {sidebarItems.map((item) => (
           <li
             key={item.name}

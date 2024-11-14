@@ -6,7 +6,7 @@ import RegEventsOption from "./RegisterEvents/RegEventsOption";
 import Meetings from "./Meetings";
 import Goals from "./Goals";
 import Chats from "./Chats/Chats";
-import Events from "./Events";
+import Events from "../UserDashBoard/RegisterEvents/EventsComing/Events";
 import CallsHistory from "./CallsHistory";
 import NotificationsMain from "./NotificationsMain";
 import Settings from "./settings/Settings";
@@ -26,13 +26,11 @@ function UserProfile({ setUser }) {
 
 export default function MainDashboard() {
   const [user, setUser] = useState("Guest");
-  const [activeItem, setActiveItem] = useState("Events"); // Track the active item
+  const [activeItem, setActiveItem] = useState("RegisterEvents"); // Track the active item
 
   // Function to render content based on active item
   const renderContent = () => {
     switch (activeItem) {
-      case "Events":
-        return <Events />;
       case "Meetings":
         return <Meetings />;
       case "Goals":
@@ -55,12 +53,12 @@ export default function MainDashboard() {
   return (
     <>
       <UserProfile setUser={setUser} />
-      <div className="flex">
-        <div className="w-[15%] h-[100%] z-10">
+      <div className="flex overflow-hidden">
+        <div className="w-[25%] h-[100%] z-10">
           <DashSide activeItem={activeItem}  setActiveItem={setActiveItem} />
         </div>
         
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full overflow-hidden">
           <DashNav userEmail={user} />
           <div className="w-full">
           {renderContent()}

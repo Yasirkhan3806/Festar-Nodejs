@@ -6,8 +6,19 @@
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
     
 }
+.hide-scrollbar {
+  overflow-y: scroll; /* Enables vertical scrolling */
+  scrollbar-width: none; /* For Firefox */
+}
+
+/* Hides the scrollbar for Webkit browsers (e.g., Chrome, Safari) */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .font-monts {
     font-family: 'Montserrat', sans-serif;
   }

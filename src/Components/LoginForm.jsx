@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, db } from "../Config/firebase";
+import useWindowSize from "./UserDashBoard/WindowSize";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -140,27 +141,49 @@ export default function LoginForm() {
     }
   };
 
-  // UI animations for login/signup toggling
+  const [width] = useWindowSize();
+
+  // Other existing code...
+
+  // Handle the animation for sliding left (Login to Sign-Up)
   const slidingLeft = () => {
-    document.getElementById("Login-Picture").classList.add("L-animation-left");
-    setTimeout(() => {
-      document.getElementById("sign-up").classList.remove("hidden");
-      document.getElementById("login-form").classList.add("hidden");
-    }, 1000);
-   
+    if (width < 768) {
+      // For mobile: Show a different transition (like sliding up/down)
+      document.getElementById("Login-Picture").classList.add("L-animation-left");
+      setTimeout(() => {
+        document.getElementById("sign-up").classList.remove("hidden");
+        document.getElementById("login-form").classList.add("hidden");
+      }, 1000);
+    } else {
+      // For larger screens (tablet/desktop): Use the original sliding effect
+      document.getElementById("Login-Picture").classList.add("L-animation-left");
+      setTimeout(() => {
+        document.getElementById("sign-up").classList.remove("hidden");
+        // document.getElementById("login-form").classList.add("hidden");
+      }, 1500);
+    }
   };
 
+  // Handle the animation for sliding right (Sign-Up to Login)
   const slidingRight = () => {
-    document
-      .getElementById("Login-Picture")
-      .classList.remove("L-animation-left");
-    setTimeout(() => {
-      document.getElementById("sign-up").classList.add("hidden");
-      document.getElementById("login-form").classList.remove("hidden");
-    }, 600);
-    document.getElementById("L-m-cont").classList.add("L-D-animation");
+    if (width < 768) {
+      // For mobile: Show a different transition (like sliding down/up)
+      document.getElementById("Login-Picture").classList.remove("L-animation-left");
+      setTimeout(() => {
+        document.getElementById("sign-up").classList.add("hidden");
+        document.getElementById("login-form").classList.remove("hidden");
+      }, 600);
+      document.getElementById("L-m-cont").classList.add("L-D-animation");
+    } else {
+      // For larger screens: Use the original sliding effect
+      document.getElementById("Login-Picture").classList.remove("L-animation-left");
+      setTimeout(() => {
+        document.getElementById("sign-up").classList.add("hidden");
+        document.getElementById("login-form").classList.remove("hidden");
+      }, 600);
+      document.getElementById("L-m-cont").classList.add("L-D-animation");
+    }
   };
-
   return (
     <div className="flex min-h-screen">
       {/* Left Side Image and Background */}
@@ -184,7 +207,7 @@ export default function LoginForm() {
         {/* Left side - Login Form */}
         <div className="p-2 md:w-2/4 lg:w-2/4 flex flex-col justify-center items-center L-F-animation" id="login-form">
           <div className="max-w-sm mx-auto">
-            <h1 className="text-4xl font-bold text-blue-700 mb-6">Fester</h1>
+            <h1 className="text-4xl font-bold text-blue-700 mb-6">Festar</h1>
             <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
 
             {/* Google Sign-In Button */}
@@ -259,9 +282,9 @@ export default function LoginForm() {
         {/* Right side - Sign-up Form */}
         <div
           id="sign-up"
-          className="w-full md:w-2/4 bg-white flex flex-col justify-center items-center p-4 md:p-16 hidden"
+          className="w-full md:w-2/4 bg-white flex flex-col justify-center items-center p-4 md:p-8 hidden md:block lg:block"
         >
-          <h1 className="text-4xl font-bold mb-2 text-blue-800">Fester</h1>
+          <h1 className="text-4xl font-bold mb-2 text-blue-800">Festar</h1>
           <h2 className="text-2xl font-semibold mb-2">Create an Account</h2>
           <button
             className="bg-gray-100 text-black border-2 border-gray-200 rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center"

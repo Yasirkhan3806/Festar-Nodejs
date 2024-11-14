@@ -13,6 +13,7 @@ import LoginForm from './Components/LoginForm';
 import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { UserProvider } from './userContext';// Import UserProvider
+import fetchDataContext from './Components/UserDashBoard/Context_Api_files/EventContext';
 
 function App() {
   // Initialize AOS animations
@@ -23,6 +24,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <EventsContex>
     <UserProvider> {/* Wrap the entire app with UserProvider */}
       <Router>
         <Routes>
@@ -45,6 +47,7 @@ function App() {
         </Routes>
       </Router>
     </UserProvider>
+    </EventsContex>
   );
 }
 

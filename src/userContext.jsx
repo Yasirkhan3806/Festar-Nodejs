@@ -3,11 +3,13 @@ import { db, auth } from "./Config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-// Create a context
+// Create contexts
 const UserContext = createContext();
+const EventsContext = createContext();
 
-// Custom hook to use the UserContext
+// Custom hooks for accessing contexts
 export const useUser = () => useContext(UserContext);
+export const useEvents = () => useContext(EventsContext);
 
 export const UserProvider = ({ children }) => {
   const [userName, setUserName] = useState("Guest");
@@ -40,6 +42,37 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userName }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userName }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const EventsProvider = ({ children }) => {
+  const [events, setEvents] = useState([]);
+
+  // Function to fetch events
+  const fetchEvents = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "UserEvents"));
+      const eventsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setEvents(eventsData);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setEvents([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  return (
+    <EventsContext.Provider value={{ events }}>
+      {children}
+    </EventsContext.Provider>
   );
 };
