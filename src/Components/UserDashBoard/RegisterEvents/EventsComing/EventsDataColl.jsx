@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { fetchEvents } from '../eventsDates';
+import { useEvents } from '../../../../userContext';
 
 export default function EventsDataColl() {
-    const [events, setEvents] = useState([]);
-
-    // Fetch events when component mounts
-    useEffect(() => {
-        fetchEvents(setEvents);
-    }, []);
-
+    const {events} = useEvents();
     // Log fetched events
-    useEffect(() => {
-        console.log("Fetched events:", events);
-    }, [events]);
+    // useEffect(() => {
+    //     console.log("Fetched events:", events);
+    // }, [events]);
 
     // Get today's date for comparison
     const today = new Date().setHours(0, 0, 0, 0); // Normalize to midnight to ignore time part

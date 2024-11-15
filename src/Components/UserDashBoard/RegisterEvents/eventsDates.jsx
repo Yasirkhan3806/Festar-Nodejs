@@ -1,34 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "./ReusableCalender";
-import { db } from "../../../Config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { useEvents } from "../../../userContext";
 
-export const fetchEvents = async (setEvents) => {
-  try {
-    const snapshot = await getDocs(collection(db, "UserEvents")); // Use getDocs to get all documents
-    const eventsData = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })); // Include doc ID if needed
-    setEvents(eventsData); // Set events state
-  } catch (error) {
-    console.error("Error fetching events:", error);
-    setEvents([]); // Set to empty array on error
-  }
-};
 
 export default function EventsDates() {
-  const [events, setEvents] = useState([]); // State to store fetched events
-
-  // Fetch events from Firestore
-  useEffect(() => {
-    fetchEvents(setEvents); // Fetch events when the component mounts
-  }, []);
+const {events } = useEvents();
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   // Calendar Grid Component
-  const CalendarGrid = ({ dates, onDateClick }) => (
+  const CalendarGrid = ({ dates, onDateClick, events, currentMonthIndex, currentYear }) => (
     <>
       <div className="flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800">
         <div className="flex flex-col gap-1">
@@ -37,12 +18,12 @@ export default function EventsDates() {
             const eventsForDate = events.filter((event) => {
               const eventDate = new Date(event.eventDate); // Convert event date string to a Date object
               return (
-                eventDate.getDate() === dateObj.date && // Match the day
-                eventDate.getMonth() === currentMonthIndex && // Match the month
-                eventDate.getFullYear() === currentYear // Match the year
+                eventDate.getDate() === dateObj.date &&
+                eventDate.getMonth() === currentMonthIndex &&
+                eventDate.getFullYear() === currentYear
               );
             });
-
+  
             return (
               <div
                 key={index}
@@ -51,19 +32,13 @@ export default function EventsDates() {
                   !dateObj.date ? "text-gray-400" : "cursor-pointer"
                 } flex gap-3 `}
               >
-                {/* Display day name and date */}
                 <div className="ml-2">
                   <div className="flex justify-center font-semibold text-xl">
-                    {" "}
-                    {` ${dateObj.date}` || ""}{" "}
+                    {` ${dateObj.date}` || ""}
                   </div>
-                  <div className="font-bold">
-                    {" "}
-                    {dateObj.day && `${dateObj.day}`}
-                  </div>
+                  <div className="font-bold">{dateObj.day && `${dateObj.day}`}</div>
                 </div>
-
-                {/* Display events next to the date */}
+  
                 {eventsForDate.map((event) => (
                   <div
                     key={event.id}
@@ -81,7 +56,7 @@ export default function EventsDates() {
       </div>
     </>
   );
-
+  
   // Helper function to get the number of days in a month
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
@@ -164,7 +139,14 @@ export default function EventsDates() {
       />
 
       {/* Calendar Grid */}
-      <CalendarGrid dates={calendarDates} onDateClick={handleDateClick} />
+      <CalendarGrid
+  dates={calendarDates}
+  onDateClick={handleDateClick}
+  events={events}
+  currentMonthIndex={currentMonthIndex}
+  currentYear={currentYear}
+/>
+
     </>
   );
 }

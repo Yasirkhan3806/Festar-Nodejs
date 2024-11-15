@@ -3,7 +3,7 @@ import { auth } from "../../Config/firebase";
 import DashNav from "./DashNav";
 import DashSide from "./DashSide";
 import RegEventsOption from "./RegisterEvents/RegEventsOption";
-import Meetings from "./Meetings";
+import Meetings from "./Meetings/MainMeetings";
 import Goals from "./Goals";
 import Chats from "./Chats/Chats";
 import Events from "../UserDashBoard/RegisterEvents/EventsComing/Events";
