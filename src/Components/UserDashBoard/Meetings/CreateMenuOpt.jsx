@@ -3,13 +3,11 @@ import { db } from '../../../Config/firebase';
 import { addDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth } from '../../../Config/firebase';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid'; // Import uuid library
 
 export default function CreateMenuOpt({ setIsOpen }) {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [meetingLink, setMeetingLink] = useState('');
   const navigate = useNavigate();
 
   // Function to get the current time in HH:MM:SS format
@@ -21,23 +19,6 @@ export default function CreateMenuOpt({ setIsOpen }) {
     return `${hours}:${minutes}:${seconds}`;
   }
 
-  // Function to generate a meeting link with a unique UUID
-  const generateMeetingLink = () => {
-    const uniqueId = uuidv4(); // Generate a unique UUID
-    const link = `https://meetings.example.com/${uniqueId}`; // Example base URL with UUID
-    setMeetingLink(link); // Set the generated link in state
-  };
-
-  useEffect(() => {
-    generateMeetingLink(); // Generate the meeting link on component mount
-  }, []);
-
-  // Log meetingLink after it has been updated
-  useEffect(() => {
-    if (meetingLink) {
-      console.log(meetingLink); // Log the meeting link whenever it changes
-    }
-  }, [meetingLink]);
 
   const userMeetingCollRef = collection(db, 'UserMeetingData');
 
@@ -76,10 +57,9 @@ export default function CreateMenuOpt({ setIsOpen }) {
         userId: auth.currentUser.uid,
         StartTime: getCurrentTime(),
         EndTime: '',
-        MeetingLink: meetingLink, // Save the generated meeting link in Firestore
       });
       setLoading(false); // Hide loading state
-      navigate('/MeetingRoom'); // Redirect to meeting room
+      navigate('/MeetingRoom', { state: { meetingName: name } }); // Redirect to meeting room
     } catch (error) {
       setLoading(false); // Hide loading state
       setError('Failed to create meeting. Please try again.');
@@ -95,7 +75,7 @@ export default function CreateMenuOpt({ setIsOpen }) {
 
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-2 right-2 text-blue-500 font-bold"
+            className="relative bottom-[3.5rem] left-[20.5rem] text-blue-500 font-bold"
             aria-label="Close"
           >
             X

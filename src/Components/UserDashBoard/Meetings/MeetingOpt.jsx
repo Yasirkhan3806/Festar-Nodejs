@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CreateMenuOpt from './CreateMenuOpt';
+import Participant from './JoiningMeeting';
 
 export default function MeetingOpt() {
   const [isOpen, setIsOpen] = useState(false);
+  const [joinIt, setjoinIt] = useState(false);
+
 
   return (
     <>
@@ -19,9 +22,10 @@ export default function MeetingOpt() {
             Create Meeting
           </button>
           {isOpen && <CreateMenuOpt setIsOpen={setIsOpen} />}
-          <Link className='bg-blue-500 hover:bg-white border-2 rounded-sm border-white p-2 text-white hover:text-blue-500 transition duration-500 font-semibold shadow-md' to="">
+          <button onClick={()=>setjoinIt(true)} className='bg-blue-500 hover:bg-white border-2 rounded-sm border-white p-2 text-white hover:text-blue-500 transition duration-500 font-semibold shadow-md' to="">
             Join Meeting
-          </Link>
+          </button>
+          {joinIt && <Participant setjoinIt = {setjoinIt}/> }
         </span>
       </div>
     </>

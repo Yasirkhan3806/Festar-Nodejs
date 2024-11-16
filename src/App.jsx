@@ -12,7 +12,7 @@ import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
-import MeetingRoom from './Components/UserDashBoard/Meetings/MeetingRoom';
+import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 
 function App() {
   // Initialize AOS animations
@@ -43,7 +43,8 @@ function App() {
           <Route path="/Dashboard" element={<MainDashboard />} />
            {/* Route for MainCalender */}
            <Route path="/Register-event" element={<MainCalendar />} />
-           <Route path="/MeetingRoom" element={<MeetingRoom />} />
+           {/* Route for host meeting room */}
+           <Route path="/MeetingRoom" element={<Host />} />
         </Routes>
       </Router>
     </UserProvider>
