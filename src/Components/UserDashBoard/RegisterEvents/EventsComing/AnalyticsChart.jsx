@@ -61,7 +61,7 @@ const AnalyticsChart = () => {
 
   return (
     <div className="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-center font-semibold text-lg mb-4">Weekly Activity: Calls & Meetings</h2>
+      {/* <h2 className="text-center font-semibold text-lg mb-4">Weekly Activity: Calls & Meetings</h2> */}
       <Bar data={data} options={options} />
     </div>
   );
