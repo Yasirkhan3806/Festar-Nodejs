@@ -10,10 +10,10 @@ import { db } from '../../../Config/firebase';
 const servers = {
     iceServers: [
         {
-            urls: [
-                "stun:stun1.l.google.com:19302",
-                "stun:stun2.l.google.com:19302",
-            ],
+                urls: 'turn:192.168.122.1:3478',
+                username: 'Yasir-Khan',
+                credential: '033690'
+            
         },
     ],
     iceCandidatePoolSize: 10,

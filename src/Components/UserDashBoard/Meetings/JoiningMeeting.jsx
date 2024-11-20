@@ -30,7 +30,7 @@ function JoinMeeting() {
         setJoining(true);
         try {
             // Retrieve the call document
-            const callDoc = doc(db, "calls", callId);
+            const callDoc = doc(db, "Calls", callId);
             const offerCandidates = collection(callDoc, "offerCandidates");
             const answerCandidates = collection(callDoc, "answerCandidates");
 
