@@ -1,244 +1,266 @@
-import React,{useState,useRef} from 'react';
-// import { ReactComponent as HangupIcon } from "./icons/hangup.svg";
-// import { ReactComponent as MoreIcon } from "./icons/more-vertical.svg";
-// import { ReactComponent as CopyIcon } from "./icons/copy.svg";
-import { doc, collection, getDocs, setDoc,deleteDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
-import { db } from '../../../Config/firebase';
+import React, { useRef, useState } from "react";
+import AgoraRTC from "agora-rtc-sdk-ng";
 
+export default function Videos() {
+  const [channelName, setChannelName] = useState("");
+  const [isHost, setIsHost] = useState(false);
+  const [uid, setUid] = useState("");
+  const [isCallStarted, setIsCallStarted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const localStreamRef = useRef(null);
+  const remoteStreamRef = useRef(null);
 
-
-const servers = {
-    iceServers: [
-        {
-                urls: 'turn:192.168.122.1:3478',
-                username: 'Yasir-Khan',
-                credential: '033690'
-            
-        },
-    ],
-    iceCandidatePoolSize: 10,
+  const rtc = {
+    localAudioTrack: null,
+    localVideoTrack: null,
+    client: AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }),
   };
-  
-  const pc = new RTCPeerConnection(servers);
 
-function Videos({ mode, callId, setPage }) {
-    const [webcamActive, setWebcamActive] = useState(false);
-    const [roomId, setRoomId] = useState(callId);
+  const options = {
+    appId: "c405190c3bca4842ab4b7964cb56177d",
+    token: null,
+  };
 
-    const localRef = useRef();
-    const remoteRef = useRef();
+  const startCall = async () => {
+    if (!channelName) {
+      alert("Please enter a Channel Name.");
+      return;
+    }
 
-    const setupSources = async () => {
-            const localStream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: true,
-            });
-            // rest of the code...
-       
-        const remoteStream = new MediaStream();
+    setLoading(true);
 
-        localStream.getTracks().forEach((track) => {
-            pc.addTrack(track, localStream);
-        });
+    try {
+      if (isHost) {
+        // Generate a unique UID for the host
+        const generatedUid = `${Math.floor(Math.random() * 1_000_000)}`;
+        setUid(generatedUid);
+      }
 
-        pc.ontrack = (event) => {
-            event.streams[0].getTracks().forEach((track) => {
-                remoteStream.addTrack(track);
-            });
-        };
+      await rtc.client.join(options.appId, channelName, options.token, uid);
+      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
 
-        localRef.current.srcObject = localStream;
-        remoteRef.current.srcObject = remoteStream;
+      rtc.localVideoTrack.play(localStreamRef.current);
+      console.log("Host video published!");
 
-        setWebcamActive(true);
+      rtc.client.on("user-published", async (user, mediaType) => {
+        await rtc.client.subscribe(user, mediaType);
+        console.log("Subscribed to remote user:", user.uid);
 
-        if (mode === "create") {
-            const callDoc = doc(collection(db, "calls")); // Create a new document in 'calls' collection
-            const offerCandidates = collection(callDoc, "offerCandidates");
-            const answerCandidates = collection(callDoc, "answerCandidates");
-            setRoomId(callDoc.id);
-
-            pc.onicecandidate = (event) => {
-                event.candidate &&
-                   setDoc(doc(offerCandidates), event.candidate.toJSON());
-
-            };
-
-            const offerDescription = await pc.createOffer();
-            await pc.setLocalDescription(offerDescription);
-
-            const offer = {
-                sdp: offerDescription.sdp,
-                type: offerDescription.type,
-            };
-
-            await setDoc(callDoc, { offer });
-
-
-            onSnapshot(callDoc,(snapshot) => {
-                const data = snapshot.data();
-                if (!pc.currentRemoteDescription && data?.answer) {
-                    const answerDescription = new RTCSessionDescription(
-                        data.answer
-                    );
-                    pc.setRemoteDescription(answerDescription);
-                }
-            });
-            
-
-            onSnapshot(answerCandidates,(snapshot) => {
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === "added") {
-                        const candidate = new RTCIceCandidate(
-                            change.doc.data()
-                        );
-                        pc.addIceCandidate(candidate);
-                    }
-                });
-            });
-        } else if (mode === "join") {
-            const callDoc = doc(db, "calls", callId); // Reference the specific document by callId
-            const offerCandidates = collection(callDoc, "offerCandidates");
-            const answerCandidates = collection(callDoc, "answerCandidates");
-        
-            // Get the call document data
-            const callSnapshot = await getDoc(callDoc);
-            if (!callSnapshot.exists()) {
-                console.error("Call document does not exist!");
-                alert("The call you are trying to join does not exist.");
-                return;
-            }
-        
-            const callData = callSnapshot.data();
-            if (!callData?.offer) {
-                console.error("No offer found in the call document!");
-                alert("This call does not have a valid offer to join.");
-                return;
-            }
-        
-            // Set remote description using the offer from the call document
-            const offerDescription = callData.offer;
-            await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
-        
-            // Create and set the local answer
-            const answerDescription = await pc.createAnswer();
-            await pc.setLocalDescription(answerDescription);
-        
-            // Update the call document with the answer
-            await updateDoc(callDoc, {
-                answer: {
-                    type: answerDescription.type,
-                    sdp: answerDescription.sdp,
-                },
-            });
-        
-            // Add ICE candidates to the answerCandidates collection
-            pc.onicecandidate = async (event) => {
-                if (event.candidate) {
-                    await setDoc(doc(answerCandidates), event.candidate.toJSON());
-                }
-            };
-        
-            // Listen for new ICE candidates in the offerCandidates collection
-            onSnapshot(offerCandidates, (snapshot) => {
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === "added") {
-                        const candidate = new RTCIceCandidate(change.doc.data());
-                        pc.addIceCandidate(candidate);
-                    }
-                });
-            });
+        if (mediaType === "video") {
+        console.log("Remote video track:", user.videoTrack);
+      user.videoTrack.play(remoteStreamRef.current);
         }
-        
-        pc.onconnectionstatechange = (event) => {
-            if (pc.connectionState === "disconnected") {
-                hangUp();
-            }
-        };
-    };
-
-    const hangUp = async () => {
-        pc.close();
-    
-        if (roomId) {
-            const roomRef = doc(db, 'calls', roomId); // Corrected roomRef initialization
-            const offerCandidates = collection(roomRef, "offerCandidates");
-            const answerCandidates = collection(roomRef, "answerCandidates");
-    
-            // Delete offer candidates
-            const offerSnapshot = await getDocs(offerCandidates);
-            offerSnapshot.forEach(async (doc) => {
-                await deleteDoc(doc.ref);
-            });
-    
-            // Delete answer candidates
-            const answerSnapshot = await getDocs(answerCandidates);
-            answerSnapshot.forEach(async (doc) => {
-                await deleteDoc(doc.ref);
-            });
-    
-            // Delete the room document itself
-            await deleteDoc(roomRef);
+        if (mediaType === "audio") {
+          user.audioTrack.play();
         }
-    
-        window.location.reload();
-    };
-    
+      });
 
-    return (
-        <div className="videos">
-            <video
-                ref={localRef}
-                autoPlay
-                playsInline
-                className="local"
-                muted
-            />
-            <video ref={remoteRef} autoPlay playsInline className="remote" />
+      rtc.client.on("user-unpublished", (user) => {
+        console.log(`User unpublished: ${user.uid}`);
+        const remotePlayerContainer = document.getElementById(user.uid);
+        if (remotePlayerContainer) {
+            remotePlayerContainer.remove();
+        }
+      });
 
-            <div className="buttonsContainer">
-                <button
-                    onClick={hangUp}
-                    disabled={!webcamActive}
-                    className="hangup button"
-                >
-                    {/* <HangupIcon /> */}
-                    hangup
-                </button>
-                <div tabIndex={0} role="button" className="more button">
-                    {/* <MoreIcon /> */}
-                    <div className="popover">
-                        <button
-                            onClick={() => {
-                                navigator.clipboard.writeText(roomId);
-                            }}
-                        >
-                            Copy joining code
-                        </button>
-                    </div>
-                </div>
-            </div>
+      setIsCallStarted(true);
+    } catch (error) {
+      console.error("Error starting the call:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            {!webcamActive && (
-                <div className="modalContainer">
-                    <div className="modal">
-                        <h3>
-                            Turn on your camera and microphone and start the
-                            call
-                        </h3>
-                        <div className="container">
-                            <button
-                                onClick={() => setPage("home")}
-                                className="secondary"
-                            >
-                                Cancel
-                            </button>
-                            <button onClick={setupSources}>Start</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+  const endCall = async () => {
+    rtc.localAudioTrack?.close();
+    rtc.localVideoTrack?.close();
+    await rtc.client.leave();
+    setIsCallStarted(false);
+  };
+
+  const copyUid = () => {
+    navigator.clipboard.writeText(uid);
+    alert("UID copied to clipboard!");
+  };
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", maxWidth: "600px", margin: "auto" }}>
+      <h2 style={{ textAlign: "center", color: "#333" }}>Agora Video Call</h2>
+
+      {!isCallStarted && (
+        <div style={{ marginBottom: "20px", textAlign: "center" }}>
+          <button
+            onClick={() => setIsHost(true)}
+            style={{
+              padding: "10px 20px",
+              marginRight: "10px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Host a Call
+          </button>
+          <button
+            onClick={() => setIsHost(false)}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#28a745",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Join as Participant
+          </button>
         </div>
-    );
+      )}
+
+      <div style={{ marginBottom: "20px" }}>
+        <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>Channel Name:</label>
+        <input
+          type="text"
+          value={channelName}
+          onChange={(e) => setChannelName(e.target.value)}
+          placeholder="Enter channel name"
+          style={{
+            width: "100%",
+            padding: "10px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            boxSizing: "border-box",
+          }}
+        />
+      </div>
+
+      {isHost && uid && (
+        <div style={{ marginBottom: "20px", textAlign: "center" }}>
+          <p style={{ fontWeight: "bold", color: "#333" }}>Your UID: {uid}</p>
+          <button
+            onClick={copyUid}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#ffc107",
+              color: "#333",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Copy UID
+          </button>
+        </div>
+      )}
+
+      {!isHost && (
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>Enter UID:</label>
+          <input
+            type="text"
+            value={uid}
+            onChange={(e) => setUid(e.target.value)}
+            placeholder="Enter shared UID"
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
+      )}
+
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        {!isCallStarted ? (
+          <button
+            onClick={startCall}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            {loading ? "Starting..." : "Start Call"}
+          </button>
+        ) : (
+          <button
+            onClick={endCall}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#dc3545",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            End Call
+          </button>
+        )}
+      </div>
+
+      {loading && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100px",
+          }}
+        >
+          <div className="spinner" style={{ border: "4px solid #ccc", borderTop: "4px solid #007bff", borderRadius: "50%", width: "30px", height: "30px", animation: "spin 1s linear infinite" }} />
+        </div>
+      )}
+
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+        <div
+          ref={localStreamRef}
+          style={{
+            width: "48%",
+            height: "300px",
+            backgroundColor: "#ddd",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "5px",
+          }}
+        >
+          <p style={{ color: "#666" }}>Local Stream</p>
+        </div>
+        <div
+          ref={remoteStreamRef}
+          style={{
+            width: "48%",
+            height: "300px",
+            backgroundColor: "#eee",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "5px",
+          }}
+        >
+          <p style={{ color: "#666" }}>Remote Stream</p>
+        </div>
+      </div>
+
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
+    </div>
+  );
 }
-export default Videos;
+

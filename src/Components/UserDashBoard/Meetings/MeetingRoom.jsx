@@ -1,28 +1,14 @@
 import React, { useState,useRef } from "react";
-import Menu from "./Menu";
+// import Menu from "./Menu";
 import Videos from "./Videos";
 
 
 
 export default function Host() {
-  const [currentPage, setCurrentPage] = useState("home");
-  const [joinCode, setJoinCode] = useState("");
 
   return (
       <div className="app">
-          {currentPage === "home" ? (
-              <Menu
-                  joinCode={joinCode}
-                  setJoinCode={setJoinCode}
-                  setPage={setCurrentPage}
-              />
-          ) : (
-              <Videos
-                  mode={currentPage}
-                  callId={joinCode}
-                  setPage={setCurrentPage}
-              />
-          )}
+    <Videos/>
       </div>
   );
 }
