@@ -5,10 +5,23 @@ import Videos from "./Videos";
 
 
 export default function Host() {
+  const [host,setHost] = useState(false)
+  const [participant,setParticipant] = useState(false)
 
   return (
       <div className="app">
-    <Videos/>
+        <button onClick={()=>setHost(true)}>
+          host
+        </button>
+        {host &&
+  <Videos role="host" uid="1" />
+        }
+           <button onClick={()=>setParticipant(true)}>
+          participant
+        </button>{
+          participant &&
+<Videos role="audience" uid="2" />
+}
       </div>
   );
 }
