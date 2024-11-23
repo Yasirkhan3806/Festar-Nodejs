@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 
-const VideoCall = ({ appId, channelName, uid }) => {
+const Participant = ({ appId, channelName, uid }) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
   const [remoteUsers, setRemoteUsers] = useState([]);
   const [inCall, setInCall] = useState(false);
-  const [userId,setUserId] = useState(uid)
+  const [userId,setUserId] = useState("")
 console.log(uid)
   // Fetch token from the backend
   const fetchToken = async (channelName,uid,role) => {
     try {
-      const response = await axios.get("http://localhost:5000/rtcToken", {
+      const response = await axios.get("https://quiet-lights-joke.loca.lt/rtcToken", {
         params: { 
           channelName : channelName
           , uid:uid
@@ -42,14 +42,14 @@ console.log(uid)
 
       // Play local video
       videoTrack.play(`local-player`);
-
+console.log(userId)
       // Subscribe to remote users
-      client.on("user-published", async (user, mediaType) => {
+      client.on(`user-published`, async (user, mediaType) => {
+        if(user.uid.toString() === userId){
         await client.subscribe(user, mediaType);
         console.log( `subscribed to user: ${user.uid}`)
-        client.on(`${user.uid}-published`, async (user, mediaType) => {
-          await client.subscribe(user, mediaType);
-        });
+        }
+    
         setRemoteUsers((prevUsers) => {
           if (!prevUsers.find((u) => u.uid === user.uid)) {
             return [...prevUsers, user];
@@ -109,6 +109,7 @@ console.log(uid)
 
   return (
     <div className="p-4">
+        <input type="text" placeholder="enter the uid" onChange={(e) => setUserId(e.target.value)} />
       {!inCall ? (
         <button
           onClick={startCall}
@@ -123,9 +124,7 @@ console.log(uid)
         >
           End Call
         </button>
-        
       )}
-      <p>{userId}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {/* Local Player */}
@@ -151,4 +150,4 @@ console.log(uid)
   );
 };
 
-export default VideoCall;
+export default Participant;

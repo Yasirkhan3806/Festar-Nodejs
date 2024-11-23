@@ -10,18 +10,14 @@ const appID = "c405190c3bca4842ab4b7964cb56177d";
 const appCertificate = "06f7bd72ac1e4ddf806908e758155c11";
 
 // Server configuration
-const PORT = 3000;
+const PORT = 5000;
 
 // Express app setup
 const app = express();
 app.set('port', PORT);
 
 // CORS setup
-app.use(cors({
-  origin: 'http://localhost:5173', // React frontend URL
-  methods: 'GET, POST',
-  allowedHeaders: 'Content-Type',
-}));
+app.use(cors());
 
 // Middleware to parse JSON requests
 app.use(express.json());

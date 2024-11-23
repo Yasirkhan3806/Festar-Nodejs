@@ -1,6 +1,8 @@
 import React, { useState,useRef } from "react";
 // import Menu from "./Menu";
 import Videos from "./Videos";
+import Participant from "./Participant";
+// import rand from 'uuid'
 
 
 
@@ -8,20 +10,25 @@ export default function Host() {
   const [host,setHost] = useState(false)
   const [participant,setParticipant] = useState(false)
 
+  const appId = "c405190c3bca4842ab4b7964cb56177d"
+  const channelName = "test"
+  const uid = Math.floor(Math.random() * 1000000); // Random UID for the session
+
+
   return (
       <div className="app">
         <button onClick={()=>setHost(true)}>
           host
         </button>
         {host &&
-  <Videos role="host" uid="1" />
+  <Videos appId={appId} channelName={channelName} uid = {uid} />
         }
            <button onClick={()=>setParticipant(true)}>
           participant
         </button>{
           participant &&
-<Videos role="audience" uid="2" />
-}
+<Participant appId={appId} channelName={channelName} uid = {uid} /> }
+
       </div>
   );
 }
