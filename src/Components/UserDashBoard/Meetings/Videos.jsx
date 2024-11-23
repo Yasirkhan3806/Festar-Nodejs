@@ -10,14 +10,14 @@ const VideoCall = ({ appId, channelName, uid }) => {
   const [userId,setUserId] = useState(uid)
 console.log(uid)
   // Fetch token from the backend
-  const fetchToken = async (channelName,uid,role) => {
+  const fetchToken = async (channelName, uid, role) => {
     try {
-      const response = await axios.get("http://localhost:5000/rtcToken", {
-        params: { 
-          channelName : channelName
-          , uid:uid
-          , role:role 
-        }, // Role 1 for both users in RTC mode
+      const response = await axios.get(`https://9bff-61-5-153-161.ngrok-free.app/rtcToken`, {
+        params: {
+          channelName: channelName,
+          uid: uid,
+          role: role,
+        },
       });
       return response.data.token;
     } catch (error) {
@@ -25,6 +25,8 @@ console.log(uid)
       throw error;
     }
   };
+  
+  
 
   // Start the video call
   const startCall = async () => {
