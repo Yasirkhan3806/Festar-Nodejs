@@ -10,7 +10,7 @@ const appID = "c405190c3bca4842ab4b7964cb56177d";
 const appCertificate = "06f7bd72ac1e4ddf806908e758155c11";
 
 // Server configuration
-const PORT = 5000;
+const PORT = 8080;
 
 // Express app setup
 const app = express();

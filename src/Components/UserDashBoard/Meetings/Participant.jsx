@@ -12,7 +12,7 @@ console.log(uid)
   // Fetch token from the backend
   const fetchToken = async (channelName,uid,role) => {
     try {
-      const response = await axios.get("http://localhost:5000/rtcToken", {
+      const response = await axios.get("http://localhost:8080/rtcToken", {
         params: { 
           channelName : channelName
           , uid:uid
