@@ -10,14 +10,18 @@ const Participant = ({ appId, channelName, uid }) => {
   const [userId,setUserId] = useState("")
 console.log(uid)
   // Fetch token from the backend
-  const fetchToken = async (channelName,uid,role) => {
+  const fetchToken = async (channelName, uid, role) => {
     try {
-      const response = await axios.get("http://localhost:8080/rtcToken", {
-        params: { 
-          channelName : channelName
-          , uid:uid
-          , role:role 
-        }, // Role 1 for both users in RTC mode
+      const response = await axios.get(`https://6fb9-61-5-153-161.ngrok-free.app/rtcToken`, {
+        params: {
+          channelName: channelName,
+          uid: uid,
+          role: role,
+        },
+        headers: {
+          "ngrok-skip-browser-warning": "true", // Add the custom ngrok header
+          // "User-Agent": "CustomUserAgent/1.0", // Example custom User-Agent
+        },
       });
       return response.data.token;
     } catch (error) {

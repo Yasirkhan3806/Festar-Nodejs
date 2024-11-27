@@ -12,11 +12,15 @@ console.log(uid)
   // Fetch token from the backend
   const fetchToken = async (channelName, uid, role) => {
     try {
-      const response = await axios.get(`http://localhost:8080/rtcToken`, {
+      const response = await axios.get(`https://6fb9-61-5-153-161.ngrok-free.app/rtcToken`, {
         params: {
           channelName: channelName,
           uid: uid,
           role: role,
+        },
+        headers: {
+          "ngrok-skip-browser-warning": "true", // Add the custom ngrok header
+          // "User-Agent": "CustomUserAgent/1.0", // Example custom User-Agent
         },
       });
       return response.data.token;
