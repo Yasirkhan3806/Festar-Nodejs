@@ -3,21 +3,24 @@ import React, { useState,useRef } from "react";
 import Videos from "./Videos";
 import Participant from "./Participant";
 // import rand from 'uuid'
+import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
 
 
 
 export default function Host() {
-  const [host,setHost] = useState(false)
-  const [participant,setParticipant] = useState(false)
+  // const [host,setHost] = useState(false)
+  // const [participant,setParticipant] = useState(false)
 
-  const appId = "c405190c3bca4842ab4b7964cb56177d"
-  const channelName = "test"
-  const uid = Math.floor(Math.random() * 1000000); // Random UID for the session
+  // const appId = "c405190c3bca4842ab4b7964cb56177d"
+  // const channelName = "test"
+  // const uid = Math.floor(Math.random() * 1000000); // Random UID for the session
 
 
   return (
-      <div className="app">
-        <button onClick={()=>setHost(true)}>
+
+      <>
+      <MeetingRoomNav/>
+        {/* <button onClick={()=>setHost(true)}>
           host
         </button>
         {host &&
@@ -27,9 +30,9 @@ export default function Host() {
           participant
         </button>{
           participant &&
-<Participant appId={appId} channelName={channelName} uid = {uid} /> }
+<Participant appId={appId} channelName={channelName} uid = {uid} /> } */}
 
-      </div>
+      </>
   );
 }
 

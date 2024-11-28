@@ -11,18 +11,18 @@ import CallsHistory from "./CallsHistory";
 import NotificationsMain from "./NotificationsMain";
 import Settings from "./settings/Settings";
 
-function UserProfile({ setUser }) {
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      console.log("User Email:", user.email);
-      console.log("User Display Name:", user.displayName);
-      setUser(user.email || "User"); // Set the user name or default to "User"
-    }
-  }, [setUser]);
+// function UserProfile({ setUser }) {
+// //   useEffect(() => {
+// //     const user = auth.currentUser;
+// //     if (user) {
+// //       console.log("User Email:", user.email);
+// //       console.log("User Display Name:", user.displayName);
+// //       setUser(user.email || "User"); // Set the user name or default to "User"
+// //     }
+// //   }, [setUser]);
 
-  return null; // Or you can return some loading indicator if needed
-}
+// //   return null; // Or you can return some loading indicator if needed
+//  }
 
 export default function MainDashboard() {
   const [user, setUser] = useState("Guest");
@@ -52,7 +52,7 @@ export default function MainDashboard() {
 
   return (
     <>
-      <UserProfile setUser={setUser} />
+      {/* <UserProfile setUser={setUser} /> */}
       <div className="flex overflow-hidden">
         <div className="w-0 md:w-[25%] lg:w-[25%] h-[100%] z-10">
           <DashSide activeItem={activeItem}  setActiveItem={setActiveItem} />

@@ -12,7 +12,9 @@ import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
+import { UserDataProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
+import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 
 function App() {
   // Initialize AOS animations
@@ -23,6 +25,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+<UserDataProvider>
     <EventsProvider>
     <UserProvider> {/* Wrap the entire app with UserProvider */}
       <Router>
@@ -43,12 +46,15 @@ function App() {
           <Route path="/Dashboard" element={<MainDashboard />} />
            {/* Route for MainCalender */}
            <Route path="/Register-event" element={<MainCalendar />} />
+           {/* Page before creating meeting by host */}
+           <Route path="/Create-menu" element={<CreateMenuOpt />} />
            {/* Route for host meeting room */}
            <Route path="/MeetingRoom" element={<Host />} />
         </Routes>
       </Router>
     </UserProvider>
     </EventsProvider>
+    </UserDataProvider>
   );
 }
 

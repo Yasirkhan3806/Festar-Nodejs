@@ -93,6 +93,7 @@ export default function LoginForm() {
           userId,
           email: result.user.email,
           userName: result.user.displayName || "",
+          profilePicture:result.user.photoURL,
         });
         console.log("User document created:", result.user.displayName);
       } else {

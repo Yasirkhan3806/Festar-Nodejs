@@ -9,10 +9,21 @@ import notificationsIcon from "./icons/notificationsIcon.png";
 import settingsIcon from "./icons/settingsIcon.png";
 import userIcon from "./icons/sideUserIcon.png";
 import { useUser } from "../../userContext";
+import { useUserData } from "../../userContext";
 
 export default function DashSide({ activeItem, setActiveItem }) {
   const { userName } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+
+  const {userData}  = useUserData()
+  const getProfilePhoto = () => {
+    // Assuming userData is an array and we're getting the first user's profile photo
+    if (userData.length > 0 && userData[0].profilePicture) {
+      return userData[0].profilePicture; // Return the profile picture URL
+    } else {
+      return userIcon; // Default user icon if no profile photo is available
+    }
+  };
 
   const sidebarItems = [
     { name: "RegisterEvents", icon: registerEventsIcon },
@@ -75,7 +86,7 @@ export default function DashSide({ activeItem, setActiveItem }) {
           ))}
         </ul>
         <div className="flex items-center gap-2 cursor-pointer p-1">
-          <img className="h-8" src={userIcon} alt="User Icon" />
+          <img className="h-8" src={getProfilePhoto()} alt="User Icon" />
           <h3 className="text-white font-bold hover:border-b-2 text-lg">
             {userName}
           </h3>

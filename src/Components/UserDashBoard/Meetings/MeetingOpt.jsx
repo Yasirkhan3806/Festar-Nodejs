@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import CreateMenuOpt from './CreateMenuOpt';
 import Participant from './JoiningMeeting';
 
 export default function MeetingOpt() {
@@ -15,13 +14,11 @@ export default function MeetingOpt() {
           <h2>Join or Create a Meeting</h2>
         </span>
         <span className='flex gap-4 md:gap-12'>
-          <button
-            onClick={() => setIsOpen(true)}
+          <Link to='/Create-menu'
             className='bg-white hover:bg-blue-500 border-2 rounded-sm border-blue-500 p-2 text-blue-500 hover:text-white transition duration-500 font-semibold shadow-md'
           >
             Create Meeting
-          </button>
-          {isOpen && <CreateMenuOpt setIsOpen={setIsOpen} />}
+          </Link>
           <button onClick={()=>setjoinIt(true)} className='bg-blue-500 hover:bg-white border-2 rounded-sm border-white p-2 text-white hover:text-blue-500 transition duration-500 font-semibold shadow-md' to="">
             Join Meeting
           </button>
