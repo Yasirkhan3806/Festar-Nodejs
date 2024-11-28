@@ -8,7 +8,7 @@ const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
 // Utility function to get the first day of the month (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
 const getFirstDayOfMonth = (month, year) => new Date(year, month, 1).getDay();
 
-const ReusableCalendar = ({ selectedDate, highlightDate, onDateClick, backgroundColor, weekLetterColor }) => {
+const ReusableCalendar = ({ selectedDate, highlightDate, onDateClick, backgroundColor, weekLetterColor,width }) => {
     const months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -20,7 +20,7 @@ const ReusableCalendar = ({ selectedDate, highlightDate, onDateClick, background
 
     // Empty dependency array to run only on mount
 // CalendarGrid Component for displaying the days and dates
-const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor }) => (
+const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor, }) => (
   <>
       {/* Days of the Week */}
       <div className={`grid grid-cols-7 text-center ${weekLetterColor} mb-2`}>
@@ -85,7 +85,7 @@ const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor
     const calendarDates = generateCalendarDates();
 
     return (
-        <div className={`${backgroundColor} p-2 rounded-xl shadow-md w-96`}>
+        <div className={`${backgroundColor} p-2 rounded-xl shadow-md ${width} md:w-96`}>
             {/* CalendarHeader Component */}
             <CalendarHeader
                 currentMonth={months[currentMonthIndex]}

@@ -54,7 +54,7 @@ export default function MainDashboard() {
     <>
       <UserProfile setUser={setUser} />
       <div className="flex overflow-hidden">
-        <div className="w-[25%] h-[100%] z-10">
+        <div className="w-0 md:w-[25%] lg:w-[25%] h-[100%] z-10">
           <DashSide activeItem={activeItem}  setActiveItem={setActiveItem} />
         </div>
         
@@ -62,16 +62,6 @@ export default function MainDashboard() {
           <DashNav userEmail={user} />
           <div className="w-full">
           {renderContent()}
-            {/* <div className="w-[50%]">
-          <Calendar />
-          </div>
-          <div className="w-[50%] pr-6" >
-        <Notification
-          message={'You have a new event scheduled!'}
-          type={"info"}
-          // onClose={handleShowNotification}
-        /> */}
-        {/* </div> */}
         </div>
       
         </div>

@@ -81,7 +81,7 @@ export default function Notification({ onClose }) {
         </div>
       ))}
       <div>
-        <img className='w-full ' src={conferenceImage} alt="" />
+        <img className='w-full hidden md:block ' src={conferenceImage} alt="" />
       </div>
     </div>
   );

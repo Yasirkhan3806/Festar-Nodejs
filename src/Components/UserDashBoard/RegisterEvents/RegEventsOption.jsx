@@ -9,10 +9,10 @@ export default function RegEventsOption() {
     <>
     <div className='overflow-y-auto h-[500px]'>
          <div className="flex">
-            <div className="w-[50%]">
+            <div className="w-full md:w-[50%]">
           <Calendar />
           </div>
-          <div className="w-[50%] pr-6" >
+          <div className="w-[50%] md:pr-6" >
         <Notification
           message={'You have a new event scheduled!'}
           type={"info"}

@@ -20,7 +20,6 @@ console.log(uid)
         },
         headers: {
           "ngrok-skip-browser-warning": "true", // Add the custom ngrok header
-          // "User-Agent": "CustomUserAgent/1.0", // Example custom User-Agent
         },
       });
       return response.data.token;

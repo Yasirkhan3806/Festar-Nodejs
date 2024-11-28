@@ -8,7 +8,7 @@ export default function DashNav() {
 
   return (
     <nav className="w-[100%]">
-      <ul className="flex justify-between border-b-2 border-b-blue-500 px-6">
+      <ul className="flex justify-between border-b-2 border-b-blue-500 pl-14 pr-6 sm:px-6 lg:px-6 ">
         <li>
           <img className="h-20" src={logo} alt="" />
         </li>
