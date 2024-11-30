@@ -13,6 +13,7 @@ import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
+import {UserMeetingDataProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 
@@ -25,6 +26,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <UserMeetingDataProvider>
 <UserDataProvider>
     <EventsProvider>
     <UserProvider> {/* Wrap the entire app with UserProvider */}
@@ -55,6 +57,7 @@ function App() {
     </UserProvider>
     </EventsProvider>
     </UserDataProvider>
+    </UserMeetingDataProvider>
   );
 }
 

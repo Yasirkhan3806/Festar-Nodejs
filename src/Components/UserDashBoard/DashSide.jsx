@@ -86,7 +86,7 @@ export default function DashSide({ activeItem, setActiveItem }) {
           ))}
         </ul>
         <div className="flex items-center gap-2 cursor-pointer p-1">
-          <img className="h-8" src={getProfilePhoto()} alt="User Icon" />
+          <img className="h-8 rounded-full" src={getProfilePhoto()} alt="User Icon" />
           <h3 className="text-white font-bold hover:border-b-2 text-lg">
             {userName}
           </h3>

@@ -32,7 +32,7 @@ export default function MNUP() {
   ];
 
   return (
-    <div className="flex justify-center items-center h-screen bg-blue-500">
+    <div className="flex ">
       <AvatarGroup avatars={userAvatars} extraCount={userAvatars.length - 4} />
     </div>
   );

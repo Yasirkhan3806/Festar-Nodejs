@@ -9,6 +9,11 @@
     /* overflow: hidden; */
     
 }
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .hide-scrollbar {
   overflow-y: scroll; /* Enables vertical scrolling */
   scrollbar-width: none; /* For Firefox */
@@ -236,6 +241,8 @@ background: #ffffff;
   gap: 0.5rem;
   cursor: pointer; /* 'cursor' is lowercase */
 }
+
+
 
 
 

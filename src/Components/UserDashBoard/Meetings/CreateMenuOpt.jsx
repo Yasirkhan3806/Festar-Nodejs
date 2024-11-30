@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import teamMember from "../pictures/conferenceImage.png";
-import { Link } from "react-router-dom";
 import { BsPlus } from "react-icons/bs";
+import StartMeetingPopup from "./MeetingRoomComponents/StartMeetingPopup";
 
 export default function CreateMenuOpt() {
+  const [open,setOpen] = useState(false)
   return (
     <div className="flex flex-col justify-center items-center bg-blue-500 min-h-screen py-8 px-4">
       {/* Card Container */}
@@ -58,13 +59,14 @@ export default function CreateMenuOpt() {
       </div>
 
       {/* Start Meeting Button */}
-      <Link
-        to="/MeetingRoom"
+      <button
+      onClick={()=>setOpen(true)}
         className="mt-6 flex items-center justify-center bg-white hover:bg-blue-600 text-blue-500 hover:text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 focus:outline-none focus:ring focus:ring-blue-300"
         aria-label="Start Meeting"
       >
         <BsPlus className="text-2xl mr-2" /> Start Meeting
-      </Link>
+      </button>
+      {open && <StartMeetingPopup setOpen = {setOpen}/> }
     </div>
   );
 }

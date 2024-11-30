@@ -2,92 +2,127 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { db, auth } from "./Config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 
 // Create contexts
 const UserContext = createContext();
 const EventsContext = createContext();
-const userDataContext = createContext();
+const UserDataContext = createContext();
+const UserMeetingDataContext = createContext();
 
 // Custom hooks for accessing contexts
 export const useUser = () => useContext(UserContext);
 export const useEvents = () => useContext(EventsContext);
-export const useUserData = () => useContext(userDataContext);
+export const useUserData = () => useContext(UserDataContext);
+export const useMeetingData = () => useContext(UserMeetingDataContext);
 
-export const UserDataProvider = ({ children }) => {
-  const [userData, setUserData] = useState([]);
+// UserMeetingDataProvider
+export const UserMeetingDataProvider = ({ children }) => {
+  const [userMeetingData, setUserMeetingData] = useState([]);
+  const [uniqueIdFilter, setUniqueIdFilter] = useState(""); // State to store the uniqueId filter
 
-  // Function to get userData from Firestore
-
-  const getUserData = async (userId) => {
+  const getMeetingData = async (userId, uniqueId) => {
     try {
-      // Reference to the 'userData' collection
-      const collectionRef = collection(db, "userData");
+      const collectionRef = collection(db, "UserMeetingData");
+      let q = query(collectionRef, where("userId", "==", userId));
 
-      // Query to filter by logged-in user UID
-      const q = query(collectionRef, where("userId", "==", userId));
+      // Add filter for uniqueId if provided
+      if (uniqueId) {
+        q = query(q, where("uniqueId", "==", uniqueId));
+      }
 
-      // Fetch the documents matching the UID
       const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-      // Extract data from the querySnapshot and set state
-      const data = querySnapshot.docs.map((doc) => doc.data());
-      setUserData(data);
+      setUserMeetingData(data);
     } catch (e) {
-      console.log("Error fetching user data:", e);
-      setUserData([]); // Handle error by setting empty array
+      console.error("Error fetching user meeting data:", e);
+      setUserMeetingData([]);
     }
   };
 
-  // Use the onAuthStateChanged listener to detect user login
   useEffect(() => {
-    const auth = getAuth();
-    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is logged in, fetch their data
-        getUserData(user.uid);
+        // console.log(uniqueIdFilter)
+        if(user.uid && uniqueIdFilter){
+        getMeetingData(user.uid, uniqueIdFilter);
+        } // Fetch data based on userId and uniqueId
       } else {
-        // No user is logged in
-        setUserData([]); // Clear user data if no user is logged in
-      } 
+        setUserMeetingData([]);
+      }
     });
-      // Cleanup the listener when component unmounts
-      return () => unsubscribe();
-    }, []);
 
+    return () => unsubscribe();
+  }, [uniqueIdFilter]); // Re-run effect when uniqueIdFilter changes
+  // console.log(uniqueIdFilter)
   return (
-    <userDataContext.Provider value={{ userData }}>
+    <UserMeetingDataContext.Provider
+      value={{ userMeetingData, setUniqueIdFilter }}
+    >
       {children}
-    </userDataContext.Provider>
+    </UserMeetingDataContext.Provider>
   );
 };
 
- 
+// UserDataProvider
+export const UserDataProvider = ({ children }) => {
+  const [userData, setUserData] = useState([]);
 
+  const getUserData = async (userId) => {
+    try {
+      const collectionRef = collection(db, "userData");
+      const q = query(collectionRef, where("userId", "==", userId));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setUserData(data);
+    } catch (e) {
+      console.error("Error fetching user data:", e);
+      setUserData([]);
+    }
+  };
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getUserData(user.uid);
+      } else {
+        setUserData([]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <UserDataContext.Provider value={{ userData }}>
+      {children}
+    </UserDataContext.Provider>
+  );
+};
+
+// UserProvider
 export const UserProvider = ({ children }) => {
   const [userName, setUserName] = useState("Guest");
 
-  // Function to get userName from Firestore
-  const getUserNameForLoggedInUser = async (userId, collectionName) => {
+  const getUserNameForLoggedInUser = async (userId) => {
     try {
-      const collectionRef = collection(db, collectionName);
-      const userQuery = query(collectionRef, where("userId", "==", userId));
-      const querySnapshot = await getDocs(userQuery);
+      const collectionRef = collection(db, "userData");
+      const q = query(collectionRef, where("userId", "==", userId));
+      const querySnapshot = await getDocs(q);
       const userNames = querySnapshot.docs.map((doc) => doc.data().userName);
       setUserName(userNames[0] || "Guest");
-      console.log("UserName updated:", userNames[0]);
     } catch (error) {
       console.error("Error fetching userName from Firestore:", error);
     }
   };
 
-  // Add an authentication state listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getUserNameForLoggedInUser(user.uid, "userData");
+        getUserNameForLoggedInUser(user.uid);
       } else {
         setUserName("Guest");
       }
@@ -103,10 +138,10 @@ export const UserProvider = ({ children }) => {
   );
 };
 
+// EventsProvider
 export const EventsProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
 
-  // Function to fetch events
   const fetchEvents = async () => {
     try {
       const snapshot = await getDocs(collection(db, "UserEvents"));
