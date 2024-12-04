@@ -4,6 +4,7 @@ import Videos from "./Videos";
 import Participant from "./Participant";
 // import rand from 'uuid'
 import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
+import ParticipantActive from "./MeetingRoomComponents/participantActive";
 
 
 
@@ -19,7 +20,15 @@ export default function Host() {
   return (
 
       <>
+      <div>
       <MeetingRoomNav/>
+      <div className="flex">
+        <div className="w-[85%] border-2"></div>
+        <div className="flex flex-col w-[15%] border-2 items-end ">
+          <ParticipantActive/>
+        </div>
+      </div>
+      </div>
         {/* <button onClick={()=>setHost(true)}>
           host
         </button>

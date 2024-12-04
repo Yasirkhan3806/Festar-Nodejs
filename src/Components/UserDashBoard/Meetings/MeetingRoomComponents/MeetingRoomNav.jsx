@@ -96,7 +96,7 @@ export default function MeetingRoomNav() {
         )}
 
         {/* Main Meeting Room Navigation */}
-        <div className="hidden md:flex-center w-[11%] pr-[0.3rem] md:pr-0 md:w-[8%] border-r-2 border-white">
+        <div className="hidden md:flex justify-center items-center w-[11%] pr-[0.3rem] md:pr-0 md:w-[8%] border-r-2 border-white">
           <img className = "hidden md:block" src={videoCallIcon} alt="" />
         </div>
         <div className=" p-2 md:p-4 text-white w-[47%] md:w-[37%] ">
