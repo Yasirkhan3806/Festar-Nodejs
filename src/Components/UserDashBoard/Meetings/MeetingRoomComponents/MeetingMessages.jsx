@@ -42,7 +42,7 @@ const MessageSidebar = ({activeOpen}) => {
           </button>
           <h2 className="text-lg font-semibold p-4">Messages</h2>
         </span>
-        <ul className="p-4 space-y-4 overflow-y-scroll h-[60%]">
+        <ul className="p-4 space-y-4 overflow-y-scroll h-[73%]">
           {messages.map((message) => (
             <li key={message.id} className="flex items-start gap-4 p-2 bg-white rounded-md shadow">
               <div className="flex flex-col">
@@ -53,7 +53,14 @@ const MessageSidebar = ({activeOpen}) => {
             </li>
           ))}
         </ul>
+        <input
+  type="text"
+  placeholder="Type a message"
+  className="w-[20rem] h-[2.5rem] border-2 border-blue-400 ml-[1rem] mt-[2rem] p-[0.5rem] focus:border-blue-500 focus:outline-none !focus:border-blue-400 rounded-lg"
+/>
+
       </div>
+     
     </div>
   );
 };

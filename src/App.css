@@ -247,7 +247,18 @@ background: #ffffff;
   scrollbar-width: 20px;
 }
 
-
+.checkingDiv{
+  width: 100%;
+  height: 50%;
+  border: 2px solid blue;
+}
+.checkingMainDiv{
+  display: flex;
+  flex-direction:column ;
+  border: 2px solid red;
+  width: 32%;
+  gap: 1rem;
+}
 
 
   

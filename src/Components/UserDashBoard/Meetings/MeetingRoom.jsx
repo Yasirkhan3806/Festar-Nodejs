@@ -24,8 +24,22 @@ export default function Host() {
       <div>
       <MeetingRoomNav/>
       <div className="flex">
-        <div className="w-[85%] border-2"></div>
-        <div className="flex flex-col w-[15%] border-2 items-end ">
+      <div className="w-[95%] flex flex-wrap border-2 h-[32rem] gap-2">
+      <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full h-[81vh]">
+  <div className="bg-blue-500 flex items-center justify-center">1</div>
+  <div className="bg-green-500 flex items-center justify-center">2</div>
+  <div className="bg-red-500 flex items-center justify-center">3</div>
+  <div className="bg-yellow-500 flex items-center justify-center">4</div>
+  <div className="bg-orange-500 flex items-center justify-center">5</div>
+  <div className="bg-purple-500 flex items-center justify-center">6</div>
+</div>
+
+
+  {/* <!-- Optional extra div if you want an uneven number of items --> */}
+  {/* <!-- <div className="w-[33.33%] border-2 border-blue-700"></div> --> */}
+</div>
+
+        <div className="flex flex-col w-[5%] border-2 items-end ">
           <ParticipantActive setActiveOpen = {setActiveOpen}/>
           <MessageSidebar activeOpen = {activeOpen} />
         </div>
