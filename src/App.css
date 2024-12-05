@@ -242,7 +242,10 @@ background: #ffffff;
   cursor: pointer; /* 'cursor' is lowercase */
 }
 
-
+.scrollbar-blue-500{
+  scrollbar-color: rgb(29, 78, 216);
+  scrollbar-width: 20px;
+}
 
 
 

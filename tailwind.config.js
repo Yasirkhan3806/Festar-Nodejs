@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+  ],
   // important: true,  // Add the important mode inside the exported object
 }

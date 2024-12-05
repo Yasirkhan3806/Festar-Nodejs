@@ -5,17 +5,18 @@ import Participant from "./Participant";
 // import rand from 'uuid'
 import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
 import ParticipantActive from "./MeetingRoomComponents/participantActive";
+import MessageSidebar from "./MeetingRoomComponents/MeetingMessages";
 
 
 
 export default function Host() {
+  const [activeOpen,setActiveOpen] = useState(false)
   // const [host,setHost] = useState(false)
   // const [participant,setParticipant] = useState(false)
 
   // const appId = "c405190c3bca4842ab4b7964cb56177d"
   // const channelName = "test"
   // const uid = Math.floor(Math.random() * 1000000); // Random UID for the session
-
 
   return (
 
@@ -25,7 +26,8 @@ export default function Host() {
       <div className="flex">
         <div className="w-[85%] border-2"></div>
         <div className="flex flex-col w-[15%] border-2 items-end ">
-          <ParticipantActive/>
+          <ParticipantActive setActiveOpen = {setActiveOpen}/>
+          <MessageSidebar activeOpen = {activeOpen} />
         </div>
       </div>
       </div>
