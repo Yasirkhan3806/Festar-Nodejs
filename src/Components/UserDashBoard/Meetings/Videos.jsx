@@ -1,26 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 
-const VideoCall = ({ appId, channelName, uid }) => {
+const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInCall }, ref) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
-  const [remoteUsers, setRemoteUsers] = useState([]);
-  const [inCall, setInCall] = useState(false);
-  const [userId,setUserId] = useState(uid)
-console.log(uid)
+
   // Fetch token from the backend
   const fetchToken = async (channelName, uid, role) => {
     try {
-      const response = await axios.get(`https://6fb9-61-5-153-161.ngrok-free.app/rtcToken`, {
+      const response = await axios.get(`http://localhost:3000/rtcToken`, {
         params: {
           channelName: channelName,
           uid: uid,
           role: role,
         },
         headers: {
-          "ngrok-skip-browser-warning": "true", // Add the custom ngrok header
-          // "User-Agent": "CustomUserAgent/1.0", // Example custom User-Agent
+          "ngrok-skip-browser-warning": "true",
         },
       });
       return response.data.token;
@@ -29,13 +25,11 @@ console.log(uid)
       throw error;
     }
   };
-  
-  
 
   // Start the video call
   const startCall = async () => {
     try {
-      const token = await fetchToken(channelName,uid,1);
+      const token = await fetchToken(channelName, uid, 1);
       await client.join(appId, channelName, token, uid);
 
       // Create local tracks (audio and video)
@@ -47,16 +41,14 @@ console.log(uid)
       await client.publish([audioTrack, videoTrack]);
 
       // Play local video
-      videoTrack.play(`local-player`);
+      videoTrack.play("local-player");
 
       // Subscribe to remote users
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        console.log( `subscribed to user: ${user.uid}`)
-        client.on(`${user.uid}-published`, async (user, mediaType) => {
-          await client.subscribe(user, mediaType);
-        });
-        setRemoteUsers((prevUsers) => {
+        console.log(`subscribed to user: ${user.uid}`);
+
+        setParticipants((prevUsers) => {
           if (!prevUsers.find((u) => u.uid === user.uid)) {
             return [...prevUsers, user];
           }
@@ -64,23 +56,17 @@ console.log(uid)
         });
 
         if (mediaType === "video") {
-          console.log(`${user.uid} video starting`)
+          console.log(`${user.uid} video starting`);
           user.videoTrack?.play(`remote-player-${user.uid}`);
         }
         if (mediaType === "audio") {
-          console.log(`${user.uid} audio starting`)
+          console.log(`${user.uid} audio starting`);
           user.audioTrack?.play();
         }
-        
       });
-      client.on("user-published", async (user, mediaType) => {
-        console.log(`User ${user.uid} published ${mediaType}`);
-
-      });
-      
 
       client.on("user-unpublished", (user) => {
-        setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
+        setParticipants((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
       });
 
       setInCall(true);
@@ -90,7 +76,6 @@ console.log(uid)
     }
   };
 
-  // Leave the video call
   const leaveCall = async () => {
     try {
       const { audioTrack, videoTrack } = localTracks;
@@ -104,7 +89,7 @@ console.log(uid)
 
       // Reset state
       setLocalTracks({ audioTrack: null, videoTrack: null });
-      setRemoteUsers([]);
+      setParticipants([]);
       setInCall(false);
 
       console.log("Call ended!");
@@ -113,48 +98,37 @@ console.log(uid)
     }
   };
 
-  return (
-    <div className="p-4">
-      {!inCall ? (
-        <button
-          onClick={startCall}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Start Video Call
-        </button>
-      ) : (
-        <button
-          onClick={leaveCall}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          End Call
-        </button>
-        
-      )}
-      <p>{userId}</p>
+  // Expose leaveCall function to parent using useImperativeHandle
+  useImperativeHandle(ref, () => ({
+    leaveCall,
+  }));
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        {/* Local Player */}
+  useEffect(() => {
+    startCall();
+  }, []);
+
+  return (
+    <>
+      {/* Local Player */}
+      <div
+        id="local-player"
+        className="bg-gray-500 flex items-center justify-center"
+      >
+        {localTracks.videoTrack ? "Local Stream" : "Waiting for Local Stream..."}
+      </div>
+
+      {/* Remote Players */}
+      {/* {participants.map((user) => (
         <div
-          id="local-player"
+          key={user.uid}
+          id={`remote-player-${user.uid}`}
           className="w-full h-64 bg-gray-800 text-white flex items-center justify-center"
         >
-          {localTracks.videoTrack ? "Local Stream" : "Waiting for Local Stream..."}
+          Remote Stream: {user.uid}
         </div>
-
-        {/* Remote Players */}
-        {remoteUsers.map((user) => (
-          <div
-            key={user.uid}
-            id={`remote-player-${user.uid}`}
-            className="w-full h-64 bg-gray-800 text-white flex items-center justify-center"
-          >
-            Remote Stream: {user.uid}
-          </div>
-        ))}
-      </div>
-    </div>
+      ))} */}
+    </>
   );
-};
+});
 
 export default VideoCall;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import micOnIcon from '../../icons/micOnIcon.png';
 import micOffIcon from '../../icons/micOffIcon.png';
 import videoOnIcon from '../../icons/videoOnIcon.png';
@@ -18,7 +18,12 @@ const ParticipantActive = ({setActiveOpen}) => {
   ];
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-setActiveOpen(isSidebarOpen);
+
+useEffect(() => {
+  // Logic for updating state, not directly inside the render
+  setActiveOpen(true); // or setActiveOpen(false)
+}, [/* dependencies, if needed */]);
+
   return (
     <div className="relative flex h-screen">
       {/* Toggle Button */}
