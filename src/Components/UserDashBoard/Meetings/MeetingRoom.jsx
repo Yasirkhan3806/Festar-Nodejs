@@ -52,23 +52,9 @@ export default function Host() {
     <>
       <div>
         <MeetingRoomNav setUID={setUID} />
-        {!inCall ? (
-          <button
-            onClick={() => setStartCall(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Start Video Call
-          </button>
-        ) : (
-          <button
-            onClick={handleEndCall}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-          >
-            End Call
-          </button>
-        )}
-        <div className="flex">
-          <div className="w-[95%] flex flex-wrap border-2 h-[32rem] gap-2">
+      
+        <div className="flex h-[504px]">
+          <div className="w-[95%] flex flex-wrap h-[32rem] gap-2">
             {/* Dynamic Grid Layout */}
             <div className={`grid gap-2 w-full h-[81vh] ${getGridClass()}`}>
               {startCall && (
@@ -86,7 +72,7 @@ export default function Host() {
                 <div
                   key={user.uid}
                   id={`remote-player-${user.uid}`}
-                  className={`bg-gray-500 flex items-center justify-center`}
+                  className={`flex items-center justify-center`}
                   // style={{ backgroundColor: `hsl(${index * 60}, 70%, 50%)` }} // Dynamic colors
                 >
                   {/* Remote Stream: {user.uid} */}
@@ -98,12 +84,28 @@ export default function Host() {
               ))}
             </div>
           </div>
+          
 
           <div className="flex flex-col w-[5%] border-2 items-end">
-            <ParticipantActive setActiveOpen={setActiveOpen} />
+            <ParticipantActive setActiveOpen={setActiveOpen} uid = {uid} />
             <MessageSidebar activeOpen={activeOpen} />
           </div>
         </div>
+        {!inCall ? (
+          <button
+            onClick={() => setStartCall(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Start Video Call
+          </button>
+        ) : (
+          <button
+            onClick={handleEndCall}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            End Call
+          </button>
+        )}
       </div>
     </>
   );

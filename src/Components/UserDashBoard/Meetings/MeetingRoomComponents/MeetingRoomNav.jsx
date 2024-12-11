@@ -108,7 +108,7 @@ export default function MeetingRoomNav({setUID}) {
           </p>
         </div>
         <span className="p-4 hidden md:block">
-          <MNUP />
+          <MNUP uid = {uid} /> {/*passing uid as a meetingId*/}
         </span>
         <button
           className="flex justify-center items-center text-white gap-1 w-1/2 md:w-[12%] bg-blue-300 rounded-3xl h-[50px] mt-4"

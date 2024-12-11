@@ -13,9 +13,11 @@ import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
+import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
+import ParticipantActive from './Components/UserDashBoard/Meetings/MeetingRoomComponents/participantActive';
 
 function App() {
   // Initialize AOS animations
@@ -26,6 +28,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <ParticipantActiveDataProvider>
     <UserMeetingDataProvider>
 <UserDataProvider>
     <EventsProvider>
@@ -58,6 +61,7 @@ function App() {
     </EventsProvider>
     </UserDataProvider>
     </UserMeetingDataProvider>
+    </ParticipantActiveDataProvider>
   );
 }
 

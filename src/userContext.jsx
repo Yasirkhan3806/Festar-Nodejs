@@ -8,12 +8,59 @@ const UserContext = createContext();
 const EventsContext = createContext();
 const UserDataContext = createContext();
 const UserMeetingDataContext = createContext();
+const ParticipantActiveContext = createContext();
 
 // Custom hooks for accessing contexts
 export const useUser = () => useContext(UserContext);
 export const useEvents = () => useContext(EventsContext);
 export const useUserData = () => useContext(UserDataContext);
 export const useMeetingData = () => useContext(UserMeetingDataContext);
+export const useParticipantActiveData = () => useContext(ParticipantActiveContext);
+
+
+
+// Active participant of meeting data
+export const ParticipantActiveDataProvider = ({ children }) => {
+  const [participantActive, setParticipantsActive] = useState(["fuck u"]);
+  const [meetingId, setMeetingId] = useState("");
+
+  const getParticipantData = async (meetingId) => {
+    if (!meetingId) return;
+    try {
+      const collectionRef = collection(db, "ParticipantsData");
+      const q = query(collectionRef, where("meetingId", "==", meetingId[0]));
+
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setParticipantsActive(data);
+    } catch (e) {
+      console.log("Error fetching participant data:", e);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getParticipantData(meetingId);
+      } else {
+        setParticipantsActive(["fuck u"]);
+      }
+    });
+    return () => unsubscribe();
+  }, [meetingId]);
+
+  return (
+    <ParticipantActiveContext.Provider value={{ participantActive, setMeetingId }}>
+      {children}
+    </ParticipantActiveContext.Provider>
+  );
+};
+
+
 
 // UserMeetingDataProvider
 export const UserMeetingDataProvider = ({ children }) => {

@@ -112,7 +112,7 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
       {/* Local Player */}
       <div
         id="local-player"
-        className="bg-gray-500 flex items-center justify-center"
+        className="flex items-center justify-center"
       >
         {localTracks.videoTrack ? "Local Stream" : "Waiting for Local Stream..."}
       </div>

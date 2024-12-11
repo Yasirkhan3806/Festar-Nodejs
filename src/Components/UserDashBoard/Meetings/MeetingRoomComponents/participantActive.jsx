@@ -4,18 +4,21 @@ import micOffIcon from '../../icons/micOffIcon.png';
 import videoOnIcon from '../../icons/videoOnIcon.png';
 import videoOffIcon from '../../icons/videoOffIcon.png';
 import participantsActiveIcon from '../../icons/participantsActiveIcon.png';
-const ParticipantActive = ({setActiveOpen}) => {
+import { useParticipantActiveData } from '../../../../userContext';
+const ParticipantActive = ({setActiveOpen,uid}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const participants = [
-    { id: 1, name: 'Dianne Russell', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: false, videoOn: false },
-    { id: 2, name: 'Guy Hawkins', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: false, videoOn: false },
-    { id: 3, name: 'Kathryn Murphy', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: true, videoOn: true },
-    { id: 4, name: 'Kathryn Murphy', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: true, videoOn: true },
-    { id: 5, name: 'Kathryn Murphy', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: true, videoOn: true },
-    { id: 6, name: 'Kathryn Murphy', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: true, videoOn: true },
-    { id: 7, name: 'Kathryn Murphy', image: 'https://randomuser.me/api/portraits/women/1.jpg', micOn: true, videoOn: true },
-  ];
+  const {participantActive,setMeetingId} = useParticipantActiveData();
+  // const [participantActive,setMeetingId] = useState([])
+  
+  // console.log(uid)
+  useEffect(() => {
+    setMeetingId(uid);
+  }, [uid, setMeetingId]);
+  
+  useEffect(() => {
+    console.log(participantActive);
+  }, [participantActive]);
+  
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -50,7 +53,7 @@ useEffect(() => {
         <h2 className="text-lg font-semibold p-4 ">Participants</h2>
         </span>
         <ul className="p-4 space-y-4 overflow-y-scroll h-[70%] scrollbar-blue-500">
-          {participants.map((participant) => (
+          {participantActive.map((participant) => (
             <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
               <img
                 src={participant.image}
