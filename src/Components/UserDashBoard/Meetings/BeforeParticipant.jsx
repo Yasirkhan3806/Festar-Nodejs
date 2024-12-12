@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Link } from "react-router-dom";
 import Participant from "./Participant";
+import { useMeeting } from "../../../userContext";
 
 export default function BeforeParticipant() {
   const [participantUid, setParticipantUid] = useState(null);
-  const [audioTrack, setAudioTrack] = useState(null);
-  const [videoTrack, setVideoTrack] = useState(null);
+  const { setAudioTrack, setVideoTrack } = useMeeting();
 
   useEffect(() => {
-    if (uid) {
+    if (participantUid) {
       const startLocalVideo = async () => {
         const audio = await AgoraRTC.createMicrophoneAudioTrack();
         const video = await AgoraRTC.createCameraVideoTrack();
@@ -20,7 +20,7 @@ export default function BeforeParticipant() {
       };
       startLocalVideo();
     }
-  }, [uid]); // Effect runs only when uid is set (not null)
+  }, [participantUid]); // Effect runs only when uid is set (not null)
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-blue-500">
@@ -44,7 +44,7 @@ export default function BeforeParticipant() {
           />
           <Link
             to="/MeetingRoom"
-            state={{ participantUid, audioTrack, videoTrack }}  // Pass state to MeetingRoom
+            state={{ participantUid }}  // Pass state to MeetingRoom
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-500"
           >
             Join Meeting

@@ -18,11 +18,13 @@ export default function Host() {
   const [audioOn, setAudioOn] = useState(false);
   const videoCallRef = useRef();
   const location = useLocation();
-  const { participantUid, audioTrack, videoTrack } = location.state || {};
-  const {host,setHost} = location.state ||{}
+  const { participantUid } = location.state || {};
+  const {host} = location.state ||{}
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
 
+
+  console.log(host)
   // Function to dynamically calculate grid classes based on the number of participants
   const getGridClass = () => {
     const count = participants.length;
@@ -36,19 +38,19 @@ export default function Host() {
   };
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
-  const generateNumericUID = (stringUID) => {
-    if (typeof stringUID === "string") {
-      // Extract the first numeric part of the UID or use a random number
-      const numericUID = parseInt(stringUID.replace(/\D/g, "").slice(0, 5)); // Remove non-numeric characters, then slice to fit range
-      return numericUID >= 0 && numericUID <= 10000
-        ? numericUID
-        : Math.floor(Math.random() * 10000); // Ensure it's in the valid range
-    }
-    // If stringUID is not a string, return a random UID within range
-    return Math.floor(Math.random() * 10000);
-  };
+  // const generateNumericUID = (stringUID) => {
+  //   if (typeof stringUID === "string") {
+  //     // Extract the first numeric part of the UID or use a random number
+  //     const numericUID = parseInt(stringUID.replace(/\D/g, "").slice(0, 5)); // Remove non-numeric characters, then slice to fit range
+  //     return numericUID >= 0 && numericUID <= 10000
+  //       ? numericUID
+  //       : Math.floor(Math.random() * 10000); // Ensure it's in the valid range
+  //   }
+  //   // If stringUID is not a string, return a random UID within range
+  //   return Math.floor(Math.random() * 10000);
+  // };
 
-  const agoraUID = generateNumericUID(uid);
+
 
   const handleEndCall = () => {
     videoCallRef.current.leaveCall(); // Calling the exposed leaveCall function
@@ -72,13 +74,21 @@ export default function Host() {
       appId={appId}
       channelName={channelName}
       setParticipants={setParticipants}
-      uid={agoraUID}
+      uid={uid}
       setInCall={setInCall}
       audioOn={audioOn}
       videoOn={videoOn}
     />
   ) : (
-    <Participant />
+    <Participant
+    ref={videoCallRef}
+    appId={appId}
+    channelName={channelName}
+    setParticipants={setParticipants}
+    uid={144}
+    setInCall={setInCall}
+    audioOn={audioOn}
+    videoOn={videoOn} />
   )
 )}
 

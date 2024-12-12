@@ -73,7 +73,7 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
       alert("Meeting saved successfully!");
       setHost(true)
       navigate('/MeetingRoom',{
-        state: { host,setHost }
+        state: { host:true }
       });
     } catch (error) {
       console.error("Error saving meeting:", error);

@@ -9,6 +9,8 @@ const EventsContext = createContext();
 const UserDataContext = createContext();
 const UserMeetingDataContext = createContext();
 const ParticipantActiveContext = createContext();
+const MeetingContext = createContext();
+
 
 // Custom hooks for accessing contexts
 export const useUser = () => useContext(UserContext);
@@ -16,6 +18,20 @@ export const useEvents = () => useContext(EventsContext);
 export const useUserData = () => useContext(UserDataContext);
 export const useMeetingData = () => useContext(UserMeetingDataContext);
 export const useParticipantActiveData = () => useContext(ParticipantActiveContext);
+export const useMeeting = () => useContext(MeetingContext);
+
+
+export const MeetingProvider = ({ children }) => {
+  const [audioTrack, setAudioTrack] = useState(null);
+  const [videoTrack, setVideoTrack] = useState(null);
+
+  return (
+    <MeetingContext.Provider value={{ audioTrack, setAudioTrack, videoTrack, setVideoTrack }}>
+      {children}
+    </MeetingContext.Provider>
+  );
+};
+
 
 
 

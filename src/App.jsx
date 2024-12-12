@@ -15,6 +15,7 @@ import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
 import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
+import { MeetingProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 import BeforeParticipant from './Components/UserDashBoard/Meetings/BeforeParticipant';
@@ -29,6 +30,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <MeetingProvider>
     <ParticipantActiveDataProvider>
     <UserMeetingDataProvider>
 <UserDataProvider>
@@ -65,6 +67,7 @@ function App() {
     </UserDataProvider>
     </UserMeetingDataProvider>
     </ParticipantActiveDataProvider>
+    </MeetingProvider>
   );
 }
 
