@@ -36,8 +36,8 @@ console.log(uid)
       await client.join(appId, channelName, token, uid);
 
       // Create local tracks (audio and video)
-      const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-      const videoTrack = await AgoraRTC.createCameraVideoTrack();
+      // const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      // const videoTrack = await AgoraRTC.createCameraVideoTrack();
       setLocalTracks({ audioTrack, videoTrack });
 
       // Publish local tracks

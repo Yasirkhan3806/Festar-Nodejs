@@ -17,6 +17,7 @@ import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
+import BeforeParticipant from './Components/UserDashBoard/Meetings/BeforeParticipant';
 import ParticipantActive from './Components/UserDashBoard/Meetings/MeetingRoomComponents/participantActive';
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
            <Route path="/Create-menu" element={<CreateMenuOpt />} />
            {/* Route for host meeting room */}
            <Route path="/MeetingRoom" element={<Host />} />
+             {/* Page before joining meeting by participant */}
+             <Route path="/Join-Menu" element={<BeforeParticipant />} />
         </Routes>
       </Router>
     </UserProvider>

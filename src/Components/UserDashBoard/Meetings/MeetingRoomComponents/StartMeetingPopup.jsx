@@ -9,6 +9,7 @@ const StartMeetingPopup = ({ setOpen }) => {
 const navigate = useNavigate()
   const [meetingName, setMeetingName] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
+  const [host,setHost] = useState(false)
   const db = getFirestore();
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
@@ -70,8 +71,10 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
       setUniqueIdFilter(uniqueId);
       localStorage.setItem("uniqueId", uniqueId);
       alert("Meeting saved successfully!");
-    
-      navigate('/MeetingRoom');
+      setHost(true)
+      navigate('/MeetingRoom',{
+        state: { host,setHost }
+      });
     } catch (error) {
       console.error("Error saving meeting:", error);
       alert("Failed to save meeting. Please try again.");
