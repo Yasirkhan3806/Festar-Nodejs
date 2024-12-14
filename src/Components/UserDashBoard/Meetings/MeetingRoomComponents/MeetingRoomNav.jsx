@@ -41,7 +41,7 @@ export default function MeetingRoomNav({setUID}) {
       setUID(uid)
     }
   }, [userMeetingData]);
-
+console.log(uid)
   let hostName = "";
   if (uid && uid.length > 0) {
     const uidParts = uid[0].split("-");

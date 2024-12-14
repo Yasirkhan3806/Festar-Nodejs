@@ -41,7 +41,7 @@ useEffect(() => {
       <div
         className={` ${
           isSidebarOpen ? 'absolute' : 'fixed'
-        } bottom-[15rem] right-0 bg-none shadow-md transform transition-transform duration-300 
+        } bottom-[6rem] right-0 bg-none shadow-md transform transition-transform duration-300 
           ${
           isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         } w-[23rem] h-[60%] `}
@@ -52,31 +52,36 @@ useEffect(() => {
         </button>
         <h2 className="text-lg font-semibold p-4 ">Participants</h2>
         </span>
-        <ul className="p-4 space-y-4 overflow-y-scroll h-[70%] scrollbar-blue-500">
-          {participantActive.map((participant) => (
-            <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
-              <img
-                src={participant.image}
-                alt={participant.name}
-                className="w-12 h-12 rounded-full"
-              />
-              <div className="flex gap-12">
-                <p className="font-medium">{participant.name}</p>
-                <div className="flex justify-end gap-2 mt-1 text-gray-500">
-                  <span
-                    className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}
-                  >
-                  <img src={micOnIcon} alt="" />
-                  </span>
-                  <span
-                    className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}
-                  >
-                    <img src={videoOnIcon} alt="" />
-                  </span>
-                </div>
-              </div>
-            </li>
-          ))}
+        
+        <ul className={`p-4 space-y-4 ${participantActive && participantActive.length > 0 ?"overflow-y-scroll h-[70%]":""} scrollbar-blue-500`}>
+        {participantActive && participantActive.length > 0 ? (
+    participantActive.map((participant) => (
+      <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
+      <img
+        src={participant.image}
+        alt={participant.name}
+        className="w-12 h-12 rounded-full"
+      />
+      <div className="flex gap-12">
+        <p className="font-medium">{participant.name}</p>
+        <div className="flex justify-end gap-2 mt-1 text-gray-500">
+          <span
+            className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}
+          >
+          <img src={micOnIcon} alt="" />
+          </span>
+          <span
+            className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}
+          >
+            <img src={videoOnIcon} alt="" />
+          </span>
+        </div>
+      </div>
+    </li>
+    ))
+  ) : (
+    <p>No participant</p>
+  )}
         </ul>
       </div>
     </div>
@@ -84,3 +89,33 @@ useEffect(() => {
 };
 
 export default ParticipantActive;
+
+
+// {participantActive && participantActive.length > 0 ? (
+//     participantActive.map((participant) => (
+//       <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
+//       <img
+//         src={participant.image}
+//         alt={participant.name}
+//         className="w-12 h-12 rounded-full"
+//       />
+//       <div className="flex gap-12">
+//         <p className="font-medium">{participant.name}</p>
+//         <div className="flex justify-end gap-2 mt-1 text-gray-500">
+//           <span
+//             className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}
+//           >
+//           <img src={micOnIcon} alt="" />
+//           </span>
+//           <span
+//             className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}
+//           >
+//             <img src={videoOnIcon} alt="" />
+//           </span>
+//         </div>
+//       </div>
+//     </li>
+//     ))
+//   ) : (
+//     <p>No participant</p>
+//   )}

@@ -30,7 +30,7 @@ const MessageSidebar = ({activeOpen}) => {
       <div
         className={`${
           isSidebarOpen ? 'absolute' : 'fixed'
-        } ${activeOpen ? 'bottom-[13rem]' : 'bottom-[37.5rem]'} right-0 h-full bg-white shadow-md transform transition-transform duration-300 
+        } ${activeOpen ? 'bottom-[3rem]' : 'bottom-[37.5rem]'} right-0 h-full bg-white shadow-md transform transition-transform duration-300 
           ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-[23rem]`}
       >
         <span className="flex justify-between bg-white border-b border-gray-300 p-2">

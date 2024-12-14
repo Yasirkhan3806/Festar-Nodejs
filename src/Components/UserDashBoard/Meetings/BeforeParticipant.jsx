@@ -2,25 +2,25 @@ import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Link } from "react-router-dom";
 import Participant from "./Participant";
-import { useMeeting } from "../../../userContext";
+// import { useMeeting } from "../../../userContext";
 
 export default function BeforeParticipant() {
   const [participantUid, setParticipantUid] = useState(null);
-  const { setAudioTrack, setVideoTrack } = useMeeting();
+  // const { setAudioTrack, setVideoTrack } = useMeeting();
 
-  useEffect(() => {
-    if (participantUid) {
-      const startLocalVideo = async () => {
-        const audio = await AgoraRTC.createMicrophoneAudioTrack();
-        const video = await AgoraRTC.createCameraVideoTrack();
-        setAudioTrack(audio);  // Save the audioTrack in state
-        setVideoTrack(video);   // Save the videoTrack in state
-        video.play("local-player");  // Play the local video
-        // audio.play(); // You can play the audio track if necessary
-      };
-      startLocalVideo();
-    }
-  }, [participantUid]); // Effect runs only when uid is set (not null)
+  // useEffect(() => {
+  //   if (participantUid) {
+  //     const startLocalVideo = async () => {
+  //       const audio = await AgoraRTC.createMicrophoneAudioTrack();
+  //       const video = await AgoraRTC.createCameraVideoTrack();
+  //       setAudioTrack(audio);  // Save the audioTrack in state
+  //       setVideoTrack(video);   // Save the videoTrack in state
+  //       video.play("local-player");  // Play the local video
+  //       // audio.play(); // You can play the audio track if necessary
+  //     };
+  //     startLocalVideo();
+  //   }
+  // }, [participantUid]); // Effect runs only when uid is set (not null)
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-blue-500">

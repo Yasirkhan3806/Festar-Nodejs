@@ -10,33 +10,32 @@ import { useLocation } from "react-router-dom";
 
 export default function Host() {
   const [activeOpen, setActiveOpen] = useState(false);
-  const [hostParticipants, setHostParticipants] = useState([]);
-  const [participants, setParticipants] = useState([]); // Example participant IDs
+  // const [hostParticipants, setHostParticipants] = useState([]);
+  // const [participants, setParticipants] = useState([]); // Example participant IDs
   const [uid, setUID] = useState("");
-  const [inCall, setInCall] = useState(false);
-  const [startCall, setStartCall] = useState(false);
-  const [videoOn, setVideoOn] = useState(false);
-  const [audioOn, setAudioOn] = useState(false);
+  // const [inCall, setInCall] = useState(false);
+  // const [startCall, setStartCall] = useState(false);
+  // const [videoOn, setVideoOn] = useState(false);
+  // const [audioOn, setAudioOn] = useState(false);
   const videoCallRef = useRef();
   const location = useLocation();
   const { participantUid } = location.state || {};
-  const {host} = location.state ||{}
+  const { host } = location.state || {};
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
 
-
-  console.log(host)
+  // console.log(host)
   // Function to dynamically calculate grid classes based on the number of participants
-  const getGridClass = () => {
-    const count = participants.length;
+  // const getGridClass = () => {
+  //   const count = hostParticipants.length;
 
-    if (count === 1) return "grid-cols-2 grid-rows-1";
-    if (count === 2) return "grid-cols-2 grid-rows-1";
-    if (count <= 4) return "grid-cols-2 grid-rows-2";
-    if (count <= 6) return "grid-cols-3 grid-rows-2";
+  //   if (count === 1) return "grid-cols-2 grid-rows-1";
+  //   if (count === 2) return "grid-cols-2 grid-rows-1";
+  //   if (count <= 4) return "grid-cols-2 grid-rows-2";
+  //   if (count <= 6) return "grid-cols-3 grid-rows-2";
 
-    return "grid-cols-4 grid-rows-auto"; // Default for more participants
-  };
+  //   return "grid-cols-4 grid-rows-auto"; // Default for more participants
+  // };
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
   const generateNumericUID = (stringUID) => {
@@ -51,13 +50,14 @@ export default function Host() {
     return Math.floor(Math.random() * 10000);
   };
 
-const participantTokenUid = generateNumericUID(participantUid)
-console.log(participantTokenUid)
-  const handleEndCall = () => {
-    videoCallRef.current.leaveCall(); // Calling the exposed leaveCall function
-    setStartCall(false);
-    setInCall(false);
-  };
+  const participantTokenUid = generateNumericUID(participantUid);
+  console.log(participantTokenUid);
+  // const handleEndCall = () => {
+  //   host?videoCallRef.current.leaveCall():participantRef.current.leaveCall() // Calling the exposed leaveCall function
+  //   // setStartCall(false);
+  //   setInCall(false);
+  // };
+  console.log(uid);
 
   return (
     <>
@@ -67,61 +67,39 @@ console.log(participantTokenUid)
         <div className="flex h-[504px]">
           <div className="w-[95%] flex flex-wrap h-[32rem] gap-2">
             {/* Dynamic Grid Layout */}
-            <div className={`grid gap-2 w-full h-[81vh] ${getGridClass()} p-3`}>
-            {startCall && (
+            <div className={`grid gap-2 w-full h-[81vh]  p-3`}>
+            {uid ? (
   host ? (
     <>
       <VideoCall
-        ref={videoCallRef}
         appId={appId}
         channelName={channelName}
-        setParticipants={setHostParticipants}
+        // setParticipants={setHostParticipants}
         uid={uid}
-        setInCall={setInCall}
-        audioOn={audioOn}
-        videoOn={videoOn}
       />
-      {hostParticipants.map((user, index) => (
+      {/* {hostParticipants.map((user, index) => (
         <div
           key={user.uid}
           id={`remote-player-${user.uid}`}
           className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
         >
-          {/* Additional content for the remote player can be added here */}
-          {/* Yasir Khan-1734086910899-458988-zsxbkiFester-Meetup */}
-        </div>
-      ))}
+          {/* Additional content for the remote player */}
+        {/* </div> */}
+      {/* // ))} */} 
     </>
   ) : (
-    <>
     <Participant
       ref={videoCallRef}
       appId={appId}
       channelName={channelName}
-      setParticipants={setParticipants}
       userStringId={participantUid}
       uid={participantTokenUid}
-      setInCall={setInCall}
-      audioOn={audioOn}
-      videoOn={videoOn}
     />
-    {participants.map((user, index) => (
-      <div
-        key={index}
-        id={`remote-player-${user.uid}`}
-        className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
-      >
-      </div>
-    ))}
-      </>
-      // Yasir Khan-1734087210451-836354-qb3nllFester-Meetup
   )
-
+) : (
+  <div>Loading...</div>
 )}
 
-
-
-           
             </div>
           </div>
 
@@ -130,7 +108,7 @@ console.log(participantTokenUid)
             <MessageSidebar activeOpen={activeOpen} />
           </div>
         </div>
-        <VideoSettingBar
+        {/* <VideoSettingBar
           inCall={inCall}
           setStartCall={setStartCall}
           handleEndCall={handleEndCall}
@@ -138,7 +116,7 @@ console.log(participantTokenUid)
           setVideoOn={setVideoOn}
           audioOn={audioOn}
           videoOn={videoOn}
-        />
+        /> */}
       </div>
     </>
   );

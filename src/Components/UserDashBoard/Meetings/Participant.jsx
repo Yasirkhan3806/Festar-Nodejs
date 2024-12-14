@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+// import { useMeeting } from "../../../userContext";
 
 const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
   const [remoteUsers, setRemoteUsersState] = useState([]); // Local state for remote users
   const [inCall, setInCall] = useState(false);
+  const navigate = useNavigate()
   const [userId, setUserId] = useState("");
   const [retryCount, setRetryCount] = useState(0); // Track retries
 
@@ -145,31 +148,43 @@ const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) 
     try {
       console.log("Leaving the call...");
       const { audioTrack, videoTrack } = localTracks;
-
-      // Stop local tracks
+  
+      // Stop and close local tracks properly
       if (audioTrack) {
-        console.log("Stopping audio track");
+        console.log("Stopping and closing audio track");
+        await audioTrack.stop();
         audioTrack.close();
       }
       if (videoTrack) {
-        console.log("Stopping video track");
+        console.log("Stopping and closing video track");
+        await videoTrack.stop();
         videoTrack.close();
       }
-
+  
       // Unpublish and leave the channel
       await client.leave();
       console.log("Left the channel");
-
+  
       // Reset state
       setLocalTracks({ audioTrack: null, videoTrack: null });
       setRemoteUsersState([]); // Reset remote users
-      setInCall(false);
-
-      console.log("Call ended!");
+      console.log("Call ended and tracks stopped!");
     } catch (error) {
       console.error("Error leaving call:", error);
     }
   };
+  
+  const getGridClass = () => {
+    const count = remoteUsers.length;
+
+    if (count === 1) return "grid-cols-2 grid-rows-1";
+    if (count === 2) return "grid-cols-2 grid-rows-1";
+    if (count <= 4) return "grid-cols-2 grid-rows-2";
+    if (count <= 6) return "grid-cols-3 grid-rows-2";
+
+    return "grid-cols-4 grid-rows-auto"; // Default for more participants
+  };
+  
 
   return (
     <div className="p-4">
@@ -182,20 +197,27 @@ const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) 
         </button>
       ) : (
         <button
-          onClick={leaveCall}
+          onClick={()=>{
+            leaveCall();
+            setInCall(false);
+           
+            navigate('/Join-Menu');
+            window.location.reload();
+          }
+          }
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
         >
           End Call
         </button>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className={`grid gap-2 w-[80vw] h-[60vh] ${getGridClass()} p-3`}>
         {/* Local Player */}
         <div
           id="local-player"
-          className="w-full h-64 bg-gray-800 text-white flex items-center justify-center"
+          className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
         >
-          {localTracks.videoTrack ? "Local Stream" : "Waiting for Local Stream..."}
+          {localTracks.videoTrack ? "" : "Connecting please wait..."}
         </div>
 
         {/* Remote Players */}
@@ -203,9 +225,9 @@ const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) 
           <div
             key={user.uid}
             id={`remote-player-${user.uid}`}
-            className="w-full h-64 bg-gray-800 text-white flex items-center justify-center"
+            className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
           >
-            Remote Stream: {user.uid}
+             {/* {user.videoTrack ? " " : "Connecting please wait..."} */}
           </div>
         ))}
       </div>

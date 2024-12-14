@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import { auth } from "../../../../Config/firebase";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +65,12 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
         userId,
         uniqueId,
       });
+      await addDoc(collection(db, "ParticipantsData"), {
+        Name:auth.currentUser.displayName,
+        Picture:auth.currentUser.photoURL,
+        Role:1
+      });
+
     
       // console.log("Document written with uniqueId:", uniqueId);
     
