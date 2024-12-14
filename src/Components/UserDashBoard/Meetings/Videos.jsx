@@ -15,7 +15,7 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
   const fetchToken = async (channelName, uid, role) => {
     try {
       console.log(`Fetching token for channel: ${channelName}, UID: ${uid}, Role: ${role}`);
-      const response = await axios.get("https://3f51-61-5-153-161.ngrok-free.app/rtcToken", {
+      const response = await axios.get("http://localhost:3000/rtcToken", {
         params: { channelName, uid, role },
         headers: { "ngrok-skip-browser-warning": "true" },
       });
