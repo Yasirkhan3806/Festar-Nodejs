@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInCall, audioOn, videoOn }, ref) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
+  const navigate = useNavigate();
   const spilitedUid = uid[0].split("-");
   const agoraUID = +(spilitedUid[2]);
   console.log("Initialized with Agora UID:", agoraUID);  // Debugging UID
@@ -13,7 +15,7 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
   const fetchToken = async (channelName, uid, role) => {
     try {
       console.log(`Fetching token for channel: ${channelName}, UID: ${uid}, Role: ${role}`);
-      const response = await axios.get("http://localhost:3000/rtcToken", {
+      const response = await axios.get("https://3f51-61-5-153-161.ngrok-free.app/rtcToken", {
         params: { channelName, uid, role },
         headers: { "ngrok-skip-browser-warning": "true" },
       });
@@ -50,6 +52,7 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
 
       // Publish local tracks
       await client.publish([audioTrack, videoTrack]);
+      console.log(videoTrack)
       console.log("Published local tracks");
 
       // Play local video
@@ -94,11 +97,11 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
         setParticipants((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
 
         // Remove the video container
-        const remotePlayerContainer = document.getElementById(`remote-player-${user.uid}`);
-        if (remotePlayerContainer) {
-          remotePlayerContainer.remove();
-          console.log(`Removed remote player container for user ${user.uid}`);
-        }
+        // const remotePlayerContainer = document.getElementById(`remote-player-${user.uid}`);
+        // if (remotePlayerContainer) {
+        //   remotePlayerContainer.remove();
+        //   console.log(`Removed remote player container for user ${user.uid}`);
+        // }
       });
 
       setInCall(true);
@@ -133,6 +136,8 @@ const VideoCall = forwardRef(({ appId, channelName, uid, setParticipants, setInC
       setInCall(false);
 
       console.log("Call ended!");
+      navigate('/Create-menu')
+      
     } catch (error) {
       console.error("Error leaving call:", error);
     }

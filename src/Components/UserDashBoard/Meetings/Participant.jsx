@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 
-const Participant = ({ appId, channelName, uid }) => {
+const Participant = ({ appId, channelName, uid,setParticipants,userStringId }) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
   const [remoteUsers, setRemoteUsers] = useState([]);
@@ -10,6 +10,17 @@ const Participant = ({ appId, channelName, uid }) => {
   const [userId, setUserId] = useState("");
 
   console.log("Component Rendered: UID", uid);
+  useEffect(() => {
+      // console.log("Video state changed:", videoOn);
+     const setUid = (uid)=>{
+      const spilitedUid = uid.split('-')
+      console.log(spilitedUid[2])
+      setUserId(spilitedUid[1])
+     }
+    //  Yasir Khan-1734161024197-759034-zs6j2wFester-Meetup
+    // Yasir Khan-1734162151569-100040-x7z297Fester-Meetup
+      setUid(userStringId);
+    }, []);
   
   // Fetch token from the backend
   const fetchToken = async (channelName, uid, role) => {
@@ -59,12 +70,13 @@ const Participant = ({ appId, channelName, uid }) => {
       // Subscribe to remote users
       client.on("user-published", async (user, mediaType) => {
         console.log(`User ${user.uid} published ${mediaType}`);
-        if (user.uid.toString() === userId) {
+        console.log(user.uid.toString());
+        if (user.uid.toString() == userId) {
           await client.subscribe(user, mediaType);
           console.log(`Subscribed to user: ${user.uid}`);
         }
 
-        setRemoteUsers((prevUsers) => {
+        setParticipants((prevUsers) => {
           if (!prevUsers.find((u) => u.uid === user.uid)) {
             console.log(`New remote user: ${user.uid}`);
             return [...prevUsers, user];
@@ -84,7 +96,7 @@ const Participant = ({ appId, channelName, uid }) => {
 
       client.on("user-unpublished", (user) => {
         console.log(`User ${user.uid} unpublished`);
-        setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
+        setParticipants((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
       });
 
       setInCall(true);
@@ -116,7 +128,7 @@ const Participant = ({ appId, channelName, uid }) => {
 
       // Reset state
       setLocalTracks({ audioTrack: null, videoTrack: null });
-      setRemoteUsers([]);
+      setParticipants([]);
       setInCall(false);
 
       console.log("Call ended!");
@@ -127,7 +139,7 @@ const Participant = ({ appId, channelName, uid }) => {
 
   return (
     <div className="p-4">
-      <input type="text" placeholder="enter the uid" onChange={(e) => setUserId(e.target.value)} />
+      {/* <input type="text" placeholder="enter the uid" onChange={(e) => setUserId(e.target.value)} /> */}
       {!inCall ? (
         <button
           onClick={startCall}
@@ -154,7 +166,7 @@ const Participant = ({ appId, channelName, uid }) => {
         </div>
 
         {/* Remote Players */}
-        {remoteUsers.map((user) => (
+        {/* {remoteUsers.map((user) => (
           <div
             key={user.uid}
             id={`remote-player-${user.uid}`}
@@ -162,7 +174,7 @@ const Participant = ({ appId, channelName, uid }) => {
           >
             Remote Stream: {user.uid}
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

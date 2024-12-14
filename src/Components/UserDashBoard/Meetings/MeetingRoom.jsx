@@ -10,7 +10,8 @@ import { useLocation } from "react-router-dom";
 
 export default function Host() {
   const [activeOpen, setActiveOpen] = useState(false);
-  const [participants, setParticipants] = useState([checkingVideo]); // Example participant IDs
+  const [hostParticipants, setHostParticipants] = useState([]);
+  const [participants, setParticipants] = useState([]); // Example participant IDs
   const [uid, setUID] = useState("");
   const [inCall, setInCall] = useState(false);
   const [startCall, setStartCall] = useState(false);
@@ -38,20 +39,20 @@ export default function Host() {
   };
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
-  // const generateNumericUID = (stringUID) => {
-  //   if (typeof stringUID === "string") {
-  //     // Extract the first numeric part of the UID or use a random number
-  //     const numericUID = parseInt(stringUID.replace(/\D/g, "").slice(0, 5)); // Remove non-numeric characters, then slice to fit range
-  //     return numericUID >= 0 && numericUID <= 10000
-  //       ? numericUID
-  //       : Math.floor(Math.random() * 10000); // Ensure it's in the valid range
-  //   }
-  //   // If stringUID is not a string, return a random UID within range
-  //   return Math.floor(Math.random() * 10000);
-  // };
+  const generateNumericUID = (stringUID) => {
+    if (typeof stringUID === "string") {
+      // Extract the first numeric part of the UID or use a random number
+      const numericUID = parseInt(stringUID.replace(/\D/g, "").slice(0, 5)); // Remove non-numeric characters, then slice to fit range
+      return numericUID >= 0 && numericUID <= 10000
+        ? numericUID
+        : Math.floor(Math.random() * 10000); // Ensure it's in the valid range
+    }
+    // If stringUID is not a string, return a random UID within range
+    return Math.floor(Math.random() * 10000);
+  };
 
-
-
+const participantTokenUid = generateNumericUID(participantUid)
+console.log(participantTokenUid)
   const handleEndCall = () => {
     videoCallRef.current.leaveCall(); // Calling the exposed leaveCall function
     setStartCall(false);
@@ -69,44 +70,58 @@ export default function Host() {
             <div className={`grid gap-2 w-full h-[81vh] ${getGridClass()} p-3`}>
             {startCall && (
   host ? (
-    <VideoCall
+    <>
+      <VideoCall
+        ref={videoCallRef}
+        appId={appId}
+        channelName={channelName}
+        setParticipants={setHostParticipants}
+        uid={uid}
+        setInCall={setInCall}
+        audioOn={audioOn}
+        videoOn={videoOn}
+      />
+      {hostParticipants.map((user, index) => (
+        <div
+          key={user.uid}
+          id={`remote-player-${user.uid}`}
+          className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
+        >
+          {/* Additional content for the remote player can be added here */}
+          {/* Yasir Khan-1734086910899-458988-zsxbkiFester-Meetup */}
+        </div>
+      ))}
+    </>
+  ) : (
+    <>
+    <Participant
       ref={videoCallRef}
       appId={appId}
       channelName={channelName}
       setParticipants={setParticipants}
-      uid={uid}
+      userStringId={participantUid}
+      uid={participantTokenUid}
       setInCall={setInCall}
       audioOn={audioOn}
       videoOn={videoOn}
     />
-  ) : (
-    <Participant
-    ref={videoCallRef}
-    appId={appId}
-    channelName={channelName}
-    setParticipants={setParticipants}
-    uid={144}
-    setInCall={setInCall}
-    audioOn={audioOn}
-    videoOn={videoOn} />
+    {participants.map((user, index) => (
+      <div
+        key={index}
+        id={`remote-player-${user.uid}`}
+        className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
+      >
+      </div>
+    ))}
+      </>
+      // Yasir Khan-1734087210451-836354-qb3nllFester-Meetup
   )
+
 )}
 
 
-              {participants.map((user, index) => (
-                <div
-                  key={user.uid}
-                  id={`remote-player-${user.uid}`}
-                  className={`flex items-center justify-center border-[4px] border-blue-500 rounded-lg`}
-                  // style={{ backgroundColor: `hsl(${index * 60}, 70%, 50%)` }} // Dynamic colors
-                >
-                  {/* Remote Stream: {user.uid} */}
-                  {/* <video
-                    src={participant}
-                    className="w-full h-full object-cover"
-                  /> */}
-                </div>
-              ))}
+
+           
             </div>
           </div>
 

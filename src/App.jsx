@@ -20,6 +20,8 @@ import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 import BeforeParticipant from './Components/UserDashBoard/Meetings/BeforeParticipant';
 import ParticipantActive from './Components/UserDashBoard/Meetings/MeetingRoomComponents/participantActive';
+import VideoCall from './Components/UserDashBoard/Meetings/Videos';
+
 
 function App() {
   // Initialize AOS animations
