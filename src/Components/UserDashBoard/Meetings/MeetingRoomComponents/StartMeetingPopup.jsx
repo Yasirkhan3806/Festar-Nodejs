@@ -4,8 +4,11 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useMeetingData } from "../../../../userContext";
+import { settingMeetingDataHost } from "./SettingParticipantData";
+import { useParticipantState } from "./SettingParticipantData";
 
 const StartMeetingPopup = ({ setOpen }) => {
+  const {Participants,setParticipants} = useParticipantState()
   const { setUniqueIdFilter, userMeetingData } = useMeetingData();
 const navigate = useNavigate()
   const [meetingName, setMeetingName] = useState("");
@@ -65,11 +68,29 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
         userId,
         uniqueId,
       });
-      await addDoc(collection(db, "ParticipantsData"), {
-        Name:auth.currentUser.displayName,
-        Picture:auth.currentUser.photoURL,
-        Role:1
+      // await addDoc(collection(db, "ParticipantsData"), {
+      //   Name:auth.currentUser.displayName,
+      //   Picture:auth.currentUser.photoURL,
+      //   Role:1,
+      //   uniqueId
+
+      // });
+      setParticipants((prevUsers) => {
+        const updatedParticipants = [
+          ...prevUsers,
+          {
+            Name: auth.currentUser.displayName,
+            Picture: auth.currentUser.photoURL,
+            Role: 1,
+          },
+        ];
+      
+        // Call settingMeetingData with the updated participants
+        settingMeetingDataHost(meetingName, updatedParticipants, uniqueId);
+      
+        return updatedParticipants;
       });
+      
 
     
       // console.log("Document written with uniqueId:", uniqueId);

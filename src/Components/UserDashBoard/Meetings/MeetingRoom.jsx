@@ -103,7 +103,7 @@ export default function Host() {
             </div>
           </div>
 
-          <div className="flex flex-col w-[5%] border-2 items-end">
+          <div className="flex flex-col w-[5%] items-end">
             <ParticipantActive setActiveOpen={setActiveOpen} uid={uid} />
             <MessageSidebar activeOpen={activeOpen} />
           </div>

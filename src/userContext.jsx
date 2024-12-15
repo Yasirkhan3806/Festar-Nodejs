@@ -44,7 +44,7 @@ export const ParticipantActiveDataProvider = ({ children }) => {
     if (!meetingId) return;
     try {
       const collectionRef = collection(db, "ParticipantsData");
-      const q = query(collectionRef, where("meetingId", "==", meetingId[0]));
+      const q = query(collectionRef, where("uniqueId", "==", meetingId[0]));
 
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map((doc) => ({

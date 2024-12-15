@@ -2,9 +2,11 @@ import React, { useState, useEffect, useImperativeHandle, forwardRef } from "rea
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+AgoraRTC.setLogLevel(0);
 const VideoCall = ({ appId, channelName, uid, setParticipants}) => {
+
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
+  AgoraRTC.setLogLevel(0);
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
   const [inCall, setInCall] = useState(false);
   const [remoteUsers,setRemoteUsers] = useState([]);
