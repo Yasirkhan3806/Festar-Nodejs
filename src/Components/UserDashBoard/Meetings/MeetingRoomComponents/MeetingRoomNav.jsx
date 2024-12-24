@@ -7,15 +7,16 @@ import copyLinkIcon from "../../icons/copyLinkIcon.png";
 import menuIcon from "../../icons/menuIcon.png"; // Add an icon for the hamburger menu
 import closeIcon from "../../icons/crossIcon.png"; // Add an icon for closing the menu
 
-export default function MeetingRoomNav({setUID}) {
+export default function MeetingRoomNav({setUID,storedUniqueId}) {
   const { setUniqueIdFilter, userMeetingData } = useMeetingData();
   const [showPopup, setShowPopup] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // State for opening/closing the menu
 
   useEffect(() => {
-    const storedUniqueId = localStorage.getItem("uniqueId");
+    // const storedUniqueId = localStorage.getItem("uniqueId");
 
     if (storedUniqueId) {
+      console.log("stored ID",storedUniqueId)
       setUniqueIdFilter(storedUniqueId);
     } else {
       console.error("No uniqueId found in localStorage");
@@ -41,7 +42,7 @@ export default function MeetingRoomNav({setUID}) {
       setUID(uid)
     }
   }, [userMeetingData]);
-console.log(uid)
+// console.log(uid)
   let hostName = "";
   if (uid && uid.length > 0) {
     const uidParts = uid[0].split("-");

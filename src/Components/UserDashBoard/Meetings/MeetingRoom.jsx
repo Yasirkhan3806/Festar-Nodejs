@@ -2,40 +2,22 @@ import React, { useState, useRef } from "react";
 import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
 import ParticipantActive from "./MeetingRoomComponents/participantActive";
 import MessageSidebar from "./MeetingRoomComponents/MeetingMessages";
-import checkingVideo from "../pictures/checkingVideo.webm";
 import VideoCall from "./Videos";
 import Participant from "./Participant";
-import VideoSettingBar from "./MeetingRoomComponents/VideoSettingBar";
 import { useLocation } from "react-router-dom";
+
 
 export default function Host() {
   const [activeOpen, setActiveOpen] = useState(false);
-  // const [hostParticipants, setHostParticipants] = useState([]);
-  // const [participants, setParticipants] = useState([]); // Example participant IDs
   const [uid, setUID] = useState("");
-  // const [inCall, setInCall] = useState(false);
-  // const [startCall, setStartCall] = useState(false);
-  // const [videoOn, setVideoOn] = useState(false);
-  // const [audioOn, setAudioOn] = useState(false);
   const videoCallRef = useRef();
   const location = useLocation();
-  const { participantUid } = location.state || {};
+ const participantUid = localStorage.getItem("participantUniqueId")
   const { host } = location.state || {};
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
-
-  // console.log(host)
-  // Function to dynamically calculate grid classes based on the number of participants
-  // const getGridClass = () => {
-  //   const count = hostParticipants.length;
-
-  //   if (count === 1) return "grid-cols-2 grid-rows-1";
-  //   if (count === 2) return "grid-cols-2 grid-rows-1";
-  //   if (count <= 4) return "grid-cols-2 grid-rows-2";
-  //   if (count <= 6) return "grid-cols-3 grid-rows-2";
-
-  //   return "grid-cols-4 grid-rows-auto"; // Default for more participants
-  // };
+  const storedUniqueId = host?localStorage.getItem("uniqueId"):participantUid;
+  console.log("stored Unique ID: ",storedUniqueId)
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
   const generateNumericUID = (stringUID) => {
@@ -51,18 +33,13 @@ export default function Host() {
   };
 
   const participantTokenUid = generateNumericUID(participantUid);
-  console.log(participantTokenUid);
-  // const handleEndCall = () => {
-  //   host?videoCallRef.current.leaveCall():participantRef.current.leaveCall() // Calling the exposed leaveCall function
-  //   // setStartCall(false);
-  //   setInCall(false);
-  // };
-  console.log(uid);
+  console.log("participant UiD: ",participantUid);
 
   return (
     <>
       <div>
-        <MeetingRoomNav setUID={setUID} />
+        {host? <MeetingRoomNav setUID={setUID} storedUniqueId= {storedUniqueId} />: <MeetingRoomNav setUID={setUID} storedUniqueId= {storedUniqueId} />}
+       
 
         <div className="flex h-[504px]">
           <div className="w-[95%] flex flex-wrap h-[32rem] gap-2">
@@ -77,15 +54,6 @@ export default function Host() {
         // setParticipants={setHostParticipants}
         uid={uid}
       />
-      {/* {hostParticipants.map((user, index) => (
-        <div
-          key={user.uid}
-          id={`remote-player-${user.uid}`}
-          className="flex items-center justify-center border-[4px] border-blue-500 rounded-lg"
-        >
-          {/* Additional content for the remote player */}
-        {/* </div> */}
-      {/* // ))} */} 
     </>
   ) : (
     <Participant
@@ -108,15 +76,6 @@ export default function Host() {
             <MessageSidebar activeOpen={activeOpen} />
           </div>
         </div>
-        {/* <VideoSettingBar
-          inCall={inCall}
-          setStartCall={setStartCall}
-          handleEndCall={handleEndCall}
-          setAudioOn={setAudioOn}
-          setVideoOn={setVideoOn}
-          audioOn={audioOn}
-          videoOn={videoOn}
-        /> */}
       </div>
     </>
   );

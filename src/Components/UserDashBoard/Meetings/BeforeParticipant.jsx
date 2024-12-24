@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { Link } from "react-router-dom";
 import Participant from "./Participant";
-import { auth,db  } from "../../../Config/firebase";
-import { addDoc,collection } from "firebase/firestore";
+import { auth, db } from "../../../Config/firebase";
+import { addDoc, collection } from "firebase/firestore";
 import { useParticipantState } from "./MeetingRoomComponents/SettingParticipantData";
 import { settingMeetingDataParticipants } from "./MeetingRoomComponents/SettingParticipantData";
 // import { useMeeting } from "../../../userContext";
 
 export default function BeforeParticipant() {
   const [participantUid, setParticipantUid] = useState(null);
-  const {Participants,setParticipants} = useParticipantState()
+  const { Participants, setParticipants } = useParticipantState();
   // const { setAudioTrack, setVideoTrack } = useMeeting();
 
   // useEffect(() => {
@@ -26,6 +26,7 @@ export default function BeforeParticipant() {
   //     startLocalVideo();
   //   }
   // }, [participantUid]); // Effect runs only when uid is set (not null)
+  console.log("Participant UID from before participants: ", participantUid);
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-blue-500">
@@ -39,7 +40,8 @@ export default function BeforeParticipant() {
         <div className="flex flex-col justify-around w-1/2 h-full border-2 border-blue-500 p-4">
           <p className="text-lg font-bold mb-4">Join Meeting</p>
           <p className="text-gray-600 mb-2">
-            Please enter the meeting ID or link you received to join the meeting.
+            Please enter the meeting ID or link you received to join the
+            meeting.
           </p>
           <input
             type="text"
@@ -48,28 +50,27 @@ export default function BeforeParticipant() {
             onChange={(e) => setParticipantUid(e.target.value)}
           />
           <Link
-            to="/MeetingRoom"
-            state={{ participantUid }}
-            onClick={()=>console.log("hello world")
-            //   {
-            //        setParticipants((prevUsers) => {
-            //             const updatedParticipants = [
-            //               ...prevUsers,
-            //               {
-            //                 Name: auth.currentUser.displayName,
-            //                 Picture: auth.currentUser.photoURL,
-            //                 Role: 2,
-            //               },
-            //             ];
-                      
-            //             // Call settingMeetingData with the updated participants
-                       
-                      
-            //             return updatedParticipants;
-            //           });
-            // }}
-              // Pass state to MeetingRoom
-}
+            to="#"
+            onClick={async (e) => {
+              e.preventDefault(); // Prevent the default navigation
+              try {
+                await settingMeetingDataParticipants(
+                  [
+                    {
+                      Name: auth.currentUser.displayName,
+                      Picture: auth.currentUser.photoURL,
+                      Role: 2,
+                    },
+                  ],
+                  participantUid
+                );
+                localStorage.setItem("participantUniqueId", participantUid);
+                // Navigate to the MeetingRoom page manually after setting data
+                window.location.href = `/MeetingRoom`;
+              } catch (error) {
+                console.error("Error setting participant data:", error);
+              }
+            }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-500"
           >
             Join Meeting

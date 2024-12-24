@@ -1,7 +1,7 @@
-import { query } from "express";
 import { db } from "../../../../Config/firebase";
-import { collection, doc,setDoc, where } from "firebase/firestore";
+import { collection, doc,setDoc, where, query,updateDoc} from "firebase/firestore";
 import React, { createContext, useContext, useState } from "react";
+import { getDocs } from "firebase/firestore";
 
 
 // Create the context

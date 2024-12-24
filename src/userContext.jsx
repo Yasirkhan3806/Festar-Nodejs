@@ -34,7 +34,6 @@ export const useParticipantActiveData = () => useContext(ParticipantActiveContex
 
 
 
-
 // Active participant of meeting data
 export const ParticipantActiveDataProvider = ({ children }) => {
   const [participantActive, setParticipantsActive] = useState(["fuck u"]);
@@ -45,14 +44,14 @@ export const ParticipantActiveDataProvider = ({ children }) => {
     try {
       const collectionRef = collection(db, "ParticipantsData");
       const q = query(collectionRef, where("uniqueId", "==", meetingId[0]));
-
+      
       const querySnapshot = await getDocs(q);
+     
       const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
+        ...doc.data().participants,
       }));
-
-      setParticipantsActive(data);
+      // console.log("query data",data)
+      setParticipantsActive(data[0]);
     } catch (e) {
       console.log("Error fetching participant data:", e);
     }
@@ -86,18 +85,23 @@ export const UserMeetingDataProvider = ({ children }) => {
   const getMeetingData = async (userId, uniqueId) => {
     try {
       const collectionRef = collection(db, "UserMeetingData");
-      let q = query(collectionRef, where("userId", "==", userId));
 
-      // Add filter for uniqueId if provided
-      if (uniqueId) {
-        q = query(q, where("uniqueId", "==", uniqueId));
+      // Use a single query based on whether uniqueId is provided
+      const q = uniqueId 
+        ? query(collectionRef, where("uniqueId", "==", uniqueId)) 
+        : query(collectionRef, where("userId", "==", userId));
+      
+      if (!uniqueId) {
+        console.log("uniqueId not provided, querying by userId");
       }
 
       const querySnapshot = await getDocs(q);
+
       const data = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+ 
 
       setUserMeetingData(data);
     } catch (e) {

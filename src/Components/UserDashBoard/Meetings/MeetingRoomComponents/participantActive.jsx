@@ -15,11 +15,11 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
     setMeetingId(uid);
   }, [uid, setMeetingId]);
   
+  let participantsData = Object.values(participantActive)
   useEffect(() => {
-    console.log(participantActive);
+  console.log("participants array",participantsData)
   }, [participantActive]);
   
-
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
 useEffect(() => {
@@ -54,32 +54,28 @@ useEffect(() => {
         </span>
         
         <ul className={`p-4 space-y-4 ${participantActive && participantActive.length > 0 ?"overflow-y-auto h-[70%]":""} scrollbar-blue-500 shadow-none box-s`}>
-        {participantActive && participantActive.length > 0 ? (
-    participantActive.map((participant) => (
-      <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
+        {participantsData && participantsData.length > 0 ? (
+   participantsData.map((participant) => (
+    <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
       <img
-        src={participant.Picture}
-        alt={"participant Picture"}
+        src={participant.Picture} // Correct
+        alt="Participant Picture"
         className="w-12 h-12 rounded-full"
       />
       <div className="flex gap-12">
-
         <p className="font-medium">{participant.Name}</p>
         <div className="flex justify-end gap-2 mt-1 text-gray-500">
-          <span
-            className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}
-          >
-          <img src={micOnIcon} alt="" />
+          <span className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}>
+            <img src={participant.micOn ? micOnIcon : micOffIcon} alt="Mic Status" />
           </span>
-          <span
-            className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}
-          >
-            <img src={videoOnIcon} alt="" />
+          <span className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}>
+            <img src={participant.videoOn ? videoOnIcon : videoOffIcon} alt="Video Status" />
           </span>
         </div>
       </div>
     </li>
-    ))
+  ))
+  
   ) : (
     <p>No participant</p>
   )}
