@@ -16,7 +16,7 @@ export default function MeetingRoomNav({setUID,storedUniqueId}) {
     // const storedUniqueId = localStorage.getItem("uniqueId");
 
     if (storedUniqueId) {
-      console.log("stored ID",storedUniqueId)
+      // console.log("stored ID",storedUniqueId)
       setUniqueIdFilter(storedUniqueId);
     } else {
       console.error("No uniqueId found in localStorage");

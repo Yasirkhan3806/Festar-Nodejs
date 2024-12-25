@@ -51,7 +51,7 @@ export const ParticipantActiveDataProvider = ({ children }) => {
         ...doc.data().participants,
       }));
       // console.log("query data",data)
-      setParticipantsActive(data[0]);
+      setParticipantsActive(Object.values(data[0]));
     } catch (e) {
       console.log("Error fetching participant data:", e);
     }
@@ -62,7 +62,7 @@ export const ParticipantActiveDataProvider = ({ children }) => {
       if (user) {
         getParticipantData(meetingId);
       } else {
-        setParticipantsActive(["fuck u"]);
+        setParticipantsActive([]);
       }
     });
     return () => unsubscribe();

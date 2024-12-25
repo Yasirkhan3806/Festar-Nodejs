@@ -60,6 +60,7 @@ export default function BeforeParticipant() {
                       Name: auth.currentUser.displayName,
                       Picture: auth.currentUser.photoURL,
                       Role: 2,
+                      userId: auth.currentUser.uid,
                     },
                   ],
                   participantUid

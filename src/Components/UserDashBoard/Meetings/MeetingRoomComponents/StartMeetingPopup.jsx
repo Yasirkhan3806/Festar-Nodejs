@@ -77,11 +77,11 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
       // });
       setParticipants((prevUsers) => {
         const updatedParticipants = [
-          ...prevUsers,
           {
             Name: auth.currentUser.displayName,
             Picture: auth.currentUser.photoURL,
             Role: 1,
+            userId: auth.currentUser.uid,
           },
         ];
       

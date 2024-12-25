@@ -1,23 +1,55 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
 import ParticipantActive from "./MeetingRoomComponents/participantActive";
 import MessageSidebar from "./MeetingRoomComponents/MeetingMessages";
 import VideoCall from "./Videos";
 import Participant from "./Participant";
 import { useLocation } from "react-router-dom";
-
+import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
+import { auth } from "../../../Config/firebase";
 
 export default function Host() {
   const [activeOpen, setActiveOpen] = useState(false);
   const [uid, setUID] = useState("");
   const videoCallRef = useRef();
   const location = useLocation();
- const participantUid = localStorage.getItem("participantUniqueId")
+  const participantUid = localStorage.getItem("participantUniqueId");
   const { host } = location.state || {};
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
-  const storedUniqueId = host?localStorage.getItem("uniqueId"):participantUid;
-  console.log("stored Unique ID: ",storedUniqueId)
+  const storedUniqueId = host
+    ? localStorage.getItem("uniqueId")
+    : participantUid;
+  console.log("stored Unique ID: ", storedUniqueId);
+
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      // Check if `host` is true or false, and call the respective function
+      alert("back button clicked");
+      if (host) {
+        removeParticipantByUserId(localStorage.getItem("uniqueId"), auth.currentUser.uid);
+      } else {
+        removeParticipantByUserId(participantUid, auth.currentUser.uid);
+      }
+
+      // Prevent the default back button behavior
+      event.preventDefault();
+      // Push a new state to ensure the back button works as expected after custom logic
+      window.history.pushState(null, null, window.location.href);
+    };
+
+    // Listen for popstate event (triggered when back button is clicked)
+    window.addEventListener("popstate", handleBackButton);
+
+    // Push initial state to history to handle back button correctly
+    window.history.pushState(null, null, window.location.href);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, []);
+ // Re-run the effect when `host` value changes
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
   const generateNumericUID = (stringUID) => {
@@ -33,41 +65,43 @@ export default function Host() {
   };
 
   const participantTokenUid = generateNumericUID(participantUid);
-  console.log("participant UiD: ",participantUid);
+  // console.log("participant UiD: ",participantUid);
 
   return (
     <>
       <div>
-        {host? <MeetingRoomNav setUID={setUID} storedUniqueId= {storedUniqueId} />: <MeetingRoomNav setUID={setUID} storedUniqueId= {storedUniqueId} />}
-       
+        {host ? (
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} />
+        ) : (
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} />
+        )}
 
         <div className="flex h-[504px]">
           <div className="w-[95%] flex flex-wrap h-[32rem] gap-2">
             {/* Dynamic Grid Layout */}
             <div className={`grid gap-2 w-full h-[81vh]  p-3`}>
-            {uid ? (
-  host ? (
-    <>
-      <VideoCall
-        appId={appId}
-        channelName={channelName}
-        // setParticipants={setHostParticipants}
-        uid={uid}
-      />
-    </>
-  ) : (
-    <Participant
-      ref={videoCallRef}
-      appId={appId}
-      channelName={channelName}
-      userStringId={participantUid}
-      uid={participantTokenUid}
-    />
-  )
-) : (
-  <div>Loading...</div>
-)}
-
+              {uid ? (
+                host ? (
+                  <>
+                    <VideoCall
+                      appId={appId}
+                      channelName={channelName}
+                      // setParticipants={setHostParticipants}
+                      uid={uid}
+                    />
+                  </>
+                ) : (
+                  <Participant
+                    ref={videoCallRef}
+                    appId={appId}
+                    channelName={channelName}
+                    userStringId={participantUid}
+                    uid={participantTokenUid}
+                  />
+                )
+              ) : (
+                <div>Loading...</div>
+              )}
             </div>
           </div>
 

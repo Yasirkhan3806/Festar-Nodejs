@@ -15,9 +15,8 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
     setMeetingId(uid);
   }, [uid, setMeetingId]);
   
-  let participantsData = Object.values(participantActive)
   useEffect(() => {
-  console.log("participants array",participantsData)
+  console.log("participants array",participantActive)
   }, [participantActive]);
   
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -54,8 +53,8 @@ useEffect(() => {
         </span>
         
         <ul className={`p-4 space-y-4 ${participantActive && participantActive.length > 0 ?"overflow-y-auto h-[70%]":""} scrollbar-blue-500 shadow-none box-s`}>
-        {participantsData && participantsData.length > 0 ? (
-   participantsData.map((participant) => (
+        {participantActive && participantActive.length > 0 ? (
+   participantActive.map((participant) => (
     <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
       <img
         src={participant.Picture} // Correct
