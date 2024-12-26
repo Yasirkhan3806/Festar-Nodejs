@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
+import { settingMeetingDataParticipants } from "./MeetingRoomComponents/SettingParticipantData";
+import { auth } from "../../../Config/firebase";
 // import { useMeeting } from "../../../userContext";
 
 const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) => {
@@ -47,6 +50,17 @@ const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) 
   // Start the video call
   const startCall = async () => {
     try {
+      await settingMeetingDataParticipants(
+        [
+          {
+            Name: auth.currentUser.displayName,
+            Picture: auth.currentUser.photoURL,
+            Role: 2,
+            userId: auth.currentUser.uid,
+          },
+        ],
+        uid
+      );
       console.log("Starting video call...");
       const token = await fetchToken(channelName, uid, 1);
       console.log("Joining channel...");
@@ -200,7 +214,7 @@ const Participant = ({ appId, channelName, uid, setRemoteUsers, userStringId }) 
           onClick={()=>{
             leaveCall();
             setInCall(false);
-           
+           removeParticipantByUserId(localStorage.getItem("participantUniqueId"), auth.currentUser.uid);
             navigate('/Join-Menu');
             window.location.reload();
           }

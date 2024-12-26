@@ -15,40 +15,17 @@ export default function Host() {
   const location = useLocation();
   const participantUid = localStorage.getItem("participantUniqueId");
   const { host } = location.state || {};
+  const [meetingRName, setMeetingRName] = useState("");
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
   const storedUniqueId = host
     ? localStorage.getItem("uniqueId")
     : participantUid;
-  console.log("stored Unique ID: ", storedUniqueId);
+  // console.log("stored Unique ID: ", storedUniqueId);
 
-  useEffect(() => {
-    const handleBackButton = (event) => {
-      // Check if `host` is true or false, and call the respective function
-      alert("back button clicked");
-      if (host) {
-        removeParticipantByUserId(localStorage.getItem("uniqueId"), auth.currentUser.uid);
-      } else {
-        removeParticipantByUserId(participantUid, auth.currentUser.uid);
-      }
+ 
 
-      // Prevent the default back button behavior
-      event.preventDefault();
-      // Push a new state to ensure the back button works as expected after custom logic
-      window.history.pushState(null, null, window.location.href);
-    };
-
-    // Listen for popstate event (triggered when back button is clicked)
-    window.addEventListener("popstate", handleBackButton);
-
-    // Push initial state to history to handle back button correctly
-    window.history.pushState(null, null, window.location.href);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, []);
+  
  // Re-run the effect when `host` value changes
 
   // Shorten UID for AgoraRTC: Ensure it's numeric and within the valid range
@@ -71,9 +48,9 @@ export default function Host() {
     <>
       <div>
         {host ? (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} />
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} />
         ) : (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} />
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} />
         )}
 
         <div className="flex h-[504px]">
@@ -88,6 +65,7 @@ export default function Host() {
                       channelName={channelName}
                       // setParticipants={setHostParticipants}
                       uid={uid}
+                      meetingRName={meetingRName}
                     />
                   </>
                 ) : (

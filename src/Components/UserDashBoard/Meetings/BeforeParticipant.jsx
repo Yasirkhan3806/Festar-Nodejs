@@ -54,22 +54,11 @@ export default function BeforeParticipant() {
             onClick={async (e) => {
               e.preventDefault(); // Prevent the default navigation
               try {
-                await settingMeetingDataParticipants(
-                  [
-                    {
-                      Name: auth.currentUser.displayName,
-                      Picture: auth.currentUser.photoURL,
-                      Role: 2,
-                      userId: auth.currentUser.uid,
-                    },
-                  ],
-                  participantUid
-                );
                 localStorage.setItem("participantUniqueId", participantUid);
                 // Navigate to the MeetingRoom page manually after setting data
                 window.location.href = `/MeetingRoom`;
               } catch (error) {
-                console.error("Error setting participant data:", error);
+                console.error("Uid setting failed", error);
               }
             }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-500"

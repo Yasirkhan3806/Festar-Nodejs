@@ -75,21 +75,7 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
       //   uniqueId
 
       // });
-      setParticipants((prevUsers) => {
-        const updatedParticipants = [
-          {
-            Name: auth.currentUser.displayName,
-            Picture: auth.currentUser.photoURL,
-            Role: 1,
-            userId: auth.currentUser.uid,
-          },
-        ];
-      
-        // Call settingMeetingData with the updated participants
-        settingMeetingDataHost(meetingName, updatedParticipants, uniqueId);
-      
-        return updatedParticipants;
-      });
+    
       
 
     

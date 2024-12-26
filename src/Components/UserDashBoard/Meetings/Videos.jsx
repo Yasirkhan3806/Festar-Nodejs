@@ -2,8 +2,11 @@ import React, { useState, useEffect, useImperativeHandle, forwardRef } from "rea
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
+import { settingMeetingDataHost } from "./MeetingRoomComponents/SettingParticipantData";
+import { auth } from "../../../Config/firebase";
 AgoraRTC.setLogLevel(0);
-const VideoCall = ({ appId, channelName, uid, setParticipants}) => {
+const VideoCall = ({ appId, channelName, uid,meetingRName}) => {
 
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   AgoraRTC.setLogLevel(0);
@@ -35,6 +38,14 @@ const VideoCall = ({ appId, channelName, uid, setParticipants}) => {
   // Start the video call
   const startCall = async () => {
     try {
+      // Call settingMeetingData with the updated participants
+        settingMeetingDataHost(meetingRName[0], [ {
+          Name: auth.currentUser.displayName,
+          Picture: auth.currentUser.photoURL,
+          Role: 1,
+          userId: auth.currentUser.uid,
+        }], uid[0]);
+    
       console.log("Starting call...");
       // Check if the client is already connected or connecting
       if (client.connectionState === "CONNECTED" || client.connectionState === "CONNECTING") {
@@ -139,6 +150,7 @@ const VideoCall = ({ appId, channelName, uid, setParticipants}) => {
       setLocalTracks({ audioTrack: null, videoTrack: null });
       setRemoteUsers([]);
       setInCall(false);
+      removeParticipantByUserId(localStorage.getItem("uniqueId"), auth.currentUser.uid);
 
       console.log("Call ended!");
       navigate('/Create-menu')

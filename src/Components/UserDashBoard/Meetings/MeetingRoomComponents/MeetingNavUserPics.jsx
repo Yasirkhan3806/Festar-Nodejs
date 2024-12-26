@@ -1,6 +1,8 @@
-import React from "react";
+import React,{useEffect} from "react";
+import { useParticipantActiveData } from '../../../../userContext';
 
 const AvatarGroup = ({ avatars, extraCount }) => {
+  
   return (
     <div className="flex items-center space-x-[-12px]">
       {avatars.slice(0, 4).map((avatar, index) => (
@@ -22,14 +24,13 @@ const AvatarGroup = ({ avatars, extraCount }) => {
 
 // Example Usage
 export default function MNUP() {
-  const userAvatars = [
-    "https://randomuser.me/api/portraits/women/1.jpg",
-    "https://randomuser.me/api/portraits/women/2.jpg",
-    "https://randomuser.me/api/portraits/men/1.jpg",
-    "https://randomuser.me/api/portraits/men/2.jpg",
-    "https://randomuser.me/api/portraits/women/3.jpg",
-    "https://randomuser.me/api/portraits/men/3.jpg",
-  ];
+  const {participantActive,setMeetingId} = useParticipantActiveData();
+  
+  useEffect(() => {
+    setMeetingId(localStorage.getItem('uniqueId'));
+    // console.log("participants array",participantActive)
+  }, []);
+  const userAvatars = participantActive.map((item) => item.Picture);
 
   return (
     <div className="flex ">
