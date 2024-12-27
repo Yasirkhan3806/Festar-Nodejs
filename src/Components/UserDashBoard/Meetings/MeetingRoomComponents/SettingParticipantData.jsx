@@ -22,7 +22,7 @@ export function ParticipantStateProvider({ children }) {
 // using this for host and to avoid hurdle i am creating a separate function for participant joining call
 export const settingMeetingDataHost = async(meetingName,participants,uniqueId)=>{
     // Specify a collection and document name
-const docRef = doc(db, "ParticipantsData", `${meetingName}`);
+    const docRef = doc(collection(db, "ParticipantsData"), uniqueId); 
 await setDoc(docRef, {
     meetingName: meetingName,
     uniqueId,

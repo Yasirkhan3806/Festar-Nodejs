@@ -36,21 +36,22 @@ export const useParticipantActiveData = () => useContext(ParticipantActiveContex
 
 // Active participant of meeting data
 export const ParticipantActiveDataProvider = ({ children }) => {
-  const [participantActive, setParticipantsActive] = useState(["fuck u"]);
+  const [participantActive, setParticipantsActive] = useState([]);
   const [meetingId, setMeetingId] = useState("");
 
   const getParticipantData = async (meetingId) => {
     if (!meetingId) return;
     try {
+      // console.log("getParticipantData called with meetingId:", meetingId);
       const collectionRef = collection(db, "ParticipantsData");
-      const q = query(collectionRef, where("uniqueId", "==", meetingId[0]));
+      const q = query(collectionRef, where("uniqueId", "==", meetingId));
       
       const querySnapshot = await getDocs(q);
      
       const data = querySnapshot.docs.map((doc) => ({
         ...doc.data().participants,
       }));
-      // console.log("query data",data)
+      // console.log("query data", data);
       setParticipantsActive(Object.values(data[0]));
     } catch (e) {
       console.log("Error fetching participant data:", e);
@@ -68,12 +69,22 @@ export const ParticipantActiveDataProvider = ({ children }) => {
     return () => unsubscribe();
   }, [meetingId]);
 
+  // Periodically fetch participant data
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getParticipantData(meetingId);
+    }, 10000); // Fetch data every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
+  }, [meetingId]); // Rerun interval when `meetingId` changes
+
   return (
     <ParticipantActiveContext.Provider value={{ participantActive, setMeetingId }}>
       {children}
     </ParticipantActiveContext.Provider>
   );
 };
+
 
 
 

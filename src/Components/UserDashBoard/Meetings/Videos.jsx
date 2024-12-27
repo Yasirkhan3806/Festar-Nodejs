@@ -153,7 +153,8 @@ const VideoCall = ({ appId, channelName, uid,meetingRName}) => {
       removeParticipantByUserId(localStorage.getItem("uniqueId"), auth.currentUser.uid);
 
       console.log("Call ended!");
-      navigate('/Create-menu')
+      window.location.href = "/Create-menu";
+
       
     } catch (error) {
       console.error("Error leaving call:", error);

@@ -10,13 +10,13 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
   const {participantActive,setMeetingId} = useParticipantActiveData();
   // const [participantActive,setMeetingId] = useState([])
   
-  // console.log(uid)
+  // console.log(uid[0])
   useEffect(() => {
-    setMeetingId(uid);
+    setMeetingId(uid[0]);
   }, [uid, setMeetingId]);
   
   useEffect(() => {
-  console.log("participants array",participantActive)
+  // console.log("participants array",participantActive)
   }, [participantActive]);
   
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);

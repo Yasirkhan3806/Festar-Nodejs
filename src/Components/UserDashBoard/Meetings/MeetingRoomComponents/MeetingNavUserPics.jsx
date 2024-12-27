@@ -29,7 +29,7 @@ export default function MNUP() {
   useEffect(() => {
     setMeetingId(localStorage.getItem('uniqueId'));
     // console.log("participants array",participantActive)
-  }, []);
+  }, [participantActive]);
   const userAvatars = participantActive.map((item) => item.Picture);
 
   return (
