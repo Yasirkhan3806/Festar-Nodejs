@@ -59,7 +59,8 @@ export default function MainDashboard() {
         </div>
         
         <div className="flex flex-col w-full overflow-hidden">
-          <DashNav userEmail={user} />
+        {activeItem !== "Chats" && <DashNav userEmail={user} />}
+
           <div className="w-full">
           {renderContent()}
         </div>

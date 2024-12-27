@@ -1,6 +1,6 @@
 import React from "react";
 import MeetingOpt from "./MeetingOpt";
-import MeetingsHistory from "./MeetingsHistory";
+import MeetingsHistory from "../meetings-History/MeetingsHistory.jsx";
 
 export default function Mettings() {
  return(
