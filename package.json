@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.1",
+    "@cloudinary/url-gen": "^1.21.0",
     "agora-access-token": "^2.0.4",
     "agora-rtc-sdk-ng": "^4.22.2",
     "aos": "^3.0.0-beta.6",
