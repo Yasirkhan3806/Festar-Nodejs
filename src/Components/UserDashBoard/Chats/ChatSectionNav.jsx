@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import callIconBlue from './icons/callIconBlue.png';
 import threeDotsIcon from './icons/threeDotsIcon.png';
 
-const ContactHeader = ({ name, lastSeen, avatar }) => {
+const ContactHeader = ({ navData }) => {
+
+  
   return (
     <div className="flex flex-col">
       {/* Left Section: Avatar and Name */}
@@ -10,16 +12,16 @@ const ContactHeader = ({ name, lastSeen, avatar }) => {
       <div className="flex items-center gap-4 w-[80%] ">
         {/* Avatar */}
         <img
-          src={avatar || "https://via.placeholder.com/150"}
-          alt={`${name}'s avatar`}
+          src={navData.groupPicture || '/default-avatar.png'}
+          alt={`${navData.groupName}'s avatar`}
           className="h-12 w-12 rounded-full object-cover"
         />
         {/* Name and Last Seen */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{name}</h3>
-          <p className="text-[0.7rem] text-gray-500">
+          <h3 className="text-lg font-bold text-gray-800">{navData.groupName || "Group Name"}</h3>
+          {/* <p className="text-[0.7rem] text-gray-500">
             Online - Last seen, {lastSeen || "unknown"}
-          </p>
+          </p> */}
         </div>
       </div>
 

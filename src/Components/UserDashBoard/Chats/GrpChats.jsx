@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { gettingChatsData, gettingChats } from './gettingChatsData';
 
-export default function GrpChats({setCurrentChat,setChatId}) {
+export default function GrpChats({setCurrentChat,setChatId,setNavData,setUserData}) {
   const [groups, setGroups] = useState([]); // Initialize with an empty array
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const grpData = await gettingChatsData(); // Fetch group data
-        console.log('grpData:', grpData);
-        setGroups(grpData); // Set the resolved data to the state
+        gettingChatsData(setGroups,setUserData); // Fetch group data
+        // console.log('grpData:', grpData);
+        // setGroups(grpData); // Set the resolved data to the state
       } catch (error) {
         console.error('Error fetching group data:', error);
       }
@@ -18,13 +18,16 @@ export default function GrpChats({setCurrentChat,setChatId}) {
     fetchData(); // Call the fetchData function
   }, []);
 
-  const getChats = async (chatId) => {
+  const getChats = async (chatId,groupPicture,groupName) => {
     try {
-      console.log('Fetching chat data for chatId:', chatId);
-      const chatData = await gettingChats(chatId); // Fetch chat data
-      setCurrentChat(chatData); // Set the chat data to the state
+      // console.log('Fetching chat data for chatId:', chatId);
+      const chatData = await gettingChats(chatId,setCurrentChat); // Fetch chat data
+      setNavData({
+        groupPicture:groupPicture,
+        groupName:groupName,
+      });
       setChatId(chatId); // Set the chatId to the state
-      console.log('chatData:', chatData);
+      // console.log('chatData:', chatData);
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }
@@ -38,7 +41,7 @@ export default function GrpChats({setCurrentChat,setChatId}) {
           groups.map((group) => (
             <div
               key={group.chatid}
-              onClick={() => getChats(group.chatid)} // Wrap in an arrow function
+              onClick={() => getChats(group.chatid,group.groupPicture,group.chatName)} // Wrap in an arrow function
               className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 border-b-2 border-gray-200"
             >
               <div className="flex items-center space-x-4">

@@ -9,20 +9,26 @@ const getMembersDataByEmail = async (email) => {
     const querySnapshot = await getDocs(q); // Execute query to get the documents
 
     if (querySnapshot.empty) {
-      console.log('No matching documents.');
+      // console.log('No matching documents.');
       return null;
     }
 
-    const matchedDocuments = [];
-    querySnapshot.forEach(doc => {
-      matchedDocuments.push({ id: doc.id, ...doc.data() });
+    // Separate userId and userData
+    const userIds = [];
+    const userDataList = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      userIds.push(data.userId); // Collect userId
+      userDataList.push(data); // Collect full user data
     });
 
-    return matchedDocuments;
+    return { userIds, userDataList }; // Return both userId and userData
   } catch (error) {
     console.error('Error fetching members data:', error);
     return null;
   }
 };
+
 
 export default getMembersDataByEmail;

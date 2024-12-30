@@ -4,9 +4,10 @@ import { collection, addDoc } from 'firebase/firestore';
 import {auth} from "../../../Config/firebase"
 
 
-const CreateGroupChat = async (chatName, chatMembers,groupDescription,imageUrl) => {
+const CreateGroupChat = async (chatName, chatMembers,groupDescription,imageUrl,userData) => {
     const chatid = uuidv4();
-alert(imageUrl)
+// alert(imageUrl)
+// console.log("userData: ",userData)
     const collectionRef = collection(db, 'GroupMessages');
     await addDoc(collectionRef, {
         adminId : auth.currentUser.uid,
@@ -14,6 +15,7 @@ alert(imageUrl)
         groupPicture: imageUrl,
         chatName: chatName,
         chatMembers: chatMembers,
+        userData:userData,
         groupDescription: groupDescription,
         chatType: 'group',
     });
