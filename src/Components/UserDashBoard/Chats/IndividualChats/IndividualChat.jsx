@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { createIndividualChat } from '../CreatingChatDB';
 import getMembersDataByEmail from '../gettingMembersData';
+import {useUser} from '../../../../userContext'
+
+
 
 const IndividualChat = () => {
   const [receiverEmail, setReceiverEmail] = useState("");
   const [initialMessage, setInitialMessage] = useState("");
   const [userDataList, setUserDataList] = useState([]); // State to store the fetched user data
+  const {userName} = useUser()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createIndividualChat(userDataList[0].userId,userDataList);
+    createIndividualChat(userDataList[0].userId,userDataList,userName);
     // Handle form submission (e.g., send to Firebase)
     
     console.log("Receiver Email:", receiverEmail);

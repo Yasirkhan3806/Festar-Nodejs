@@ -3,14 +3,22 @@ import { db,auth } from "../../../Config/firebase";
 import { arrayUnion } from "firebase/firestore";
 
 
-export const sendMessage = async (message, chatId) => {
+export const sendMessage = async (message, chatId,isGroup) => {
     try {
         console.log("Sending message:", message);
         // Query the "GroupMessages" collection where "chatId" matches the provided chatId
-        const q = query(
-            collection(db, "GroupMessages"),
-            where("chatid", "==", chatId) // Ensure the field name matches your Firestore schema
-        );
+        let q  = null;
+        if(isGroup){
+            q = query(
+                collection(db, "GroupMessages"),
+                where("chatid", "==", chatId)
+            );
+        }else{
+            q = query(
+                collection(db, "IndividualMessages"),
+                where("chatId", "==", chatId)
+            );
+        }
 
         const querySnapshot = await getDocs(q);
 

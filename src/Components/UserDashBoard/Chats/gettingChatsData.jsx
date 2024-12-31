@@ -45,13 +45,21 @@ export const gettingChatsData = (callback) => {
   };
 
  
- export const gettingChats = (chatsId, callback) => {
+ export const gettingChats = (chatsId, callback,group) => {
    try {
      // Query the "GroupMessages" collection where "chatId" matches the provided chatsId
-     const q = query(
-       collection(db, "GroupMessages"),
-       where("chatid", "==", chatsId)
-     );
+     let q = null;
+     if(group){
+       q = query(
+        collection(db, "GroupMessages"),
+        where("chatid", "==", chatsId)
+      );}
+      else{
+         q = query(
+          collection(db, "IndividualMessages"),
+          where("chatId", "==", chatsId)
+        );
+      }
  
      // Listen to real-time updates
      const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -79,7 +87,7 @@ export const gettingChatsData = (callback) => {
       where("senderId", "==", auth.currentUser.uid)
     );
     const qReceiver = query(
-      collection(db, "GroupMessages"),
+      collection(db, "IndividualMessages"),
       where("receiverId", "==", auth.currentUser.uid)
     );
 

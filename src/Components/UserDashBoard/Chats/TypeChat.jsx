@@ -4,7 +4,7 @@ import { auth } from "../../../Config/firebase";
 import { useUser } from "../../../userContext";
 import { v4 as uuidv4 } from 'uuid';
 
-export default function TypeChat({ chatId }) {
+export default function TypeChat({ chatId,isGroup }) {
   const [messageText, setMessageText] = useState("");
   const {userName } = useUser(); // Access userName from context
 
@@ -17,7 +17,7 @@ export default function TypeChat({ chatId }) {
       senderName: auth.currentUser.displayName || userName || "guest", // Use the user's name from context
       read:false,
     };
-    const sent = await sendMessage(message, chatId);
+    const sent = await sendMessage(message, chatId,isGroup);
     if (sent) {
       console.log("Message sent successfully");
       setMessageText(""); // Clear the input field

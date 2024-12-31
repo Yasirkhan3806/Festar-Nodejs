@@ -1,74 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { gettingChatsDataIndividual } from "../gettingChatsData";
-import personIcon from '../icons/personIcon.png'
+import personIcon from '../icons/personIcon.png';
+import { gettingChats } from "../gettingChatsData";
+import { auth } from "../../../../Config/firebase";
+import { useUser } from "../../../../userContext";
 
-export default function PeopleChats() {
+export default function PeopleChats({setCurrentChat,setNavData,setChatId,setIsGroup}) {
   const [people,setPeople] = useState([])
+//   const [receiver,setReceiver] = useState([])
+const {userName} = useUser()
 useEffect(()=>{
 gettingChatsDataIndividual(setPeople)
-// console.log("chats",chats)
-},[])
-  // const people = [
-  //   {
-  //     id: 1,
-  //     name: "Ali",
-  //     message: "April fool's day",
-  //     time: "Today, 9:52pm",
-  //     avatar: "https://via.placeholder.com/50", // Replace with actual avatar URL
-  //     readStatus: "read", // Can be "read" or "unread"
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Tallal",
-  //     message: "Baag",
-  //     time: "Today, 12:11pm",
-  //     avatar: "https://via.placeholder.com/50",
-  //     readStatus: "unread",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Mariy",
-  //     message: "You have to report it...",
-  //     time: "Today, 2:40pm",
-  //     avatar: "https://via.placeholder.com/50",
-  //     readStatus: "unread",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Boss",
-  //     message: "Nevermind bro",
-  //     time: "Yesterday, 12:31pm",
-  //     avatar: "https://via.placeholder.com/50",
-  //     readStatus: "unread",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "shiza",
-  //     message: "Okay, brother. let's see...",
-  //     time: "Wednesday, 11:12am",
-  //     avatar: "https://via.placeholder.com/50",
-  //     readStatus: "read",
-  //   },
-  // ];
 
+// console.log(r)
+},[])
+ 
+const getChats = (chatId,receiverPicture,receiverName) => {
+  try{
+  // console.log("receiverPicture",receiverPicture)
+gettingChats(chatId,setCurrentChat,false)
+setNavData({
+  groupPicture: receiverPicture,
+        groupName: receiverName,
+});
+setChatId(chatId)
+setIsGroup(false)
+  }catch(error){
+    console.log("error in getting chats",error)
+  }
+};
+
+// useEffect(()=>{
+//   let r = null;
+// people.forEach((person)=>{
+// person.receiverData.forEach((p)=>{
+//   if(p.userId !== auth.currentUser.uid){
+//     r = p
+//   }
+// });
+// // console.log("receier",r)
+// setReceiver([r])
+// });
+  
+//   // console.log(r)
+  // },[people])
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-4 border-[2.5px] border-b-4 border-blue-400">
       <h2 className="text-xl font-bold text-gray-800 mb-4">People</h2>
       <div className="space-y-4">
         {people.map((person) => (
           <div
-            key={person.ChatId}
+            key={person.chatId}
+            onClick={()=>{
+              const receiverName = person.receiverName === auth.currentUser.displayName || userName?person.senderName:person.receiverName
+              const receiverPicture = person.receiverPicture === auth.currentUser.photoURL?person.senderPicture:person.receiverPicture
+              getChats(person.chatId,receiverPicture,receiverName)
+                // console.log("I am clicked")
+              }}
             className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50"
           >
             <div className="flex items-center space-x-4">
               <img
-                src={person.receiverData[0].profilePicture || personIcon}
-                alt={person.receiverData[0].userName || "guest"}
+                src={person.receiverPicture === auth.currentUser.photoURL?person.senderPicture:person.receiverPicture  || personIcon}
+                alt={person.receiverPicture || "guest"}
                 className="h-12 w-12 rounded-full"
               />
               <div>
                 <h3 className="text-sm font-semibold text-gray-800">
-                  {person.receiverData[0].userName || "guest"}
+                {person.receiverName === auth.currentUser.displayName || userName?person.senderName:person.receiverName  || "guest"}
                 </h3>
                 <p className="text-xs text-gray-500 truncate">{person.message}</p>
               </div>

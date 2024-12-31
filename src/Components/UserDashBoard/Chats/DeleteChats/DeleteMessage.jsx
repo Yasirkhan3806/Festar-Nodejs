@@ -6,7 +6,7 @@ import { db } from '../../../../Config/firebase';
 export default function DeleteMessage({messageId,chatId}) {
     const [open,setOpen] = useState(false)
     const menuRef = useRef(null)
-    console.log(chatId)
+    // console.log(chatId)
    
 const deleteMessage = async (messageId, chatId) => {
     try {

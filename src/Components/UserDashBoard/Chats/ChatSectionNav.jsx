@@ -19,7 +19,7 @@ const ContactHeader = ({ navData }) => {
         />
         {/* Name and Last Seen */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{navData.groupName || "Group Name"}</h3>
+          <h3 className="text-lg font-bold text-gray-800">{navData.groupName || "Chat Name"}</h3>
           {/* <p className="text-[0.7rem] text-gray-500">
             Online - Last seen, {lastSeen || "unknown"}
           </p> */}

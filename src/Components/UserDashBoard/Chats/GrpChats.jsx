@@ -5,7 +5,7 @@ import groupIcon from './icons/groupIcon.png';
 import { settingRead } from './sendingMessages';
 import DeleteGroup from './DeleteChats/deleteGroup';
 
-export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
+export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGroup }) {
   const [groups, setGroups] = useState([]); // Initialize with an empty array
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
 
@@ -23,12 +23,13 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
 
   const getChats = async (chatId, groupPicture, groupName) => {
     try {
-      gettingChats(chatId, setCurrentChat); // Fetch chat data
+      gettingChats(chatId, setCurrentChat,true); // Fetch chat data
       setNavData({
         groupPicture: groupPicture,
         groupName: groupName,
       });
       setChatId(chatId); // Set the chatId to the state
+      setIsGroup(true);
       settingRead(chatId); // Mark messages as read
     } catch (error) {
       console.error('Error fetching chat data:', error);
@@ -60,7 +61,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
       messages: newUnreadMessages,
     });
 
-    console.log('Unread messages:', newUnreadMessages);
+    // console.log('Unread messages:', newUnreadMessages);
   }, [groups]); // Run when groups or the current user changes
 
   return (

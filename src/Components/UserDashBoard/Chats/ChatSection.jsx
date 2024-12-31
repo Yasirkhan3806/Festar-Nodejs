@@ -3,7 +3,7 @@ import ContactHeader from './ChatSectionNav';
 import TypeChat from './TypeChat';
 import MainChat from './MainChat';
 
-export default function ChatSection({currentChat,chatId,navData,}) {
+export default function ChatSection({currentChat,chatId,navData,isGroup}) {
   // useEffect(() => {
   //   console.log("userData at chat section",userData)
   // }, [userData]);
@@ -19,7 +19,7 @@ export default function ChatSection({currentChat,chatId,navData,}) {
         <MainChat currentChat={currentChat} chatId={chatId} />
       </div>
       <div id='Type-chat' className='h-[10%] ml-[2rem]'>
-     <TypeChat chatId={chatId} />
+     <TypeChat chatId={chatId} isGroup={isGroup} />
      </div> 
      </div>
     </>
