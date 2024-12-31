@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import callIconBlue from './icons/callIconBlue.png';
 import threeDotsIcon from './icons/threeDotsIcon.png';
+import groupIcon from './icons/groupIcon.png';
 
 const ContactHeader = ({ navData }) => {
 
@@ -12,7 +13,7 @@ const ContactHeader = ({ navData }) => {
       <div className="flex items-center gap-4 w-[80%] ">
         {/* Avatar */}
         <img
-          src={navData.groupPicture || '/default-avatar.png'}
+          src={navData.groupPicture || groupIcon}
           alt={`${navData.groupName}'s avatar`}
           className="h-12 w-12 rounded-full object-cover"
         />

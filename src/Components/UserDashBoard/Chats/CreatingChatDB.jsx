@@ -22,3 +22,18 @@ const CreateGroupChat = async (chatName, chatMembers,groupDescription,imageUrl,u
 }
 
 export default CreateGroupChat;
+
+export const createIndividualChat = async(receiverId,receiverData )=>{
+    const chatid = uuidv4();
+// alert(imageUrl)
+// console.log("userData: ",userData)
+    const collectionRef = collection(db, 'IndividualMessages');
+    await addDoc(collectionRef, {
+        chatId :chatid,
+        senderId:auth.currentUser.uid,
+        receiverId,
+        receiverData,
+        messages :[],
+
+    });
+}

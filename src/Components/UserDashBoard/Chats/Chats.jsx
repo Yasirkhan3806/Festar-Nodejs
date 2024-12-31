@@ -10,10 +10,7 @@ export default function Chats() {
   const [currentChat, setCurrentChat] = useState([]); // Initialize with an empty array
   const [chatId, setChatId] = useState(''); // Initialize with an empty string
   const[navData,setNavData]=useState([]);
-  const [userData, setUserData] = useState([]);
-  // console.log("chatId at chats: ", chatId);
-  // console.log("navData at chats: ", navData);
-  console.log("userData at chats: ", userData);
+  // const [userData, setUserData] = useState([]);
   return (
     <>
 <div>
@@ -29,7 +26,7 @@ export default function Chats() {
       </div>
       <div id='chats-box' className='flex flex-col gap-2'>
       <div id='grp-chats'>
-        <GrpChats setCurrentChat={setCurrentChat} setChatId= {setChatId} setNavData={setNavData} setUserData={userData}/>
+        <GrpChats setCurrentChat={setCurrentChat} setChatId= {setChatId} setNavData={setNavData}/>
       </div>
       <div id='indiv-chats'>
         <PeopleChats />

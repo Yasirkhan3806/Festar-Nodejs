@@ -45,7 +45,7 @@ export const gettingChatsData = (callback) => {
   };
 
  
- export const gettingChats = (chatsId, callback,callbackUserData) => {
+ export const gettingChats = (chatsId, callback) => {
    try {
      // Query the "GroupMessages" collection where "chatId" matches the provided chatsId
      const q = query(
@@ -56,17 +56,12 @@ export const gettingChatsData = (callback) => {
      // Listen to real-time updates
      const unsubscribe = onSnapshot(q, (querySnapshot) => {
        let messagesdata = [];
-       let userData = [];
  
        // Process the documents in the snapshot
        querySnapshot.forEach((doc) => {
         messagesdata.push(...doc.data().messages); // Assuming "messages" is an array
-        userData.push(doc.data().userData); // Assuming "userData
        });
- console.log("userData: ",userData)
-    //    console.log("Real-time Data: ", data); // Log real-time data
        callback(messagesdata); // Pass the data to the provided callback
-         callbackUserData(userData);
      });
  
      // Return the unsubscribe function so the listener can be stopped when needed
@@ -76,5 +71,46 @@ export const gettingChatsData = (callback) => {
      return null; // Return null if an error occurs
    }
  };
+
+ export const gettingChatsDataIndividual = (callback)=>{
+  try {
+    const qSender = query(
+      collection(db, "IndividualMessages"),
+      where("senderId", "==", auth.currentUser.uid)
+    );
+    const qReceiver = query(
+      collection(db, "GroupMessages"),
+      where("receiverId", "==", auth.currentUser.uid)
+    );
+
+
+    // Real-time listener for admin chats
+    const unsubscribeSender = onSnapshot(qSender, (snapshot) => {
+      const adminData = snapshot.docs.map((doc) => doc.data());
+
+      // Real-time listener for member chats
+      const unsubscribeReceiver = onSnapshot(qReceiver, (snapshot) => {
+        const memberData = snapshot.docs.map((doc) => doc.data());
+    
+
+        // Combine both admin and member data
+        const combinedData = [...adminData, ...memberData];
+
+        // Pass the updated data to the callback
+        callback(combinedData);
+      });
+
+      // Return a cleanup function for member listener
+      return unsubscribeReceiver;
+    });
+
+    // Return a cleanup function for admin listener
+    return () => {
+      unsubscribeSender();
+    };
+  } catch (err) {
+    console.error("Error fetching chats data: ", err);
+  }
+ }
  
  

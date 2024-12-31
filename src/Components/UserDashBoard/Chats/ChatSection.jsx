@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ContactHeader from './ChatSectionNav';
 import TypeChat from './TypeChat';
 import MainChat from './MainChat';
 
-export default function ChatSection({currentChat,chatId,navData}) {
+export default function ChatSection({currentChat,chatId,navData,}) {
+  // useEffect(() => {
+  //   console.log("userData at chat section",userData)
+  // }, [userData]);
   return (
     <>
     <div id='main' className='w-[99%] h-screen '>
@@ -13,7 +16,7 @@ export default function ChatSection({currentChat,chatId,navData}) {
       />
       </div>
       <div id='main-Chat' className='h-[68%]'>
-        <MainChat currentChat={currentChat}  />
+        <MainChat currentChat={currentChat} chatId={chatId} />
       </div>
       <div id='Type-chat' className='h-[10%] ml-[2rem]'>
      <TypeChat chatId={chatId} />

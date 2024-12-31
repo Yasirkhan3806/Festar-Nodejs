@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { sendMessage } from "./sendingMessages";
 import { auth } from "../../../Config/firebase";
+import { useUser } from "../../../userContext";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function TypeChat({ chatId }) {
   const [messageText, setMessageText] = useState("");
+  const {userName } = useUser(); // Access userName from context
 
   const sendMessages = async () => {
     const message = {
+      messageId :  uuidv4(),
       text: messageText,
       senderId: auth.currentUser.uid,
       timestamp: new Date().getTime(),
+      senderName: auth.currentUser.displayName || userName || "guest", // Use the user's name from context
+      read:false,
     };
     const sent = await sendMessage(message, chatId);
     if (sent) {

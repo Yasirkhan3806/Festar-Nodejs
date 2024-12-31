@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import IndividualChat from "./IndividualChat";
+import IndividualChat from '../';
 import CreateGroupChat from "./CreatingChatDB";
 import getMembersDataByEmail from "./gettingMembersData";
-import { use } from "react";
 
 export default function GroupChatPopup({ setShowPopup }) {
   const [isGroupChat, setIsGroupChat] = useState(false);

@@ -1,47 +1,65 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { auth } from '../../../Config/firebase';
+import React, { useEffect, useRef } from "react";
+import { auth } from "../../../Config/firebase";
+import DeleteMessage from "./DeleteChats/DeleteMessage";
 
-export default function MainChat({ currentChat }) {
-  // useEffect(() => {
-  //   console.log("currentChat at mainchat: ", currentChat);
-  // }, [currentChat]);
+export default function MainChat({ currentChat,chatId }) {
+  const messagesEndRef = useRef(null); // Reference to the end of the chat container
+
+  // Scroll to the bottom when new messages are added
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [currentChat]); // Trigger scrolling when currentChat changes (new messages)
 
   return (
-    <>
-      <div className="flex flex-col space-y-4 overflow-y-auto scroll-left h-[98%] p-2">
-        {currentChat && currentChat.length > 0 ? (
-          currentChat?.map((msg) => (
+    <div className="flex flex-col space-y-4 overflow-y-auto h-[98%] p-4 scroll-left">
+      {currentChat && currentChat.length > 0 ? (
+        currentChat.map((msg) => (
+          <div
+            key={msg.id}
+            className={`flex items-start ${
+              msg.senderId === auth.currentUser.uid
+                ? "justify-end" // Align sent messages to the right
+                : "justify-start" // Align received messages to the left
+            }`}
+          >
             <div
-              key={msg.id}
-              className={`flex items-start ${
+              className={`p-3 rounded-lg w-[36%] ${
                 msg.senderId === auth.currentUser.uid
-                  ? 'justify-end' // Align sent messages to the right
-                  : 'justify-start' // Align received messages to the left
+                  ? "bg-blue-500 text-white" // Styling for sent messages
+                  : "bg-gray-200" // Styling for received messages
               }`}
+              
             >
-              <div
-                className={`p-3 rounded-lg w-[36%] ${
+              <p className="text-xs">from {msg.senderName}</p>
+              <span className="flex justify-between">
+                <p className="font-bold">{msg.text}</p>
+                <span className="transition duration-1000">
+                  <DeleteMessage messageId = {msg.messageId} chatId={chatId} />
+                </span>
+              </span>
+              <span
+                className={`text-xs ${
                   msg.senderId === auth.currentUser.uid
-                    ? 'bg-blue-500 text-white' // Styling for sent messages
-                    : 'bg-gray-200' // Styling for received messages
+                    ? "text-white" // Styling for sent messages
+                    : "text-black" // Styling for received messages
                 }`}
               >
-                <p>{msg.text}</p>
-                <span className={`text-xs  ${
-                  msg.senderId === auth.currentUser.uid
-                    ? ' text-white' // Styling for sent messages
-                    : 'text-black' // Styling for received messages
-                } `}>
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </span>
-              </div>
+                {new Date(msg.timestamp).toLocaleTimeString()}
+              </span>
             </div>
-          ))
-        ) : (
-          <p className="text-center">No messages</p>
-        )}
-      </div>
-    </>
+          </div>
+        ))
+      ) : (
+        <p className="text-center">No messages</p>
+      )}
+      {/* The reference to automatically scroll to the bottom */}
+      <div ref={messagesEndRef} />{" "}
+      {/* This is the reference that you scroll to */}
+    </div>
   );
 }

@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { gettingChatsDataIndividual } from "../../gettingChatsData";
 
 export default function PeopleChats() {
+  const [chats,setChats] = useState([])
+useEffect(()=>{
+gettingChatsDataIndividual(setChats)
+console.log(chats)
+},[])
   const people = [
     {
       id: 1,

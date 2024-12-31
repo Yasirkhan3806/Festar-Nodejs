@@ -22,6 +22,7 @@ const getMembersDataByEmail = async (email) => {
       userIds.push(data.userId); // Collect userId
       userDataList.push(data); // Collect full user data
     });
+    console.log(userDataList)
 
     return { userIds, userDataList }; // Return both userId and userData
   } catch (error) {
