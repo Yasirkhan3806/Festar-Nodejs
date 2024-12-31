@@ -86,15 +86,15 @@ export const gettingChatsData = (callback) => {
 
     // Real-time listener for admin chats
     const unsubscribeSender = onSnapshot(qSender, (snapshot) => {
-      const adminData = snapshot.docs.map((doc) => doc.data());
+      const senderData = snapshot.docs.map((doc) => doc.data());
 
       // Real-time listener for member chats
       const unsubscribeReceiver = onSnapshot(qReceiver, (snapshot) => {
-        const memberData = snapshot.docs.map((doc) => doc.data());
+        const receiverData = snapshot.docs.map((doc) => doc.data());
     
 
         // Combine both admin and member data
-        const combinedData = [...adminData, ...memberData];
+        const combinedData = [...senderData, ...receiverData];
 
         // Pass the updated data to the callback
         callback(combinedData);

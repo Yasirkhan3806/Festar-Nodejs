@@ -1,7 +1,7 @@
 import React ,{useState} from 'react';
 import ChatsSearch from './ChatsSearch';
 import GrpChats from './GrpChats';
-import PeopleChats from './PeopleChats';
+import PeopleChats from './IndividualChats/PeopleChats';
 import CreateChat from './CreateChat';
 import ChatSection from './ChatSection';
 

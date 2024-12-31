@@ -38,6 +38,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
   useEffect(() => {
     const newUnreadMessages = []; // Array to hold unread message detail
 
+    if(groups){
     // Loop through the groups
     groups.forEach((group) => {
       // Loop through the messages in each group
@@ -52,6 +53,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
         }
       });
     });
+  }
 
     // Update the unreadMessages state with both the count and message details
     setUnreadMessages({
@@ -59,7 +61,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData }) {
     });
 
     console.log('Unread messages:', newUnreadMessages);
-  }, [groups, auth.currentUser.uid]); // Run when groups or the current user changes
+  }, [groups]); // Run when groups or the current user changes
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 border-[2.5px] border-b-4 border-blue-400">

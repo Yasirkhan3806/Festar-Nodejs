@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { createIndividualChat } from '../../CreatingChatDB';
-import getMembersDataByEmail from '../../gettingMembersData';
+import { createIndividualChat } from '../CreatingChatDB';
+import getMembersDataByEmail from '../gettingMembersData';
 
 const IndividualChat = () => {
   const [receiverEmail, setReceiverEmail] = useState("");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IndividualChat from '../';
+import IndividualChat from "./IndividualChats/IndividualChat";
 import CreateGroupChat from "./CreatingChatDB";
 import getMembersDataByEmail from "./gettingMembersData";
 
