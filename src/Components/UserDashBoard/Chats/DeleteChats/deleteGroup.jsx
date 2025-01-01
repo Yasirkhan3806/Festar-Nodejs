@@ -9,15 +9,23 @@ import {
 } from "firebase/firestore";
 import threeDots from "../icons/threeDotsIcon.png";
 
-export default function DeleteGroup({ chatId }) {
+export default function DeleteGroup({ chatId,isGroup }) {
   const [open, setOpen] = useState(false);
 
-  const deleteGroup = async (chatId) => {
+  const deleteGroup = async (chatId,isGroup) => {
     try {
-      const q = query(
+      let q = null;
+      if(isGroup){
+       q = query(
         collection(db, "GroupMessages"),
         where("chatid", "==", chatId)
       );
+    }else{
+        q = query(
+            collection(db, "IndividualMessages"),
+            where("chatId", "==", chatId)
+        )
+    }
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
         console.error("No matching chat document found for chatId:", chatId);
@@ -66,11 +74,11 @@ export default function DeleteGroup({ chatId }) {
         >
           <button
             onClick={() => {
-              deleteGroup(chatId);
+              deleteGroup(chatId,isGroup);
               setOpen(false);
             }}
           >
-            Delete Group
+            {isGroup?"Delete Group" : "Delete Chat"}
           </button>
         </div>
       )}

@@ -43,12 +43,20 @@ export const sendMessage = async (message, chatId,isGroup) => {
     }
 };
 
-export const settingRead = async (chatId) => {
+export const settingRead = async (chatId,isGroup) => {
     try {
-        const q = query(
+        let q  = null;
+        if(isGroup){
+         q = query(
             collection(db, "GroupMessages"),
             where("chatid", "==", chatId)
         );
+    }else{
+        q = query(
+            collection(db, "IndividualMessages"),
+            where("chatId", "==", chatId)
+        )
+    }
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {

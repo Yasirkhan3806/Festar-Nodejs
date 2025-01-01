@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { auth } from "../../../Config/firebase";
 import DeleteMessage from "./DeleteChats/DeleteMessage";
 
-export default function MainChat({ currentChat,chatId }) {
+export default function MainChat({ currentChat,chatId,isGroup }) {
   const messagesEndRef = useRef(null); // Reference to the end of the chat container
 
   // Scroll to the bottom when new messages are added
@@ -28,7 +28,7 @@ export default function MainChat({ currentChat,chatId }) {
             }`}
           >
             <div
-              className={`p-3 rounded-lg w-[36%] ${
+              className={`p-3 rounded-lg w-[48%] ${
                 msg.senderId === auth.currentUser.uid
                   ? "bg-blue-500 text-white" // Styling for sent messages
                   : "bg-gray-200" // Styling for received messages
@@ -38,9 +38,11 @@ export default function MainChat({ currentChat,chatId }) {
               <p className="text-xs">from {msg.senderName}</p>
               <span className="flex justify-between">
                 <p className="font-bold">{msg.text}</p>
-                <span className="transition duration-1000">
-                  <DeleteMessage messageId = {msg.messageId} chatId={chatId} />
-                </span>
+                <div>
+                  {msg.senderId === auth.currentUser.uid &&
+                  <DeleteMessage messageId = {msg.messageId} chatId={chatId} isGroupMessage={isGroup} />
+                  }
+                </div>
               </span>
               <span
                 className={`text-xs ${

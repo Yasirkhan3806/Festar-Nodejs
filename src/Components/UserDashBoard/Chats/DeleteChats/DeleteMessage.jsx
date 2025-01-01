@@ -3,15 +3,20 @@ import React, { useState,useEffect, useRef } from 'react';
 import threeDotsWhite from '../icons/threeDotsWhite.png';
 import { db } from '../../../../Config/firebase';
 
-export default function DeleteMessage({messageId,chatId}) {
+export default function DeleteMessage({messageId,chatId,isGroupMessage}) {
     const [open,setOpen] = useState(false)
     const menuRef = useRef(null)
     // console.log(chatId)
    
-const deleteMessage = async (messageId, chatId) => {
+const deleteMessage = async (messageId, chatId,isGroupMessage) => {
     try {
+      let q  = null;
+      if(isGroupMessage){
+        q = query(collection(db, "GroupMessages"), where("chatid", "==", chatId));
+      } else{
+        q = query(collection(db, "IndividualMessages"), where("chatId", "==", chatId));
+      }
       // Create a query to find the chat document
-      const q = query(collection(db, "GroupMessages"), where('chatid', '==', chatId));
       
       // Fetch the documents
       const querySnapshot = await getDocs(q);
@@ -60,6 +65,7 @@ const deleteMessage = async (messageId, chatId) => {
         <>
         <div className='relative mr-2'>
          <button
+         className='w-[24px]'
             onClick={(event) => {
               event.stopPropagation(); // Stops the click from propagating to the document listener
               setOpen((prev) => !prev); // Toggle the menu state
@@ -74,7 +80,7 @@ const deleteMessage = async (messageId, chatId) => {
             >
               <button
                 onClick={() => {
-                  deleteMessage(messageId,chatId);
+                  deleteMessage(messageId,chatId,isGroupMessage);
                   setOpen(false);
                 }}
                 className='text-black'

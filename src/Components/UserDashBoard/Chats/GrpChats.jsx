@@ -30,7 +30,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
       });
       setChatId(chatId); // Set the chatId to the state
       setIsGroup(true);
-      settingRead(chatId); // Mark messages as read
+      settingRead(chatId,true); // Mark messages as read
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }
@@ -113,7 +113,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
                  
                 </div>
                 <div>
-                    <DeleteGroup chatId={group.chatid} />
+                    <DeleteGroup chatId={group.chatid} isGroup={true} />
                 
                 </div>
               </div>
