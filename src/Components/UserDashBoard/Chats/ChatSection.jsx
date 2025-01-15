@@ -15,7 +15,7 @@ export default function ChatSection({currentChat,chatId,navData,isGroup}) {
         navData={navData}
       />
       </div>
-      <div id='main-Chat' className='h-[68%]'>
+      <div id='main-Chat' className='h-[66%]'>
         <MainChat currentChat={currentChat} chatId={chatId} isGroup={isGroup} />
       </div>
       <div id='Type-chat' className='h-[10%] ml-[2rem]'>
