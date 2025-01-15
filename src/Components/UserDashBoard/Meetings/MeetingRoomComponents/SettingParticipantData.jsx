@@ -2,6 +2,7 @@ import { db } from "../../../../Config/firebase";
 import { collection, doc,setDoc, where, query,updateDoc} from "firebase/firestore";
 import React, { createContext, useContext, useState } from "react";
 import { getDocs } from "firebase/firestore";
+import { useMeetingData } from "../../../../userContext";
 
 // Create the context
 const ParticipantStateContext = createContext();
@@ -58,6 +59,50 @@ export const settingMeetingDataParticipants = async (participants, uniqueId) => 
       console.log("No document found with this uniqueId.");
     }
   };
+
+
+
+  export const removingParticipant = async(userId,uniqueId)=>{
+    storingParticipantData(userId)
+    const collectionRef = collection(db,"ParticipantsData")
+    const q = query(collectionRef, where("uniqueId", "==", uniqueId));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const updatePromises = [];
+  
+      querySnapshot.forEach((docSnapshot) => {
+        const docRef = doc(db, "ParticipantsData", docSnapshot.id);
+        const Participants = docSnapshot.data().participants || [];
+      }
+    )
+    }
+  }
+
+  const storingParticipantData = async (userId) => {
+   const { setUniqueIdFilter, userMeetingData } = useMeetingData();
+    useEffect(() => {
+       // const storedUniqueId = localStorage.getItem("uniqueId");
+   
+       if (storedUniqueId) {
+         // console.log("stored ID",storedUniqueId)
+         setUniqueIdFilter(storedUniqueId);
+       } else {
+         console.error("No uniqueId found in localStorage");
+       }
+     }, [setUniqueIdFilter]);
+     console.log(userMeetingData)
+    const secCollectionRef = collection(db, "UserMeetingData");
+    const q = query(secCollectionRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref;
+        const meetingData = querySnapshot.docs[0].data().meetingData || [];
+        const updatedMeetingData = [...meetingData, ...setMeetingData];
+        
+        await updateDoc(docRef, { meetingData: updatedMeetingData });
+    }
+};
 
 
 

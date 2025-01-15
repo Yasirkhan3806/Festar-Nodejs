@@ -30,6 +30,7 @@ export default function MeetingRoomNav({setUID,storedUniqueId,setMeetingRName}) 
 
   useEffect(() => {
     if (userMeetingData && userMeetingData.length > 0) {
+      console.log(userMeetingData)
       const names = userMeetingData.map((meeting) => meeting.meetingName);
       const dates = userMeetingData.map((meeting) => meeting.meetingDate);
       const times = userMeetingData.map((meeting) => meeting.meetingTime);
