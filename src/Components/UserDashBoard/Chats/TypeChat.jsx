@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { sendMessage } from "./sendingMessages";
+import sendMessagesIcon from '../Chats/icons/sendMessagesIcon.png'
 import { auth } from "../../../Config/firebase";
 import { useUser } from "../../../userContext";
 import { v4 as uuidv4 } from "uuid";
@@ -62,9 +63,9 @@ export default function TypeChat({ chatId, isGroup }) {
           e.preventDefault();
           sendMessages();
         }}
-        className="p-3 bg-blue-500 rounded-lg text-white"
+        className="p-1  bg-white rounded-lg text-white"
       >
-        Send
+        <img className="h-[32px]" src={sendMessagesIcon} alt="" />
       </button>
     </div>
   );
