@@ -5,8 +5,6 @@ import MessageSidebar from "./MeetingRoomComponents/MeetingMessages";
 import VideoCall from "./Videos";
 import Participant from "./Participant";
 import { useLocation } from "react-router-dom";
-import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
-import { auth } from "../../../Config/firebase";
 
 export default function Host() {
   const [activeOpen, setActiveOpen] = useState(false);
@@ -16,12 +14,12 @@ export default function Host() {
   const participantUid = localStorage.getItem("participantUniqueId");
   const { host } = location.state || {};
   const [meetingRName, setMeetingRName] = useState("");
+  const [mStartTime,setMStartTime] = useState("");
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
   const storedUniqueId = host
     ? localStorage.getItem("uniqueId")
     : participantUid;
-  // console.log("stored Unique ID: ", storedUniqueId);
 
  
 
@@ -48,9 +46,9 @@ export default function Host() {
     <>
       <div>
         {host ? (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} />
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime} />
         ) : (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} />
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime}/>
         )}
 
         <div className="flex h-[504px]">
@@ -66,6 +64,7 @@ export default function Host() {
                       // setParticipants={setHostParticipants}
                       uid={uid}
                       meetingRName={meetingRName}
+                      mStartTime = {mStartTime}
                     />
                   </>
                 ) : (
@@ -75,6 +74,8 @@ export default function Host() {
                     channelName={channelName}
                     userStringId={participantUid}
                     uid={participantTokenUid}
+                    mStartTime = {mStartTime}
+                    meetingRName={meetingRName}
                   />
                 )
               ) : (

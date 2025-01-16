@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
 import { settingMeetingDataHost } from "./MeetingRoomComponents/SettingParticipantData";
 import { auth } from "../../../Config/firebase";
+import { removingParticipant } from "./MeetingRoomComponents/SettingParticipantData";
 AgoraRTC.setLogLevel(0);
-const VideoCall = ({ appId, channelName, uid,meetingRName}) => {
-
+const VideoCall = ({ appId, channelName, uid,meetingRName, mStartTime}) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   AgoraRTC.setLogLevel(0);
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
@@ -111,13 +111,6 @@ const VideoCall = ({ appId, channelName, uid,meetingRName}) => {
       client.on("user-unpublished", (user) => {
         console.log(`User unpublished: ${user.uid}`);
         setRemoteUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
-
-        // Remove the video container
-        // const remotePlayerContainer = document.getElementById(`remote-player-${user.uid}`);
-        // if (remotePlayerContainer) {
-        //   remotePlayerContainer.remove();
-        //   console.log(`Removed remote player container for user ${user.uid}`);
-        // }
       });
 
       setInCall(true);
@@ -227,7 +220,16 @@ const VideoCall = ({ appId, channelName, uid,meetingRName}) => {
         </button>
       ) : (
         <button
-          onClick={leaveCall}
+        onClick={() => {
+          removingParticipant(auth.currentUser?.uid, uid, meetingRName, mStartTime[0])
+              .then(() => {
+                  leaveCall();
+              })
+              .catch((error) => {
+                  console.error("Error removing participant:", error);
+              });
+      }}
+      
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
         >
           End Call
