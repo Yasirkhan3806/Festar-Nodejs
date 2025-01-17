@@ -19,13 +19,10 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
   // console.log("participants array",participantActive)
   }, [participantActive]);
   
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-useEffect(() => {
-  // Logic for updating state, not directly inside the render
-  setActiveOpen(true); // or setActiveOpen(false)
-}, [/* dependencies, if needed */]);
-
+  const toggleSidebar = () => {
+    setActiveOpen(true)
+    setIsSidebarOpen(!isSidebarOpen)}
+;
   return (
     <div className="relative flex h-screen">
       {/* Toggle Button */}
@@ -46,7 +43,9 @@ useEffect(() => {
         } w-[23rem] h-[100%] `}
       >
         <span className='flex gap-10 bg-white border-b border-gray-300 p-2 shadow'>
-        <button onClick={()=> setIsSidebarOpen(false)} className='text-blue-700 font-bold'>
+        <button onClick={()=> {
+          setActiveOpen(false)
+          setIsSidebarOpen(false)}} className='text-blue-700 font-bold'>
           X
         </button>
         <h2 className="text-lg font-semibold p-4 ">Participants</h2>

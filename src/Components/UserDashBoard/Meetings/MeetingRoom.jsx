@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from "react";
 import MeetingRoomNav from "./MeetingRoomComponents/MeetingRoomNav";
 import ParticipantActive from "./MeetingRoomComponents/participantActive";
-import MessageSidebar from "./MeetingRoomComponents/MeetingMessages";
+import MessageSidebar from "./MeetingRoomComponents/GroupMessages/MeetingMessages";
 import VideoCall from "./Videos";
 import Participant from "./Participant";
 import { useLocation } from "react-router-dom";
@@ -20,6 +20,9 @@ export default function Host() {
   const storedUniqueId = host
     ? localStorage.getItem("uniqueId")
     : participantUid;
+
+    useEffect(()=>{console.log(activeOpen)},[activeOpen])
+    
 
  
 
