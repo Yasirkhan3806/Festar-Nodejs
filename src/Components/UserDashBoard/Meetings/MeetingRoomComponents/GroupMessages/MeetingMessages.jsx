@@ -1,56 +1,67 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import messageIcon from "../../../icons/messageIcon.png";
 import { useUserData } from "../../../../../userContext";
-import { sendVMessages } from "./sendVideoMessage";
+import { sendVMessages} from "./sendVideoMessage";
 import { auth } from "../../../../../Config/firebase";
+import { gettingVMessages } from "./sendVideoMessage";
+// import { getDocs, query, collection, where } from "firebase/firestore";
+// import { db } from "../../../../../Config/firebase";
 
-const MessageSidebar = ({ activeOpen }) => {
+const MessageSidebar = ({ activeOpen,host }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [uniqueId, setUniqueId] = useState(null);
+  const [messages, setMessages] = useState([]);
   const { userName } = useUserData();
 
   useEffect(() => {
-    setUniqueId(localStorage.getItem("uniqueId"));
+    let storedUniqueId = null
+    if(host){
+       storedUniqueId = localStorage.getItem("uniqueId");
+    }else{
+     storedUniqueId = localStorage.getItem("participantUniqueId");
+    }
+    setUniqueId(storedUniqueId);
   }, []);
+
+
+  useEffect(() => {
+    try{
+        gettingVMessages(uniqueId,setMessages)
+    }catch(E){
+      console.log("error getting messages: ",E)
+    }
+
+  }, [messages]);
+
+
+
 
   const sendMessages = async () => {
     if (!message.trim()) return;
+
     const messageText = {
       text: message.trim(),
       timestamp: new Date().getTime(),
       senderName: auth.currentUser?.displayName || userName || "guest",
     };
+
     try {
       const sent = await sendVMessages(uniqueId, messageText);
-      if (sent) {
-        console.log("Message sent successfully");
-        setMessage("");
-      } else {
-        console.error("Error sending message");
-      }
+      if (sent) setMessage("");
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   };
 
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Formats to a readable string
+  };
+
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   const bottomPosition = activeOpen ? "bottom-[3rem]" : "bottom-[15.5rem]";
-  const messages = [
-    {
-      id: 1,
-      sender: "Dianne Russell",
-      text: "Hey, how’s it going?",
-      time: "12:45 PM",
-    },
-    {
-      id: 2,
-      sender: "Guy Hawkins",
-      text: "Let’s catch up later.",
-      time: "1:00 PM",
-    },
-  ];
 
   return (
     <div className="relative flex h-screen">
@@ -77,18 +88,26 @@ const MessageSidebar = ({ activeOpen }) => {
           <h2 className="text-lg font-semibold p-4">Messages</h2>
         </span>
         <ul className="p-4 space-y-4 overflow-y-scroll h-[73%]">
-          {messages.map((msg) => (
-            <li
-              key={msg.id}
-              className="flex items-start gap-4 p-2 bg-white rounded-md shadow"
-            >
-              <div className="flex flex-col">
-                <p className="font-medium">{msg.sender}</p>
-                <p className="text-gray-500 text-sm">{msg.text}</p>
-                <span className="text-xs text-gray-400">{msg.time}</span>
-              </div>
-            </li>
-          ))}
+        {messages && messages.length > 0 ? (
+  messages[0].map((msg, index) => (
+    <li
+      key={index}
+      className="flex items-start gap-4 p-2 bg-white rounded-md shadow"
+    >
+      <div className="flex flex-col">
+        <p className="font-medium">{msg.senderName}</p>
+        <p className="text-gray-500 text-sm">{msg.text}</p>
+        <span className="text-xs text-gray-400">
+          {formatTimestamp(msg.timestamp)}
+        </span>
+      </div>
+    </li>
+  ))
+) : (
+  <p>No Messages</p>
+)}
+
+         
         </ul>
         <input
           type="text"

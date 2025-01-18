@@ -21,7 +21,7 @@ export default function Host() {
     ? localStorage.getItem("uniqueId")
     : participantUid;
 
-    useEffect(()=>{console.log(activeOpen)},[activeOpen])
+    // useEffect(()=>{console.log(activeOpen)},[activeOpen])
     
 
  
@@ -89,7 +89,7 @@ export default function Host() {
 
           <div className="flex flex-col w-[5%] items-end">
             <ParticipantActive setActiveOpen={setActiveOpen} uid={uid} />
-            <MessageSidebar activeOpen={activeOpen} />
+            <MessageSidebar activeOpen={activeOpen} host={host} />
           </div>
         </div>
       </div>

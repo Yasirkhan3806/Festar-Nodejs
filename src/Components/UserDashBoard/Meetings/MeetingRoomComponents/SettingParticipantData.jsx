@@ -45,6 +45,7 @@ export const settingMeetingDataParticipants = async (
   participants,
   uniqueId
 ) => {
+  console.log(uniqueId)
   const collectionRef = collection(db, "ParticipantsData");
 
   // Query to find documents where uniqueId matches

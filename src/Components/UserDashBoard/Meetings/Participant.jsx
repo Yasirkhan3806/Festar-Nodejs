@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { removingParticipant } from "./MeetingRoomComponents/SettingParticipantData";
 import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipantData";
 import { settingMeetingDataParticipants } from "./MeetingRoomComponents/SettingParticipantData";
 import { auth } from "../../../Config/firebase";
@@ -58,7 +59,7 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
             userId: auth.currentUser.uid,
           },
         ],
-        uid
+        userStringId
       );
       console.log("Starting video call...");
       const token = await fetchToken(channelName, uid, 1);
@@ -126,30 +127,30 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
       console.log("Call started!");
 
       // Monitor remote video element
-      const checkRemoteVideo = async () => {
-        // Check if the remote player div exists
-        const remoteDiv = document.getElementById(`remote-player-${userId}`);
+      // const checkRemoteVideo = async () => {
+      //   // Check if the remote player div exists
+      //   const remoteDiv = document.getElementById(`remote-player-${userId}`);
         
-        if (remoteDiv) {
-          const remoteVideoElements = remoteDiv.querySelectorAll('video'); 
+      //   if (remoteDiv) {
+      //     const remoteVideoElements = remoteDiv.querySelectorAll('video'); 
           
-          if (remoteVideoElements.length === 0 && retryCount < 3) {
-            console.log(`Remote video element not found, retrying call...`);
-            setRetryCount((prev) => prev + 1);
-            await leaveCall();
-            await startCall(); // Retry starting the call
-          }
-        } else {
-          console.log(`Remote div not found for user ${userId}, retrying call...`);
-          setRetryCount((prev) => prev + 1);
-          await leaveCall();
-          await startCall(); // Retry starting the call
-        }
-      };
+      //     if (remoteVideoElements.length === 0 && retryCount < 3) {
+      //       console.log(`Remote video element not found, retrying call...`);
+      //       setRetryCount((prev) => prev + 1);
+      //       await leaveCall();
+      //       await startCall(); // Retry starting the call
+      //     }
+      //   } else {
+      //     console.log(`Remote div not found for user ${userId}, retrying call...`);
+      //     setRetryCount((prev) => prev + 1);
+      //     await leaveCall();
+      //     await startCall(); // Retry starting the call
+      //   }
+      // };
       
 
       // Set a timeout to check remote video availability after 3 seconds
-      setTimeout(checkRemoteVideo, 3000);
+      // setTimeout(checkRemoteVideo, 3000);
 
     } catch (error) {
       console.error("Error starting call:", error);
@@ -159,10 +160,7 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
   // Leave the video call
   const leaveCall = async () => {
     try {
-      if(mStartTime)
-        {
-      removingParticipant(auth.currentUser?.uid,uid,meetingRName,mStartTime[0])
-        }
+      
       console.log("Leaving the call...");
       const { audioTrack, videoTrack } = localTracks;
   
@@ -214,7 +212,8 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
         </button>
       ) : (
         <button
-          onClick={()=>{
+          onClick={async ()=>{
+            await removingParticipant(auth.currentUser?.uid,userStringId,meetingRName,mStartTime[0])
             leaveCall();
             setInCall(false);
            removeParticipantByUserId(localStorage.getItem("participantUniqueId"), auth.currentUser.uid);

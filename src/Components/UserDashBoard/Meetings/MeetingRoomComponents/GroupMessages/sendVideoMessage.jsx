@@ -3,8 +3,6 @@ import { db } from "../../../../../Config/firebase";
 
 export const sendVMessages = async (uniqueId, message) => {
     try {
-        console.log("Sending message:", message);
-
         // Query the "meetingMessages" collection for the matching document
         const collectionRef = collection(db, "meetingMessages");
         const q = query(collectionRef, where("uniqueId", "==", uniqueId));
@@ -43,17 +41,9 @@ export const sendVMessages = async (uniqueId, message) => {
     }
 };
 
+export const gettingVMessages = async (uniqueId,callback) => {
+  const q = query(collection(db, "meetingMessages"), where("uniqueId", "==", uniqueId));
+  const docs = await getDocs(q);
+  callback( docs.docs.map((doc) => doc.data().messages));
+};
 
-export const getttingVMessages = async(uniqueId)=>{
-    try{const collectionRef = collection(db, "meetingMessages");
-    const q = query(collectionRef, where("uniqueId", "==", uniqueId));
-    const querySnapshot = await getDocs(q);
-
-    const data = querySnapshot.docs[0].data();
-    const messages = data.messages;
-    return messages;
-}catch(e){
-    console.log("error fetchingData: ",e)
-    return []
-}
-}
