@@ -1,5 +1,6 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { useEffect,useState } from "react";
+import { gettingAnalyticalData } from "./gettingAnalyticalData";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,7 +9,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
+import { auth } from "../../../../Config/firebase";
 
 // Register the necessary components
 ChartJS.register(
@@ -20,22 +22,55 @@ ChartJS.register(
   Legend
 );
 
+
+
+
 const AnalyticsChart = () => {
+  const [meetingData, setMeetingData] = useState([]); // State to store meeting data
+  const [hours,setHours] = useState("");
+  const [weekdays,setWeekdays] = useState([])
+
+  const getData = async () => {
+    const userId = auth.currentUser?.uid;
+    const MeetingData = await gettingAnalyticalData(userId);
+    if (MeetingData) {
+      const dates = MeetingData[0].map((doc) => new Date(doc.meetingDate)); // Convert to Date object
+      const totalHours = MeetingData[0].map((doc) => doc.totalTime.hours);
+  
+      const dayOfWeek = dates
+      .filter((date) => date && !isNaN(date)) // Exclude null and invalid dates
+      .map((date) => date.toLocaleDateString('en-US', { weekday: 'long' })); // Get day names
+
+      setWeekdays(dayOfWeek); // Output: [ 'Tuesday', 'Wednesday', ...
+      setHours(totalHours);
+      setMeetingData(MeetingData);
+    } else {
+      console.log("No MeetingData...");
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await getData();
+    };
+  
+    fetchData();
+  }, []);
   const data = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    labels: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
     datasets: [
       {
-        label: 'Time Spent on Calls (hrs)',
-        data: [1.5, 2, 0.5, 3, 1.2, 0, 1], // Example data for calls
-        backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Time Spent on Meetings (hrs)',
-        data: [2, 1, 3, 2.5, 0, 1.8, 2.2], // Example data for meetings
-        backgroundColor: 'rgba(54, 162, 235, 1)', // Red color
-        borderColor: 'rgba(54, 162, 235, 1)',
+        label: "Time Spent on Meetings (hrs)",
+        data: hours, // Example data for meetings
+        backgroundColor: "rgba(54, 162, 235, 1)", // Red color
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
     ],
@@ -45,7 +80,7 @@ const AnalyticsChart = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
     },
     scales: {
@@ -53,7 +88,7 @@ const AnalyticsChart = () => {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Hours',
+          text: "Hours",
         },
       },
     },

@@ -15,6 +15,7 @@ export default function Host() {
   const { host } = location.state || {};
   const [meetingRName, setMeetingRName] = useState("");
   const [mStartTime,setMStartTime] = useState("");
+  const [mMeetingDate,setMMeetingDate] = useState("")
   const appId = "c405190c3bca4842ab4b7964cb56177d";
   const channelName = "test";
   const storedUniqueId = host
@@ -49,9 +50,9 @@ export default function Host() {
     <>
       <div>
         {host ? (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime} />
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime} setMMeetingDate = {setMMeetingDate} />
         ) : (
-          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime}/>
+          <MeetingRoomNav setUID={setUID} storedUniqueId={storedUniqueId} setMeetingRName={setMeetingRName} setMStartTime ={setMStartTime} setMMeetingDate = {setMMeetingDate} />
         )}
 
         <div className="flex h-[504px]">
@@ -68,6 +69,7 @@ export default function Host() {
                       uid={uid}
                       meetingRName={meetingRName}
                       mStartTime = {mStartTime}
+                      mMeetingDate = {mMeetingDate}
                     />
                   </>
                 ) : (
@@ -79,6 +81,7 @@ export default function Host() {
                     uid={participantTokenUid}
                     mStartTime = {mStartTime}
                     meetingRName={meetingRName}
+                    mMeetingDate ={ mMeetingDate}
                   />
                 )
               ) : (

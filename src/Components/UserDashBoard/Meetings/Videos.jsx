@@ -7,7 +7,7 @@ import { settingMeetingDataHost } from "./MeetingRoomComponents/SettingParticipa
 import { auth } from "../../../Config/firebase";
 import { removingParticipant } from "./MeetingRoomComponents/SettingParticipantData";
 AgoraRTC.setLogLevel(0);
-const VideoCall = ({ appId, channelName, uid,meetingRName, mStartTime}) => {
+const VideoCall = ({ appId, channelName, uid,meetingRName, mStartTime,mMeetingDate}) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   AgoraRTC.setLogLevel(0);
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
@@ -221,7 +221,7 @@ const VideoCall = ({ appId, channelName, uid,meetingRName, mStartTime}) => {
       ) : (
         <button
         onClick={() => {
-          removingParticipant(auth.currentUser?.uid, uid, meetingRName, mStartTime[0])
+          removingParticipant(auth.currentUser?.uid, uid, meetingRName, mStartTime[0],mMeetingDate)
               .then(() => {
                   leaveCall();
               })

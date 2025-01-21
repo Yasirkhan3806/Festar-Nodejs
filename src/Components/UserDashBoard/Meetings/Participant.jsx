@@ -7,7 +7,7 @@ import removeParticipantByUserId from "./MeetingRoomComponents/deletingParticipa
 import { settingMeetingDataParticipants } from "./MeetingRoomComponents/SettingParticipantData";
 import { auth } from "../../../Config/firebase";
 
-const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingRName }) => {
+const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingRName,mMeetingDate }) => {
   const [client] = useState(AgoraRTC.createClient({ mode: "rtc", codec: "vp8" }));
   const [localTracks, setLocalTracks] = useState({ audioTrack: null, videoTrack: null });
   const [remoteUsers, setRemoteUsersState] = useState([]); // Local state for remote users
@@ -213,7 +213,7 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
       ) : (
         <button
           onClick={async ()=>{
-            await removingParticipant(auth.currentUser?.uid,userStringId,meetingRName,mStartTime[0])
+            await removingParticipant(auth.currentUser?.uid,userStringId,meetingRName,mStartTime[0],mMeetingDate)
             leaveCall();
             setInCall(false);
            removeParticipantByUserId(localStorage.getItem("participantUniqueId"), auth.currentUser.uid);

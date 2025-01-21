@@ -76,12 +76,8 @@ export const settingMeetingDataParticipants = async (
   }
 };
 
-export const removingParticipant = async (userId, uniqueId,meetingName,meetingTime) => {
-  console.log(userId)
-  console.log(uniqueId)
-  console.log(meetingName)
-  console.log(meetingTime)
-  storingParticipantData(userId,meetingName,meetingTime,uniqueId);
+export const removingParticipant = async (userId, uniqueId,meetingName,meetingTime,meetingDate) => {
+  storingParticipantData(userId,meetingName,meetingTime,uniqueId,meetingDate);
   const collectionRef = collection(db, "ParticipantsData");
   console.log(uniqueId)
   const q = query(collectionRef, where("uniqueId", "==", uniqueId[0]));
@@ -141,7 +137,7 @@ const calculateTimeDifference = (givenTime) => {
   }
 };
 
-const storingParticipantData = async (userId,meetingName,meetingTime,meetingId) => {
+const storingParticipantData = async (userId,meetingName,meetingTime,meetingId,meetingDate) => {
   const secCollectionRef = collection(db, "UserMeetingData");
   const q = query(secCollectionRef, where("userId", "==", userId));
   const querySnapshot = await getDocs(q);
@@ -154,6 +150,7 @@ const storingParticipantData = async (userId,meetingName,meetingTime,meetingId) 
     userId,
     totalTime:totalMeetingTime,
     meetingId:meetingId[0],
+    meetingDate,
   }]
 
   if (!querySnapshot.empty) {

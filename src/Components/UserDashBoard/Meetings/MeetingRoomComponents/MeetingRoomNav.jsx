@@ -7,7 +7,7 @@ import copyLinkIcon from "../../icons/copyLinkIcon.png";
 import menuIcon from "../../icons/menuIcon.png"; // Add an icon for the hamburger menu
 import closeIcon from "../../icons/crossIcon.png"; // Add an icon for closing the menu
 
-export default function MeetingRoomNav({setUID,storedUniqueId,setMeetingRName,setMStartTime}) {
+export default function MeetingRoomNav({setUID,storedUniqueId,setMeetingRName,setMStartTime,setMMeetingDate}) {
   const { setUniqueIdFilter, userMeetingData } = useMeetingData();
   const [showPopup, setShowPopup] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // State for opening/closing the menu
@@ -38,6 +38,7 @@ export default function MeetingRoomNav({setUID,storedUniqueId,setMeetingRName,se
       setMeetingNames(names);
       setMeetingRName(names)
       setMeetingDates(dates);
+      setMMeetingDate(dates)
       setMeetingTimes(times);
       setMStartTime(times)
       setUid(uid);
