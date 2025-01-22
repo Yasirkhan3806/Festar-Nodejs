@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { gettingAnalyticalData } from "./gettingAnalyticalData";
 import { Bar } from "react-chartjs-2";
 import {
@@ -22,39 +22,86 @@ ChartJS.register(
   Legend
 );
 
-
-
-
 const AnalyticsChart = () => {
   const [meetingData, setMeetingData] = useState([]); // State to store meeting data
-  const [hours,setHours] = useState("");
-  const [weekdays,setWeekdays] = useState([])
+  const [hours, setHours] = useState([]);
+  const [weekdays, setWeekdays] = useState([]);
 
-  const getData = async () => {
+  const gettingUid = async () => {
     const userId = auth.currentUser?.uid;
-    const MeetingData = await gettingAnalyticalData(userId);
-    if (MeetingData) {
-      const dates = MeetingData[0].map((doc) => new Date(doc.meetingDate)); // Convert to Date object
-      const totalHours = MeetingData[0].map((doc) => doc.totalTime.hours);
-  
-      const dayOfWeek = dates
-      .filter((date) => date && !isNaN(date)) // Exclude null and invalid dates
-      .map((date) => date.toLocaleDateString('en-US', { weekday: 'long' })); // Get day names
+    return userId;
+  };
+  const getData = async () => {
+    const userId = await gettingUid();
+    if (userId) {
+      const MeetingData = await gettingAnalyticalData(userId);
 
-      setWeekdays(dayOfWeek); // Output: [ 'Tuesday', 'Wednesday', ...
-      setHours(totalHours);
-      setMeetingData(MeetingData);
+      if (MeetingData) {
+        const dates = MeetingData[0].map((doc) => new Date(doc.meetingDate)); // Convert to Date object
+        const totalHours = MeetingData[0].map((doc) => doc.totalTime.hours);
+        const filteredDates = dates.filter((date) => {
+          const currentDate = new Date(); // Get today's date
+          const targetDate = new Date(date); // Convert the date string to a Date object
+        
+          // Calculate the difference in milliseconds
+          const timeDifference = targetDate - currentDate;
+        
+          // Convert milliseconds to days (1 day = 24 * 60 * 60 * 1000 ms)
+          const dayDifference = Math.abs(Math.ceil(timeDifference / (24 * 60 * 60 * 1000)));
+        
+          // Check if the difference is within 7 days (inclusive)
+          return dayDifference >= 0 && dayDifference <= 7;
+        });
+        const dayOfWeek = filteredDates
+          .filter((date) => !isNaN(date)) // Exclude null and invalid dates
+          .map((date) => date.toLocaleDateString("en-US", { weekday: "long" })); // Get day names
+        console.log(dayOfWeek);
+
+        setWeekdays(dayOfWeek); // Output: [ 'Tuesday', 'Wednesday', ...
+        setHours(totalHours);
+        setMeetingData(MeetingData);
+      } else {
+        console.log("No MeetingData...");
+      }
     } else {
-      console.log("No MeetingData...");
+      setTimeout(async () => {
+        await getData();
+      }, 1000);
     }
   };
+
   useEffect(() => {
     const fetchData = async () => {
       await getData();
     };
-  
+
     fetchData();
   }, []);
+
+  // Map hours to weekdays
+  const mapHoursToWeekdays = () => {
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const hoursByDay = new Array(7).fill(0); // Initialize an array with 7 zeros
+
+    weekdays.forEach((day, index) => {
+      const dayIndex = daysOfWeek.indexOf(day);
+      if (dayIndex !== -1) {
+        hoursByDay[dayIndex] = hours[index]; // Assign hours to the corresponding day
+      }
+    });
+
+    return hoursByDay;
+  };
+  console.log(hours);
+
   const data = {
     labels: [
       "Monday",
@@ -68,8 +115,8 @@ const AnalyticsChart = () => {
     datasets: [
       {
         label: "Time Spent on Meetings (hrs)",
-        data: hours, // Example data for meetings
-        backgroundColor: "rgba(54, 162, 235, 1)", // Red color
+        data: mapHoursToWeekdays(), // Use the mapped hours array
+        backgroundColor: "rgba(54, 162, 235, 1)", // Blue color
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
@@ -96,7 +143,6 @@ const AnalyticsChart = () => {
 
   return (
     <div className="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md">
-      {/* <h2 className="text-center font-semibold text-lg mb-4">Weekly Activity: Calls & Meetings</h2> */}
       <Bar data={data} options={options} />
     </div>
   );
