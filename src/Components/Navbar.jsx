@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/Pictures/logo_primary_V17oRtSd.png";
 import { Link } from "react-router-dom";
+import DarkmodeToggler from "./DarkmodeToggler";
+import { useTheme } from "../ThemeContext";
+
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {darkMode} = useTheme()
+
   useEffect(() => {
     const navbar = document.getElementById("nav-bar"); // Move this inside useEffect
     const handleScroll = () => {
@@ -25,7 +30,7 @@ function Navbar() {
     <>
       <nav
         id="nav-bar"
-        className="justify-between flex flex-wrap pl-2 pr-2 md:justify-around items-center w-full sticky top-0 bg-white h-20 z-[2] "
+        className={`"justify-between flex flex-wrap pl-2 pr-2 md:justify-around items-center w-full sticky top-0 ${darkMode?"dark-mode":"bg-white"} h-20 z-[2] "`}
       >
         <img src={logo} alt="Logo" className="mt-0" />
 
@@ -51,6 +56,7 @@ function Navbar() {
               Contact Us
             </Link>
           </li>
+          <DarkmodeToggler/>
         </ul>
 
         {/* Mobile Menu Button */}

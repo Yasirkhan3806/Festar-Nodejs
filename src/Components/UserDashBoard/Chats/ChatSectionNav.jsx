@@ -28,21 +28,6 @@ const ContactHeader = ({ navData }) => {
 
       {/* Right Section: Icons */}
       <div className="flex items-center space-x-4 text-blue-500 ">
-        {/* Call Icon */}
-        <button
-          title="Call"
-          className="hover:text-blue-600 transition duration-200 "
-        >
-         <img src={callIconBlue} alt="" className='h-[70%]'/>
-        </button>
-
-        {/* Options Icon */}
-        <button
-          title="More options"
-          className="hover:text-blue-600 transition duration-200"
-        >
-          <img src={threeDotsIcon} alt="" className='h-[70%]' />
-        </button>
       </div>
       </div>
       <div className='border-[1px] border-blue-300 w-[27rem] ml-14 '></div>

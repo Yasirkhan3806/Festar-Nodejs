@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { db, auth } from "./Config/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where,onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 // Create contexts
@@ -9,7 +9,6 @@ const EventsContext = createContext();
 const UserDataContext = createContext();
 const UserMeetingDataContext = createContext();
 const ParticipantActiveContext = createContext();
-// const MeetingContext = createContext();
 
 
 // Custom hooks for accessing contexts
@@ -18,19 +17,7 @@ export const useEvents = () => useContext(EventsContext);
 export const useUserData = () => useContext(UserDataContext);
 export const useMeetingData = () => useContext(UserMeetingDataContext);
 export const useParticipantActiveData = () => useContext(ParticipantActiveContext);
-// export const useMeeting = () => useContext(MeetingContext);
 
-
-// export const MeetingProvider = ({ children }) => {
-//   const [audioTrack, setAudioTrack] = useState(null);
-//   const [videoTrack, setVideoTrack] = useState(null);
-
-//   return (
-//     <MeetingContext.Provider value={{ audioTrack, setAudioTrack, videoTrack, setVideoTrack }}>
-//       {children}
-//     </MeetingContext.Provider>
-//   );
-// };
 
 
 
@@ -182,31 +169,52 @@ export const UserDataProvider = ({ children }) => {
 };
 
 // UserProvider
+
 export const UserProvider = ({ children }) => {
   const [userName, setUserName] = useState("Guest");
 
-  const getUserNameForLoggedInUser = async (userId) => {
+  // Function to listen for real-time updates to the userName
+  const listenForUserNameChanges = (userId) => {
     try {
       const collectionRef = collection(db, "userData");
       const q = query(collectionRef, where("userId", "==", userId));
-      const querySnapshot = await getDocs(q);
-      const userNames = querySnapshot.docs.map((doc) => doc.data().userName);
-      setUserName(userNames[0] || "Guest");
+
+      // Set up a real-time listener
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const userNames = querySnapshot.docs.map((doc) => doc.data().userName);
+          setUserName(userNames[0] || "Guest"); // Update userName with the latest data
+        } else {
+          setUserName("Guest"); // No matching document found
+        }
+      });
+
+      // Return the unsubscribe function to clean up the listener
+      return unsubscribe;
     } catch (error) {
-      console.error("Error fetching userName from Firestore:", error);
+      console.error("Error setting up real-time listener:", error);
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getUserNameForLoggedInUser(user.uid);
+        // Set up the real-time listener for the logged-in user
+        const unsubscribeFirestore = listenForUserNameChanges(user.uid);
+
+        // Clean up the Firestore listener when the component unmounts or the user changes
+        return () => {
+          if (unsubscribeFirestore) {
+            unsubscribeFirestore();
+          }
+        };
       } else {
-        setUserName("Guest");
+        setUserName("Guest"); // No user is logged in
       }
     });
 
-    return () => unsubscribe();
+    // Clean up the auth listener when the component unmounts
+    return () => unsubscribeAuth();
   }, []);
 
   return (

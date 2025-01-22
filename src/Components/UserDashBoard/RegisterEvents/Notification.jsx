@@ -8,16 +8,11 @@ export default function Notification({ onClose }) {
   const [eventNotifications, setEventNotifications] = useState([]);
   const {events} = useEvents()
 
-  // Log fetched events
-  // useEffect(() => {
-  //   console.log("Fetched events:", events);
-  // }, [events]);
+
 
   // Filter and set notifications for events within the next 24 hours
   useEffect(() => {
     const currentDate = new Date();
-    // console.log("Current Date:", currentDate);
-
     const upcomingEvents = events.map(event => {
       const eventDate = new Date(event.eventDate); // Initial event date without time
 
@@ -26,15 +21,11 @@ export default function Notification({ onClose }) {
         const [startHour, startMinute] = event.startTime.split(":");
         eventDate.setHours(parseInt(startHour, 10), parseInt(startMinute, 10)); // Set time on the eventDate
       } else {
-        // console.warn(`Event ${event.eventName} is missing startTime.`);
+        console.warn(`Event ${event.eventName} is missing startTime.`);
       }
 
       const timeDiff = eventDate - currentDate; // Time difference in milliseconds
       const hoursDiff = timeDiff / (1000 * 60 * 60); // Convert to hours
-
-      // console.log(`Event: ${event.eventName}`);
-      // console.log(`Event date with time: ${eventDate}`);
-      // console.log(`Hours difference: ${hoursDiff}`);
 
       if (hoursDiff > 0 && hoursDiff <= 24) {
         let alertLevel = 'yellow'; // Medium alert within 24 hours

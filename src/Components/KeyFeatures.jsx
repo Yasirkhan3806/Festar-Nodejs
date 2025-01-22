@@ -2,9 +2,11 @@ import React from 'react';
 import dashboard from '../assets/Pictures/dashboard.jpg';
 import integration from '../assets/Pictures/integration.jpg';
 import security from '../assets/Pictures/security.jpg';
+import { useTheme } from '../ThemeContext';
 
 
 export default function KeyFeatures() {
+  const {darkMode} = useTheme()
     const data = [
         {
             title: 'User-Friendly Dashboard',
@@ -32,7 +34,7 @@ Discover the unique features that make Festar the ideal choice for your meeting 
 </p>
       <div className='flex flex-col justify-around mb-16 md:flex-row'>
       {data.map((item, index) => (
-            <div key={index} className="flex flex-col gap-3 w-[100%] md:w-[30%] m-1 div-shadow rounded-3xl p-2 cursor-pointer">
+            <div key={index} className={`flex flex-col gap-3 w-[100%] md:w-[30%] m-1 ${darkMode?"dark-mode-shadow":"div-shadow "}rounded-3xl p-2 cursor-pointer ${darkMode?"dark-mode dark-mode-shadow":""}`}>
                 <img  className="h-2/3 w-full rounded-lg" src={item.image} alt="" />
               <h2  className="text-2xl font-bold">{item.title}</h2>
 

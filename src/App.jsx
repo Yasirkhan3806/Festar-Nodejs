@@ -15,13 +15,13 @@ import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
 import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
+import { ThemeProvider } from './ThemeContext';
 import { ParticipantStateProvider } from './Components/UserDashBoard/Meetings/MeetingRoomComponents/SettingParticipantData';
 // import { MeetingProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 import BeforeParticipant from './Components/UserDashBoard/Meetings/BeforeParticipant';
-import ParticipantActive from './Components/UserDashBoard/Meetings/MeetingRoomComponents/participantActive';
-import VideoCall from './Components/UserDashBoard/Meetings/Videos';
+
 
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <ThemeProvider>
     <ParticipantStateProvider>
     <ParticipantActiveDataProvider>
     <UserMeetingDataProvider>
@@ -71,6 +72,7 @@ function App() {
     </UserMeetingDataProvider>
     </ParticipantActiveDataProvider>
     </ParticipantStateProvider>
+    </ThemeProvider>
   );
 }
 

@@ -37,8 +37,6 @@
 .div-shadow{
   border-radius: 12px;
 background: #ffffff;
-/* box-shadow:  20px 2px 47px #f0f0f0,
-             -14px -14px 47px #ffffff; */
              transition: 0.5s ease-in-out;
 }
 .div-shadow:hover{
@@ -262,5 +260,24 @@ background: #ffffff;
 
 .scroll-left::-webkit-scrollbar {
   width: 12px;
+}
+
+.dark-mode{
+  background-color: black !important;
+  color: white !important;
+}
+.dark-mode-shadow {
+  border-radius: 12px;
+background: #ffffff;
+             transition: 0.5s ease-in-out;
+}
+.dark-mode-shadow:hover{
+  box-shadow: 4px 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode-btn{
+  background-color: white;
+  color: black;
+  font-weight: 600;
 }
   

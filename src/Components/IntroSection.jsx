@@ -1,8 +1,11 @@
 import React from 'react';
 import introPicture from '../assets/Pictures/4814043.jpg';
+import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.png"
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
+import { useTheme } from '../ThemeContext';
 
 export default function IntroSection() {
+  const {darkMode} = useTheme()
   const [text] = useTypewriter({
     words: ['Meetings', 'Calls', 'Collabs'],
     loop: true,
@@ -24,7 +27,7 @@ export default function IntroSection() {
               data-aos-delay="100"
               data-aos-duration="2000"
               className="max-h-25"
-              src={introPicture}
+              src={bgReIntroPicture}
               alt="Meeting illustration"
             />
           </div>
@@ -51,7 +54,7 @@ export default function IntroSection() {
             data-aos-delay="100"
             data-aos-duration="2000"
             className="max-h-25"
-            src={introPicture}
+            src={darkMode?bgReIntroPicture:introPicture}
             alt="Meeting illustration"
           />
         </div>

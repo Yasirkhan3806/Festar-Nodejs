@@ -3,6 +3,7 @@ import logo from "../../assets/Pictures/logo_primary_V17oRtSd.png";
 import userIcon from "./icons/userIcon2.png";
 import { useUser } from "../../userContext"; // Import the custom hook
 import { useUserData } from "../../userContext";
+import UserName from "./settings/UserName";
 
 export default function DashNav() {
   const { userName } = useUser(); // Access userName from context
@@ -22,10 +23,11 @@ export default function DashNav() {
           <img className="h-20" src={logo} alt="" />
         </li>
         <li className="flex mt-6 gap-2">
-        <img src={getProfilePhoto()} className="h-8 rounded-full" alt="user icon" />
+          <UserName/>
+        {/* <img src={getProfilePhoto()} className="h-8 rounded-full" alt="user icon" />
           <p className="mt-1">
             <b>{userName}</b>
-          </p>
+          </p> */}
         </li>
       </ul>
     </nav>

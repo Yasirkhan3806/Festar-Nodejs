@@ -7,8 +7,11 @@ export default function MeetingsHistory() {
   useEffect(() => {
     const fetchData = async () => {
       const meetings = await fetchMeetings();
-      setMeetingData(meetings);
-      console.log(meetings);
+      const MeetingData = meetings
+  .filter((data) => data.meetingData) // Filter out elements where `meetingData` is falsy
+  .map((data) => data.meetingData); // Extract `meetingData` from the filtered elements
+  console.log(MeetingData)
+      setMeetingData(MeetingData[0]);
     };
 
     fetchData();
@@ -25,7 +28,7 @@ export default function MeetingsHistory() {
           >
             <div className="flex justify-between">
               <span className="text-lg font-medium text-blue-600">{meeting.meetingName}</span>
-              <span className="text-sm text-gray-500">{meeting.meetingDate}  {meeting.meetingTime}</span>
+              <span className="text-sm text-gray-500">`<b>Date:</b> {meeting.meetingDate} <b>Total Time:</b> {meeting.totalTime.hours} Hours {meeting.totalTime.minutes} Minutes`</span>
             </div>
           </div>
         ))}
