@@ -4,8 +4,10 @@ import email from '../Contact us page/icons/icons8-gmail.svg';
 import call from '../Contact us page/icons/call.png';
 import location from '../Contact us page/icons/location.png'
 import Footer from '../Footer';
+import { useTheme } from '../../ThemeContext';
 
 export default function Contact() {
+  const {darkMode} = useTheme();
   return (
     <>
       <Navbar/>
@@ -54,7 +56,7 @@ export default function Contact() {
               type="text"
               id="name"
               placeholder="Enter your name"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={` ${darkMode?"dark-mode":""} w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           <div>
@@ -65,7 +67,7 @@ export default function Contact() {
               type="email"
               id="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={` ${darkMode?"dark-mode":""} w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           <div>
@@ -75,7 +77,7 @@ export default function Contact() {
             <textarea
               id="message"
               placeholder="Type your message"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+              className={` ${darkMode?"dark-mode":""} w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-32`}
             ></textarea>
           </div>
           <div className="flex items-center">

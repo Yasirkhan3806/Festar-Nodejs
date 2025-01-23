@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "./ReusableCalender";
 import { useEvents } from "../../../userContext";
+import { useTheme } from "../../../ThemeContext";
 
 
 export default function EventsDates() {
 const {events } = useEvents();
+const {darkMode} = useTheme();
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   // Calendar Grid Component
   const CalendarGrid = ({ dates, onDateClick, events, currentMonthIndex, currentYear }) => (
     <>
-      <div className="flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800">
+      <div className={`flex flex-col overflow-x-hidden overflow-y-auto h-[92%] mt-[-2%] text-gray-800  ${darkMode?"dark-mode":""}`}>
         <div className="flex flex-col gap-1">
           {dates.map((dateObj, index) => {
             // Find events that match the current date

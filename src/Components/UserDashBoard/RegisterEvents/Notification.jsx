@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import crossIcon from '../icons/crossIcon.png';
 import notificationIcon from '../icons/notificationsIcon.png';
 import conferenceImage from '../pictures/conferenceImage.png';
+import bgReIntroPicture from "../../../assets/Pictures/bgReIntroPicture.png"
 import { useEvents } from '../../../userContext';
+import { useTheme } from '../../../ThemeContext';
 
 export default function Notification({ onClose }) {
   const [eventNotifications, setEventNotifications] = useState([]);
   const {events} = useEvents()
+  const {darkMode} = useTheme();
 
 
 
@@ -72,7 +75,7 @@ export default function Notification({ onClose }) {
         </div>
       ))}
       <div>
-        <img className='w-full hidden md:block ' src={conferenceImage} alt="" />
+        <img className='w-full hidden md:block ' src={darkMode?bgReIntroPicture:conferenceImage} alt="" />
       </div>
     </div>
   );

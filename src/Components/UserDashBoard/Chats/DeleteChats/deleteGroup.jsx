@@ -8,9 +8,11 @@ import {
   where,
 } from "firebase/firestore";
 import threeDots from "../icons/threeDotsIcon.png";
+import { useTheme } from "../../../../ThemeContext";
 
 export default function DeleteGroup({ chatId,isGroup }) {
   const [open, setOpen] = useState(false);
+  const {darkMode} = useTheme();
 
   const deleteGroup = async (chatId,isGroup) => {
     try {
@@ -70,7 +72,7 @@ export default function DeleteGroup({ chatId,isGroup }) {
       {open && (
         <div
           ref={menuRef}
-          className="absolute bg-white p-2 rounded-lg shadow-md text-xs"
+          className={`absolute bg-white p-2 rounded-lg shadow-md text-xs  ${darkMode?"dark-mode":""}`}
         >
           <button
             onClick={() => {

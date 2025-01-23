@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useEvents } from '../../../../userContext';
+import { useTheme } from '../../../../ThemeContext';
 
 export default function EventsDataColl() {
     const {events} = useEvents();
-    // Log fetched events
-    // useEffect(() => {
-    //     console.log("Fetched events:", events);
-    // }, [events]);
+    const {darkMode} = useTheme();
 
     // Get today's date for comparison
     const today = new Date().setHours(0, 0, 0, 0); // Normalize to midnight to ignore time part
@@ -19,7 +17,7 @@ export default function EventsDataColl() {
 
     return (
         <>
-            <div className="bg-blue-200 font-monts  p-6 rounded-lg w-[70%] overflow-x-auto overflow-y-auto h-80  border-blue-500 border-2 shadow-xl ">
+            <div className={`bg-blue-200 font-monts  p-6 rounded-lg w-[70%] overflow-x-auto overflow-y-auto h-80  border-blue-500 border-2 shadow-xl  ${darkMode?"dark-mode":""}`}>
                 <h1 className="text-2xl font-bold  text-center text-white mb-4">Upcoming Events & Meetings</h1>
                 <div className="flex flex-col gap-4 mx-40">
                     {upcomingEvents.map(event => {

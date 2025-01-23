@@ -21,11 +21,13 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+import { useTheme } from "../../../../ThemeContext";
 
 const AnalyticsChart = () => {
   const [meetingData, setMeetingData] = useState([]); // State to store meeting data
   const [hours, setHours] = useState([]);
   const [weekdays, setWeekdays] = useState([]);
+  const {darkMode} = useTheme();
 
   const gettingUid = async () => {
     const userId = auth.currentUser?.uid;
@@ -35,10 +37,13 @@ const AnalyticsChart = () => {
     const userId = await gettingUid();
     if (userId) {
       const MeetingData = await gettingAnalyticalData(userId);
+      const filteredMeetingData = MeetingData.filter((data)=>{
+          return Array.isArray(data)
+      })
 
-      if (MeetingData) {
-        const dates = MeetingData[0].map((doc) => new Date(doc.meetingDate)); // Convert to Date object
-        const totalHours = MeetingData[0].map((doc) => doc.totalTime.hours);
+      if (filteredMeetingData) {
+        const dates = filteredMeetingData[0].map((doc) => new Date(doc.meetingDate)); // Convert to Date object
+        const totalHours = filteredMeetingData[0].map((doc) => doc.totalTime.hours);
         const filteredDates = dates.filter((date) => {
           const currentDate = new Date(); // Get today's date
           const targetDate = new Date(date); // Convert the date string to a Date object
@@ -59,7 +64,7 @@ const AnalyticsChart = () => {
 
         setWeekdays(dayOfWeek); // Output: [ 'Tuesday', 'Wednesday', ...
         setHours(totalHours);
-        setMeetingData(MeetingData);
+        setMeetingData(filteredMeetingData);
       } else {
         console.log("No MeetingData...");
       }
@@ -100,7 +105,6 @@ const AnalyticsChart = () => {
 
     return hoursByDay;
   };
-  console.log(hours);
 
   const data = {
     labels: [
@@ -116,7 +120,7 @@ const AnalyticsChart = () => {
       {
         label: "Time Spent on Meetings (hrs)",
         data: mapHoursToWeekdays(), // Use the mapped hours array
-        backgroundColor: "rgba(54, 162, 235, 1)", // Blue color
+        backgroundColor: darkMode?"rgb(230,230,230)":"rgba(54, 162, 235, 1)", // Blue color
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
@@ -142,7 +146,7 @@ const AnalyticsChart = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md">
+    <div className={`max-w-3xl mx-auto bg-white p-4 rounded-lg shadow-md  ${darkMode?"dark-mode":""}`}>
       <Bar data={data} options={options} />
     </div>
   );

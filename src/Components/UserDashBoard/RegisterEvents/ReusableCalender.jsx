@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useTheme } from '../../../ThemeContext';
 
 
 // Utility function to get the number of days in a month
@@ -17,6 +18,7 @@ const ReusableCalendar = ({ selectedDate, highlightDate, onDateClick, background
     const days = ["S", "M", "T", "W", "T", "F", "S"];
     const [currentMonthIndex, setCurrentMonthIndex] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    const {darkMode} = useTheme();
 
     // Empty dependency array to run only on mount
 // CalendarGrid Component for displaying the days and dates
@@ -30,7 +32,7 @@ const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor
       </div>
 
       {/* Dates */}
-      <div className="grid grid-cols-7 text-center text-gray-800">
+      <div className={` ${darkMode?"dark-mode":""} grid grid-cols-7 text-center text-gray-800`}>
           {dates.map((date, index) => (
               <div
                   key={index}
@@ -85,13 +87,14 @@ const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor
     const calendarDates = generateCalendarDates();
 
     return (
-        <div className={`${backgroundColor} p-2 rounded-xl shadow-md ${width} md:w-96`}>
+        <div className={`${backgroundColor} p-2 rounded-xl shadow-md ${width} md:w-96  ${darkMode?"dark-mode":""}`}>
             {/* CalendarHeader Component */}
             <CalendarHeader
                 currentMonth={months[currentMonthIndex]}
                 currentYear={currentYear}
                 onPrev={() => handleMonthChange('prev')}
                 onNext={() => handleMonthChange('next')}
+                darkMode = {darkMode}
             />
 
             {/* CalendarGrid Component */}
@@ -107,8 +110,8 @@ const CalendarGrid = ({ days, dates, highlightDate, onDateClick, weekLetterColor
 };
 
 // CalendarHeader Component for Month and Year navigation
-export const CalendarHeader = ({ currentMonth, currentYear, onPrev, onNext }) => (
-    <div className="flex justify-between items-center mb-4">
+export const CalendarHeader = ({ currentMonth, currentYear, onPrev, onNext,darkMode }) => (
+    <div className={`flex justify-between items-center mb-4`}>
         <FiChevronLeft className="text-2xl cursor-pointer" onClick={onPrev} />
         <h2 className="text-xl font-bold">{currentMonth} {currentYear}</h2>
         <FiChevronRight className="text-2xl cursor-pointer" onClick={onNext} />

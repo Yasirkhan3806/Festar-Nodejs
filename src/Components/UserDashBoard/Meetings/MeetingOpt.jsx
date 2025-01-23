@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../../ThemeContext";
 export default function MeetingOpt() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [joinIt, setjoinIt] = useState(false);
+  const {darkMode} = useTheme();
+
 
   return (
     <>
-      <div className="flex flex-col items-center gap-8 shadow-xl bg-blue-700 border-white rounded-lg border-2 w-[94%] md:w-2/4 h-44 mt-8">
+      <div className={`flex flex-col items-center gap-8 shadow-xl bg-blue-700 border-white rounded-lg border-2 w-[94%] md:w-2/4 h-44 mt-8  ${darkMode?"dark-mode":""}`}>
         <span className="text-white font-bold text-2xl p-4">
           <h2>Join or Create a Meeting</h2>
         </span>

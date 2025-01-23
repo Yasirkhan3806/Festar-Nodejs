@@ -1,24 +1,22 @@
-import React, { useState,useEffect } from "react";
-import { auth } from "../../../../Config/firebase";
+import React, { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useMeetingData } from "../../../../userContext";
-import { settingMeetingDataHost } from "./SettingParticipantData";
-import { useParticipantState } from "./SettingParticipantData";
+import { useTheme } from "../../../../ThemeContext";
 
 const StartMeetingPopup = ({ setOpen }) => {
-  const {Participants,setParticipants} = useParticipantState()
-  const { setUniqueIdFilter, userMeetingData } = useMeetingData();
-const navigate = useNavigate()
+  const { setUniqueIdFilter } = useMeetingData();
+  const navigate = useNavigate();
   const [meetingName, setMeetingName] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
-  const [host,setHost] = useState(false)
+  const [host, setHost] = useState(false);
   const db = getFirestore();
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
   const userName = auth.currentUser?.displayName;
-  const handleOnClose = () => setOpen(false)
+  const handleOnClose = () => setOpen(false);
+  const { darkMode } = useTheme();
 
   // Function to format time in 12-hour format
   const formatTime12Hour = (time) => {
@@ -29,23 +27,19 @@ const navigate = useNavigate()
   };
 
   /**
- * Generates a random unique ID.
- * @param {string} prefix - Optional prefix for the ID.
- * @param {string} suffix - Optional suffix for the ID.
- * @returns {string} A random unique ID.
- */
-function generateUniqueId(prefix = '', suffix = '') {
-  const timestamp = Date.now(); // Current timestamp in milliseconds
-  const randomNumber = Math.floor(Math.random() * 1_000_000); // Random number up to 999,999
-  const randomString = Math.random().toString(36).substring(2, 8); // Random alphanumeric string
-  return `${prefix}-${timestamp}-${randomNumber}-${randomString}${suffix}`;
-}
+   * Generates a random unique ID.
+   * @param {string} prefix - Optional prefix for the ID.
+   * @param {string} suffix - Optional suffix for the ID.
+   * @returns {string} A random unique ID.
+   */
+  function generateUniqueId(prefix = "", suffix = "") {
+    const timestamp = Date.now(); // Current timestamp in milliseconds
+    const randomNumber = Math.floor(Math.random() * 1_000_000); // Random number up to 999,999
+    const randomString = Math.random().toString(36).substring(2, 8); // Random alphanumeric string
+    return `${prefix}-${timestamp}-${randomNumber}-${randomString}${suffix}`;
+  }
 
-// Example usage:
-const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
-// console.log(uniqueId); // Example output: user_1696164698367-854382-z4hrxf_end
-
-// console.log(userMeetingData)
+  const uniqueId = generateUniqueId(`${userName}`, "Fester-Meetup");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,26 +62,14 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
         userId,
         uniqueId,
       });
-      // await addDoc(collection(db, "ParticipantsData"), {
-      //   Name:auth.currentUser.displayName,
-      //   Picture:auth.currentUser.photoURL,
-      //   Role:1,
-      //   uniqueId
 
-      // });
-    
-      
-
-    
-      // console.log("Document written with uniqueId:", uniqueId);
-    
       // Wait until the uniqueId is set in the provider
       setUniqueIdFilter(uniqueId);
       localStorage.setItem("uniqueId", uniqueId);
       alert("Meeting saved successfully!");
-      setHost(true)
-      navigate('/MeetingRoom',{
-        state: { host:true }
+      setHost(true);
+      navigate("/MeetingRoom", {
+        state: { host: true },
       });
     } catch (error) {
       console.error("Error saving meeting:", error);
@@ -97,43 +79,45 @@ const uniqueId = generateUniqueId(`${userName}`, 'Fester-Meetup');
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-6 shadow-lg w-96">
-        <h2 className="text-lg font-semibold mb-4">Create a Meeting</h2>
+      <div className={`bg-white rounded-lg p-6 shadow-lg w-96 ${darkMode ? "dark-mode" : ""}`}>
+        <h2 className={`text-lg font-semibold mb-4 ${darkMode ? "dark-mode" : ""}`}>
+          Create a Meeting
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className={`block text-sm font-medium text-gray-700 mb-1 ${darkMode ? "dark-mode" : ""}`}>
               Meeting Name
             </label>
             <input
               type="text"
               value={meetingName}
               onChange={(e) => setMeetingName(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className={`w-full border border-gray-300 rounded px-3 py-2 ${darkMode ? "dark-mode" : ""}`}
               placeholder="Enter meeting name"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className={`block text-sm font-medium text-gray-700 mb-1 ${darkMode ? "dark-mode" : ""}`}>
               Start Date & Time
             </label>
             <input
               type="datetime-local"
               value={startDateTime}
               onChange={(e) => setStartDateTime(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className={`w-full border border-gray-300 rounded px-3 py-2 ${darkMode ? "dark-mode" : ""}`}
             />
           </div>
           <div className="flex justify-end">
             <button
               type="button"
               onClick={handleOnClose}
-              className="px-4 py-2 mr-2 bg-gray-300 rounded hover:bg-gray-400"
+              className={`px-4 py-2 mr-2 bg-gray-300 rounded hover:bg-gray-400 ${darkMode ? "dark-mode-btn" : ""}`}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${darkMode ? "dark-mode-btn" : ""}`}
             >
               Save Meeting
             </button>

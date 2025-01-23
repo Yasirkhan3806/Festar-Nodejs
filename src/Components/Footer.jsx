@@ -4,10 +4,13 @@ import logo from '../assets/Pictures/logo-inverted-color.png';
 import instagram from '../assets/icons/instagram.png';
 import twitter from '../assets/icons/twitter.png';
 import Linkedin from '../assets/icons/Linkedin.png';
+import {useTheme} from "../ThemeContext"
 
 export default function Footer() {
+  const {darkMode} = useTheme();
+  console.log(darkMode)
   return (
-    <footer className="bg-blue-500 text-white py-6 mt-12 h-80 lg:h-60 md:h-60">
+    <footer className={`bg-blue-500 text-white py-6 mt-12 h-80 lg:h-60 md:h-60 ${darkMode?"dark-mode":""}`}>
       <div className="container mx-auto flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
         {/* Logo Section */}
         <div className="flex flex-col items-center md:items-start">

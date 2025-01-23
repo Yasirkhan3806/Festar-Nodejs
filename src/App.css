@@ -34,14 +34,15 @@
 .nav-box-shadow{
   box-shadow:  0.1px 0px 4px #000000;
 }
-.div-shadow{
+.div-shadow {
   border-radius: 12px;
-background: #ffffff;
-             transition: 0.5s ease-in-out;
+  background: #ffffff;
+  transition: 0.5s ease-in-out;
 }
-.div-shadow:hover{
-  box-shadow:  20px 2px 47px #f0f0f0,
-             -14px -14px 47px #ffffff;
+
+.div-shadow:hover {
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), 
+              -10px -10px 20px rgba(255, 255, 255, 0.5);
 }
 .hover-shadow{
   transition: 0.5s ease-in-out;

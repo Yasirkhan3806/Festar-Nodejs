@@ -7,6 +7,7 @@ import { useUser } from "../../../userContext";
 import { v4 as uuidv4 } from "uuid";
 import Picker from '@emoji-mart/react';
 // import "@emoji-mart/css/emoji-mart.css"; // Import emoji-mart styles
+import { useTheme } from "../../../ThemeContext";
 
 export default function TypeChat({ chatId, isGroup }) {
   const [messageText, setMessageText] = useState("");
@@ -14,6 +15,7 @@ export default function TypeChat({ chatId, isGroup }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State for toggling emoji picker
   const inputRef = useRef(null);
   const { userName } = useUser();
+  const {darkMode} = useTheme();
 
   const sendMessages = async () => {
     if (!messageText.trim()) return;
@@ -72,9 +74,9 @@ export default function TypeChat({ chatId, isGroup }) {
         }, [showEmojiPicker]); //
 
   return (
-    <div className="flex items-center gap-4 bg-white p-2 rounded-2xl">
+    <div className={` ${darkMode?"dark-mode border-2 border-white":""} flex items-center gap-4 bg-white p-2 rounded-2xl`}>
       {/* Emoji Icon */}
-      <div className="relative">
+      <div className="relative dark-mode">
         <img
           src={emojiIcon}
           alt="Emoji"
@@ -100,7 +102,7 @@ export default function TypeChat({ chatId, isGroup }) {
         placeholder="Type your message"
         value={messageText}
         onChange={(e) => setMessageText(e.target.value)}
-        className="border-2 border-blue-500 focus:outline-none focus:border-blue-700 p-2 w-[81%] h-[50px] rounded-lg"
+        className={` ${darkMode?"dark-mode":""} border-2 border-blue-500 focus:outline-none focus:border-blue-700 p-2 w-[81%] h-[50px] rounded-lg dark-mode`}
       />
 
       {/* Send Button */}
@@ -109,9 +111,9 @@ export default function TypeChat({ chatId, isGroup }) {
           e.preventDefault();
           sendMessages();
         }}
-        className="p-1 bg-white rounded-lg text-white"
+        className={` ${darkMode?"dark-mode":""} p-1 bg-white rounded-lg text-white dark-mode`}
       >
-        <img className="h-[32px]" src={sendMessagesIcon} alt="Send" />
+        <img className="h-[32px] " src={sendMessagesIcon} alt="Send" />
       </button>
     </div>
   );

@@ -4,10 +4,12 @@ import { gettingChatsData, gettingChats } from './gettingChatsData';
 import groupIcon from './icons/groupIcon.png';
 import { settingRead } from './sendingMessages';
 import DeleteGroup from './DeleteChats/deleteGroup';
+import { useTheme } from '../../../ThemeContext';
 
 export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGroup }) {
   const [groups, setGroups] = useState([]); // Initialize with an empty array
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
+  const {darkMode} = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,9 +67,9 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
   }, [groups]); // Run when groups or the current user changes
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 border-[2.5px] border-b-4 border-blue-400">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Groups</h2>
-      <div className="space-y-4">
+    <div className={`max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 border-[2.5px] border-b-4 border-blue-400 dark-mode  ${darkMode?"dark-mode":""}`}>
+      <h2 className={`text-xl font-bold text-gray-800 mb-4 dark-mode  ${darkMode?"dark-mode":""}`}>Groups</h2>
+      <div className="space-y-4 ">
         {groups.length > 0 ? (
           groups.map((group) => {
             // Find the most recent unread message for the group
@@ -86,16 +88,16 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
                 onClick={() =>
                   getChats(group.chatid, group.groupPicture, group.chatName)
                 }
-                className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 border-b-2 border-gray-200"
+                className="flex items-center justify-between p-2 rounded-md border-b-2 border-gray-200 "
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 ">
                   <img
                     src={group.groupPicture || groupIcon} // Ensure fallback works
                     alt={group.chatName}
-                    className="h-12 w-12 rounded-full"
+                    className="h-12 w-12 rounded-full "
                   />
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-800">
+                    <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800 dark-mode`}>
                       {group.chatName || 'Untitled Group'}
                     </h3>
                     <p className="text-xs text-gray-500">

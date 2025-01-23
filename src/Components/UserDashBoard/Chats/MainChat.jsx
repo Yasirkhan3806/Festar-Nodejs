@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { auth } from "../../../Config/firebase";
 import DeleteMessage from "./DeleteChats/DeleteMessage";
+import { useTheme } from "../../../ThemeContext";
 
 export default function MainChat({ currentChat,chatId,isGroup }) {
   const messagesEndRef = useRef(null); // Reference to the end of the chat container
+  const {darkMode} = useTheme();
 
   // Scroll to the bottom when new messages are added
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function MainChat({ currentChat,chatId,isGroup }) {
               className={`p-3 rounded-lg w-[48%] ${
                 msg.senderId === auth.currentUser.uid
                   ? "bg-blue-500 text-white" // Styling for sent messages
-                  : "bg-gray-200" // Styling for received messages
+                  : ` ${darkMode?"dark-mode border-2 border-white":"bg-gray-200"} ` // Styling for received messages
               }`}
               
             >
@@ -48,7 +50,7 @@ export default function MainChat({ currentChat,chatId,isGroup }) {
                 className={`text-xs ${
                   msg.senderId === auth.currentUser.uid
                     ? "text-white" // Styling for sent messages
-                    : "text-black" // Styling for received messages
+                    : ` ${darkMode?"dark-mode":"text-black"} ` // Styling for received messages
                 }`}
               >
                 {new Date(msg.timestamp).toLocaleTimeString()}

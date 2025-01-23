@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ContactHeader from './ChatSectionNav';
 import TypeChat from './TypeChat';
 import MainChat from './MainChat';
 
 export default function ChatSection({currentChat,chatId,navData,isGroup}) {
-  // useEffect(() => {
-  //   console.log("userData at chat section",userData)
-  // }, [userData]);
   return (
     <>
     <div id='main' className='w-[99%] h-screen '>

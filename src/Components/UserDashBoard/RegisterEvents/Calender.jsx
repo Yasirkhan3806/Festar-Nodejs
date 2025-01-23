@@ -4,9 +4,10 @@ import { BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import ReusableCalendar from './ReusableCalender';
 import { auth } from '../../../Config/firebase';
+import { useTheme } from '../../../ThemeContext';
 
 export function UserProfile({ setUser }) {
-
+  
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
@@ -19,6 +20,7 @@ export function UserProfile({ setUser }) {
 
 
 export default function Calendar() {
+  const {darkMode} = useTheme();
   const handleDateClick = (date) => {
     console.log('Date clicked:', date);
   };
@@ -39,7 +41,7 @@ export default function Calendar() {
       />
 
       {/* Create Event Button */}
-      <Link to="/Register-event" className="mt-6 flex w-[100%] md:w-[40%] bg-blue-500 hover:bg-white  text-white hover:text-blue-500 font-bold py-2 px-4 rounded-full shadow-md transition duration-500">
+      <Link to="/Register-event" className={` ${darkMode?"dark-mode-btn":""} mt-6 flex w-[100%] md:w-[40%] bg-blue-500 hover:bg-white  text-white hover:text-blue-500 font-bold py-2 px-4 rounded-full shadow-md transition duration-500`}>
         <BsPlus className="text-2xl mr-2" /> Create Event
       </Link>
     </div>

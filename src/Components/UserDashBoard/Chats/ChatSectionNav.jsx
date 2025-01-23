@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
-import callIconBlue from './icons/callIconBlue.png';
-import threeDotsIcon from './icons/threeDotsIcon.png';
 import groupIcon from './icons/groupIcon.png';
+import { useTheme } from '../../../ThemeContext';
 
 const ContactHeader = ({ navData }) => {
+  const {darkMode} = useTheme();
 
   
   return (
     <div className="flex flex-col">
       {/* Left Section: Avatar and Name */}
-      <div className="flex items-center justify-between p-3 px-9 pr-14   bg-white w-[100%] gap-44">
+      <div className={`flex items-center justify-between p-3 px-9 pr-14   bg-white w-[100%] gap-44 dark-mode  ${darkMode?"dark-mode":""}`}>
       <div className="flex items-center gap-4 w-[80%] ">
         {/* Avatar */}
         <img
@@ -17,12 +16,9 @@ const ContactHeader = ({ navData }) => {
           alt={`${navData.groupName}'s avatar`}
           className="h-12 w-12 rounded-full object-cover"
         />
-        {/* Name and Last Seen */}
+        {/* Name  */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800">{navData.groupName || "Chat Name"}</h3>
-          {/* <p className="text-[0.7rem] text-gray-500">
-            Online - Last seen, {lastSeen || "unknown"}
-          </p> */}
+          <h3 className={` ${darkMode?"dark-mode":""} text-lg font-bold text-gray-800 dark-mode`}>{navData.groupName || "Chat Name"}</h3>
         </div>
       </div>
 

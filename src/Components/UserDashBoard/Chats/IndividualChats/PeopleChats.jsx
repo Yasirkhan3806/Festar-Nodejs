@@ -6,11 +6,12 @@ import personIcon from '../icons/personIcon.png';
 import { gettingChats } from "../gettingChatsData";
 import { auth } from "../../../../Config/firebase";
 import { useUser } from "../../../../userContext";
+import { useTheme } from "../../../../ThemeContext";
 
 export default function PeopleChats({setCurrentChat,setNavData,setChatId,setIsGroup}) {
   const [people,setPeople] = useState([])
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
-const {userName} = useUser()
+   const {darkMode} = useTheme();
 useEffect(()=>{
 gettingChatsDataIndividual(setPeople)
 
@@ -61,8 +62,8 @@ useEffect(() => {
   }, [people]); // Run when groups or the current user changes
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-4 border-[2.5px] border-b-4 border-blue-400">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">People</h2>
+    <div className={`max-w-md mx-auto bg-white rounded-lg shadow-md p-4 border-[2.5px] border-b-4 border-blue-400  ${darkMode?"dark-mode":""}`}>
+      <h2 className={` ${darkMode?"dark-mode":""} text-xl font-bold text-gray-800 mb-4 dark-mode`}>People</h2>
       <div className="space-y-4">
         {people.map((person) => {
            const recentMessage = unreadMessages.messages.find(
@@ -82,7 +83,7 @@ useEffect(() => {
               getChats(person.chatId,receiverPicture,receiverName)
                 // console.log("I am clicked")
               }}
-            className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50"
+            className="flex items-center justify-between p-2 rounded-md "
           >
             <div className="flex items-center space-x-4">
               <img
@@ -91,7 +92,7 @@ useEffect(() => {
                 className="h-12 w-12 rounded-full"
               />
               <div>
-                <h3 className="text-sm font-semibold text-gray-800">
+                <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800 dark-mode`}>
                 {person.receiverName === auth.currentUser.displayName ?person.senderName:person.receiverName  || "guest"}
                 </h3>
                 <p className="text-xs text-gray-500 truncate">{recentMessage? recentMessage.message:"No Recent Messages"}</p>

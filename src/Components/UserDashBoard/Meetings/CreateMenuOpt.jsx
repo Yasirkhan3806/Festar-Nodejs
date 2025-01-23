@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import teamMember from "../pictures/conferenceImage.png";
 import { BsPlus } from "react-icons/bs";
 import StartMeetingPopup from "./MeetingRoomComponents/StartMeetingPopup";
+import { useTheme } from "../../../ThemeContext";
 
 export default function CreateMenuOpt() {
   const [open,setOpen] = useState(false)
+  const {darkMode} = useTheme();
   return (
-    <div className="flex flex-col justify-center items-center bg-blue-500 min-h-screen py-8 px-4">
+    <div className={` ${darkMode?"dark-mode":""} flex flex-col justify-center items-center bg-blue-500 min-h-screen py-8 px-4 dark-mode `}>
       {/* Card Container */}
-      <div className="w-full max-w-5xl flex flex-col md:flex-row gap-6 bg-white p-6 rounded-lg shadow-xl">
+      <div className={`  ${darkMode?"dark-mode  border-2 border-white":""} w-full max-w-5xl flex flex-col md:flex-row gap-6 bg-white p-6 rounded-lg shadow-xl`}>
         {/* Image Section */}
         <div className="flex-1 flex justify-center items-center bg-blue-100 rounded-lg overflow-hidden">
           <img
@@ -23,7 +25,7 @@ export default function CreateMenuOpt() {
           <h3 className="font-monts font-bold text-2xl text-blue-600 mb-4">
             Instructions
           </h3>
-          <ul className="flex flex-col gap-4 text-gray-700">
+          <ul className={` flex flex-col gap-4 text-gray-700  ${darkMode?"dark-mode":""}`}>
             <li>
               <p>
                 After clicking the <strong>Start Meeting</strong> button, your
