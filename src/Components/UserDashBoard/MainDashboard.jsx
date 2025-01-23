@@ -28,7 +28,7 @@ export default function MainDashboard() {
     <>
       {/* <UserProfile setUser={setUser} /> */}
       <div className="flex overflow-hidden">
-        <div className="w-0 md:w-[25%] lg:w-[25%] h-[100%] z-10">
+        <div className="w-0 md:w-[5%] lg:w-[5%] h-[100%] z-10">
           <DashSide activeItem={activeItem}  setActiveItem={setActiveItem} />
         </div>
         

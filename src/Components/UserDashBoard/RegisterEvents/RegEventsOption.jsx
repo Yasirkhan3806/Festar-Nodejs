@@ -7,7 +7,7 @@ import Events from './EventsComing/Events';
 export default function RegEventsOption() {
   return (
     <>
-    <div className='overflow-y-auto h-[500px]'>
+    <div className='overflow-y-auto'>
          <div className="flex">
             <div className="w-full md:w-[50%]">
           <Calendar />

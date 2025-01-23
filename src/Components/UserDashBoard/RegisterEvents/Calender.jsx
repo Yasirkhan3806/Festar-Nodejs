@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import ReusableCalendar from './ReusableCalender';

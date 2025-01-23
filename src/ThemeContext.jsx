@@ -5,7 +5,11 @@ const ThemeContext = createContext();
 
 // Create a provider component
 export const ThemeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  // Initialize darkMode state synchronously with localStorage value
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    return savedDarkMode === "true"; // Convert string to boolean
+  });
 
   // Toggle dark mode
   const toggleDarkMode = () => {
@@ -30,12 +34,6 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
-
-  // Load dark mode preference from localStorage on initial render
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedDarkMode);
-  }, []);
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
