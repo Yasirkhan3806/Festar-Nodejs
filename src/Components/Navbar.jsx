@@ -4,11 +4,13 @@ import logoWhite from "../assets/Pictures/logo-inverted-color.png"
 import { Link } from "react-router-dom";
 import DarkmodeToggler from "./DarkmodeToggler";
 import { useTheme } from "../ThemeContext";
+import useWindowSize from "./UserDashBoard/WindowSize"
 
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {darkMode} = useTheme()
+  const [width] = useWindowSize()
 
   useEffect(() => {
     const navbar = document.getElementById("nav-bar"); // Move this inside useEffect
@@ -26,17 +28,18 @@ function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  console.log(darkMode)
 
   return (
     <>
       <nav
         id="nav-bar"
-        className={`"justify-between flex flex-wrap pl-2 pr-2 md:justify-around items-center w-full sticky top-0 ${darkMode?"dark-mode":"bg-white"} h-20 z-[2] "`}
+        className={`justify-between flex flex-wrap pl-2 pr-9 md:justify-around items-center w-full sticky top-0 ${darkMode?"dark-mode":"bg-white"} h-20 z-[2] "`}
       >
         <img src={darkMode?logoWhite:logo} alt="Logo" className="mt-0" />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex md:space-x-8 space-x-14 space-y-3">
+        <ul className={`hidden md:flex md:space-x-8 space-x-14 space-y-3 `}>
           <li></li>
           <li>
             <Link
@@ -57,7 +60,9 @@ function Navbar() {
               Contact Us
             </Link>
           </li>
+         {width >= 768 &&
           <DarkmodeToggler/>
+         }
         </ul>
 
         {/* Mobile Menu Button */}
@@ -85,7 +90,7 @@ function Navbar() {
         <div
           className={`md:hidden ${
             isMenuOpen ? "block" : "hidden"
-          } absolute top-16 right-0 w-2/4 h-[312%] bg-white shadow-lg`}
+          } absolute top-16 right-0 w-2/4 h-[350%] ${darkMode?"dark-mode":"bg-white"} shadow-lg`}
         >
           <ul className="flex flex-col items-center space-y-4 ">
             <li>
@@ -103,6 +108,9 @@ function Navbar() {
                 Contact Us
               </Link>
             </li>
+            {width <= 768 &&
+          <DarkmodeToggler/>
+         }
             <button className="bg-white hover:bg-blue-500 transition duration-300 pl-6 pr-6 pt-3 pb-3 border-2 border-black border-opacity-10 rounded-md h-12 mt-8 text-blue-400 hover:text-white font-monts shadow-sm">
               Get Started
             </button>

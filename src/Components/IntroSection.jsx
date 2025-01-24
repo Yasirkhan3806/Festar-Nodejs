@@ -27,7 +27,7 @@ export default function IntroSection() {
               data-aos-delay="100"
               data-aos-duration="2000"
               className="max-h-25"
-              src={bgReIntroPicture}
+              src={darkMode?bgReIntroPicture:introPicture}
               alt="Meeting illustration"
             />
           </div>

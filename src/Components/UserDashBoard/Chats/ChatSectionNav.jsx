@@ -1,14 +1,26 @@
 import groupIcon from './icons/groupIcon.png';
 import { useTheme } from '../../../ThemeContext';
+import backIconWhite from "./icons/backIconWhite.png";
+import backIconDark from "./icons/backIconDark.png";
+import { useNavigate } from 'react-router-dom';
 
 const ContactHeader = ({ navData }) => {
   const {darkMode} = useTheme();
+  const navigate = useNavigate()
+  
+  const goBackToChats = ()=>{
+    navigate("/Chats",{
+      replace:true
+    })
+  }
 
   
   return (
     <div className="flex flex-col">
       {/* Left Section: Avatar and Name */}
-      <div className={`flex items-center justify-between p-3 px-9 pr-14   bg-white w-[100%] gap-44 dark-mode  ${darkMode?"dark-mode":""}`}>
+      <div className={`flex items-center justify-between p-3 px-9 pr-14 gap-2   bg-white w-[100%] dark-mode  ${darkMode?"dark-mode":""}`}>
+
+  <img onClick={goBackToChats} className='h-12' src={backIconDark} alt="" />
       <div className="flex items-center gap-4 w-[80%] ">
         {/* Avatar */}
         <img
@@ -26,7 +38,7 @@ const ContactHeader = ({ navData }) => {
       <div className="flex items-center space-x-4 text-blue-500 ">
       </div>
       </div>
-      <div className='border-[1px] border-blue-300 w-[27rem] ml-14 '></div>
+      <div className='border-[1px] border-blue-300 w-[80vw] ml-14 '></div>
     </div>
   );
 };

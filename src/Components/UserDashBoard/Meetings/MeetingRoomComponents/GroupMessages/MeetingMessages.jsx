@@ -4,8 +4,8 @@ import { useUserData } from "../../../../../userContext";
 import { sendVMessages} from "./sendVideoMessage";
 import { auth } from "../../../../../Config/firebase";
 import { gettingVMessages } from "./sendVideoMessage";
-// import { getDocs, query, collection, where } from "firebase/firestore";
-// import { db } from "../../../../../Config/firebase";
+import {useTheme} from "../../../../../ThemeContext"
+
 
 const MessageSidebar = ({ activeOpen,host }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,6 +13,7 @@ const MessageSidebar = ({ activeOpen,host }) => {
   const [uniqueId, setUniqueId] = useState(null);
   const [messages, setMessages] = useState([]);
   const { userName } = useUserData();
+  const {darkMode} = useTheme()
 
   useEffect(() => {
     let storedUniqueId = null
@@ -65,34 +66,34 @@ const MessageSidebar = ({ activeOpen,host }) => {
 
   return (
     <div className="relative flex h-screen">
-      <button
+      <a
         onClick={toggleSidebar}
         className={`${
           isSidebarOpen ? "hidden" : "block"
         } fixed top-[8rem] right-[-8px] text-white px-4 py-2 z-10`}
       >
         <img className="h-[2.0rem]" src={messageIcon} alt="Message Icon" />
-      </button>
+      </a>
 
       <div
         className={`${isSidebarOpen ? "absolute" : "fixed"} ${bottomPosition} right-0 h-full bg-white shadow-md transform transition-transform duration-300 
-          ${isSidebarOpen ? "translate-x-0" : "translate-x-full"} w-[23rem]`}
+          ${isSidebarOpen ? "translate-x-0" : "translate-x-full"} w-[23rem] ${darkMode?"dark-mode":"bg-blue-500"}`}
       >
-        <span className="flex justify-between bg-white border-b border-gray-300 p-2">
-          <button
+        <span className={`flex justify-between ${darkMode?"dark-mode":"bg-white"} border-b border-gray-300 p-2`}>
+          <a
             onClick={() => setIsSidebarOpen(false)}
             className="text-blue-700 font-bold"
           >
             X
-          </button>
-          <h2 className="text-lg font-semibold p-4">Messages</h2>
+          </a>
+          <h2 className={`${darkMode?"dark-mode":""} text-lg font-semibold p-4`}>Messages</h2>
         </span>
-        <ul className="p-4 space-y-4 overflow-y-scroll h-[73%]">
+        <ul className={`p-4 space-y-4 overflow-y-scroll md:h-[73%] lg:h-[73%] h-full`}>
         {messages && messages.length > 0 ? (
   messages[0].map((msg, index) => (
     <li
       key={index}
-      className="flex items-start gap-4 p-2 bg-white rounded-md shadow"
+      className="flex items-start gap-4 p-2 bg-white rounded-md shadow dark-mode border-2 border-white"
     >
       <div className="flex flex-col">
         <p className="font-medium">{msg.senderName}</p>
@@ -117,7 +118,7 @@ const MessageSidebar = ({ activeOpen,host }) => {
           onKeyDown={async (e) => {
             if (e.key === "Enter") await sendMessages();
           }}
-          className="w-[20rem] h-[2.5rem] border-2 border-blue-400 ml-[1rem] mt-[2rem] p-[0.5rem] focus:border-blue-500 focus:outline-none !focus:border-blue-400 rounded-lg"
+          className={`${darkMode?"dark-mode":""} w-[20rem] h-[2.5rem] border-2 border-blue-400 ml-[1rem] mt-[2rem] p-[0.5rem] focus:border-blue-500 focus:outline-none !focus:border-blue-400 rounded-lg`}
         />
       </div>
     </div>

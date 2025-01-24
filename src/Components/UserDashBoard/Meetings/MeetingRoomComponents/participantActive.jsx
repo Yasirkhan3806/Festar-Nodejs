@@ -5,10 +5,11 @@ import videoOnIcon from '../../icons/videoOnIcon.png';
 import videoOffIcon from '../../icons/videoOffIcon.png';
 import participantsActiveIcon from '../../icons/participantsActiveIcon.png';
 import { useParticipantActiveData } from '../../../../userContext';
+import {useTheme} from "../../../../ThemeContext"
 const ParticipantActive = ({setActiveOpen,uid}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {participantActive,setMeetingId} = useParticipantActiveData();
-  // const [participantActive,setMeetingId] = useState([])
+  const {darkMode} = useTheme()
   
   // console.log(uid[0])
   useEffect(() => {
@@ -26,18 +27,18 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
   return (
     <div className="relative flex h-screen">
       {/* Toggle Button */}
-      <button
+      <a
         onClick={toggleSidebar}
         className={`${isSidebarOpen ? 'hidden' : 'block'} fixed top-[6rem] right-[-8px]   text-white px-4 py-2 z-10`}
       >
         <img className='h-[2.0rem]' src={participantsActiveIcon} alt="" />
-      </button>
+      </a>
 
       {/* Sidebar */}
       <div
         className={` ${
           isSidebarOpen ? 'absolute' : 'fixed'
-        } bottom-[0rem] right-0 bg-transparent transform transition-transform duration-300 
+        } bottom-[0rem] right-0 md:bg-transparent lg:bg-transparent  ${darkMode?"dark-mode":"bg-blue-500"} transform transition-transform duration-300 
           ${
           isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         } w-[23rem] h-[100%] `}
@@ -51,10 +52,10 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
         <h2 className="text-lg font-semibold p-4 ">Participants</h2>
         </span>
         
-        <ul className={`p-4 space-y-4 ${participantActive && participantActive.length > 0 ?"overflow-y-auto h-[70%]":""} scrollbar-blue-500 shadow-none box-s`}>
+        <ul className={`p-4 space-y-4 ${participantActive && participantActive.length > 0 ?"overflow-y-auto h-[70%]":""} scrollbar-blue-500 shadow-none box-s ${darkMode?"dark-mode":""}`}>
         {participantActive && participantActive.length > 0 ? (
    participantActive.map((participant) => (
-    <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
+    <li key={participant.id} className="flex items-center gap-4 p-2 bg-white border-2 border-white rounded-md shadow">
       <img
         src={participant.Picture} // Correct
         alt="Participant Picture"
@@ -84,33 +85,3 @@ const ParticipantActive = ({setActiveOpen,uid}) => {
 };
 
 export default ParticipantActive;
-
-
-// {participantActive && participantActive.length > 0 ? (
-//     participantActive.map((participant) => (
-//       <li key={participant.id} className="flex items-center gap-4 p-2 bg-white rounded-md shadow">
-//       <img
-//         src={participant.image}
-//         alt={participant.name}
-//         className="w-12 h-12 rounded-full"
-//       />
-//       <div className="flex gap-12">
-//         <p className="font-medium">{participant.name}</p>
-//         <div className="flex justify-end gap-2 mt-1 text-gray-500">
-//           <span
-//             className={`w-6 h-4 ${participant.micOn ? 'text-blue-500' : 'text-red-500'}`}
-//           >
-//           <img src={micOnIcon} alt="" />
-//           </span>
-//           <span
-//             className={`w-6 h-4 ${participant.videoOn ? 'text-blue-500' : 'text-red-500'}`}
-//           >
-//             <img src={videoOnIcon} alt="" />
-//           </span>
-//         </div>
-//       </div>
-//     </li>
-//     ))
-//   ) : (
-//     <p>No participant</p>
-//   )}

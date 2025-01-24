@@ -28,12 +28,7 @@ export default function SignoutButton() {
   return (
     <div>
       {/* Logout Button with Tailwind CSS */}
-      <button
-        onClick={handleSignOut}
-        className="px-3"
-      >
-        <img src={darkMode?logoutIconDark:logoutIconWhite} alt="" />
-      </button>
+        <img onClick={handleSignOut} className="px-3 cursor-pointer" src={darkMode?logoutIconDark:logoutIconWhite} alt="" />
     </div>
   );
 }

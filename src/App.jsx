@@ -17,10 +17,13 @@ import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
 import { ThemeProvider } from './ThemeContext';
 import { ParticipantStateProvider } from './Components/UserDashBoard/Meetings/MeetingRoomComponents/SettingParticipantData';
+import { ChatProvider } from './Components/UserDashBoard/Chats/ChatsContext';
 // import { MeetingProvider } from './userContext';
 import Host from './Components/UserDashBoard/Meetings/MeetingRoom';
 import CreateMenuOpt from './Components/UserDashBoard/Meetings/CreateMenuOpt';
 import BeforeParticipant from './Components/UserDashBoard/Meetings/BeforeParticipant';
+import ChatSection from './Components/UserDashBoard/Chats/ChatSection';
+import Chats from './Components/UserDashBoard/Chats/Chats';
 
 
 
@@ -33,6 +36,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    <ChatProvider>
     <ThemeProvider>
     <ParticipantStateProvider>
     <ParticipantActiveDataProvider>
@@ -64,6 +68,11 @@ function App() {
            <Route path="/MeetingRoom" element={<Host />} />
              {/* Page before joining meeting by participant */}
              <Route path="/Join-Menu" element={<BeforeParticipant />} />
+               {/* main chat section */}
+             <Route path="/Type-chat" element={<ChatSection />} />
+               {/* chats */}
+               <Route path="/Chats" element={<Chats />} />
+
         </Routes>
       </Router>
     </UserProvider>
@@ -73,6 +82,7 @@ function App() {
     </ParticipantActiveDataProvider>
     </ParticipantStateProvider>
     </ThemeProvider>
+    </ChatProvider>
   );
 }
 

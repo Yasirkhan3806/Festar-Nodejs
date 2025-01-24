@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useContext} from 'react';
 import { auth } from '../../../Config/firebase';
 import { gettingChatsData, gettingChats } from './gettingChatsData';
 import groupIcon from './icons/groupIcon.png';
 import { settingRead } from './sendingMessages';
 import DeleteGroup from './DeleteChats/deleteGroup';
 import { useTheme } from '../../../ThemeContext';
+import ChatContext from './ChatsContext';
 
-export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGroup }) {
+export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForMobiles }) {
   const [groups, setGroups] = useState([]); // Initialize with an empty array
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
   const {darkMode} = useTheme();
+  const {setCurrentChat} = useContext(ChatContext)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +35,7 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
       setChatId(chatId); // Set the chatId to the state
       setIsGroup(true);
       settingRead(chatId,true); // Mark messages as read
+      navigateForMobiles(groupName,groupPicture)
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }
@@ -63,7 +66,6 @@ export default function GrpChats({ setCurrentChat, setChatId, setNavData,setIsGr
       messages: newUnreadMessages,
     });
 
-    // console.log('Unread messages:', newUnreadMessages);
   }, [groups]); // Run when groups or the current user changes
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { gettingChatsDataIndividual } from "../gettingChatsData";
 import { settingRead } from "../sendingMessages";
 import DeleteGroup from "../DeleteChats/deleteGroup";
@@ -7,11 +7,14 @@ import { gettingChats } from "../gettingChatsData";
 import { auth } from "../../../../Config/firebase";
 import { useUser } from "../../../../userContext";
 import { useTheme } from "../../../../ThemeContext";
+import ChatContext from "../ChatsContext";
 
-export default function PeopleChats({setCurrentChat,setNavData,setChatId,setIsGroup}) {
+export default function PeopleChats({setNavData,setChatId,setIsGroup,navigateForMobiles}) {
   const [people,setPeople] = useState([])
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
    const {darkMode} = useTheme();
+   const {setCurrentChat} = useContext(ChatContext)
+
 useEffect(()=>{
 gettingChatsDataIndividual(setPeople)
 
@@ -28,6 +31,7 @@ setNavData({
 setChatId(chatId)
 setIsGroup(false)
 settingRead(chatId,false); // Mark messages as read
+navigateForMobiles(receiverName,receiverPicture)
   }catch(error){
     console.log("error in getting chats",error)
   }

@@ -24,14 +24,14 @@ export default function MainChat({ currentChat,chatId,isGroup }) {
           <div
             key={msg.id}
             className={`flex items-start ${
-              msg.senderId === auth.currentUser.uid
+              msg.senderId === auth.currentUser?.uid
                 ? "justify-end" // Align sent messages to the right
                 : "justify-start" // Align received messages to the left
             }`}
           >
             <div
               className={`p-3 rounded-lg w-[48%] ${
-                msg.senderId === auth.currentUser.uid
+                msg.senderId === auth.currentUser?.uid
                   ? "bg-blue-500 text-white" // Styling for sent messages
                   : ` ${darkMode?"dark-mode border-2 border-white":"bg-gray-200"} ` // Styling for received messages
               }`}
@@ -41,7 +41,7 @@ export default function MainChat({ currentChat,chatId,isGroup }) {
               <span className="flex justify-between">
                 <p className="font-bold">{msg.text}</p>
                 <div>
-                  {msg.senderId === auth.currentUser.uid &&
+                  {msg.senderId === auth.currentUser?.uid &&
                   <DeleteMessage messageId = {msg.messageId} chatId={chatId} isGroupMessage={isGroup} />
                   }
                 </div>

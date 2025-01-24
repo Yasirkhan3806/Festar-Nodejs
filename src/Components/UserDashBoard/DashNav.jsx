@@ -19,7 +19,7 @@ export default function DashNav() {
  
   const renderDarkModeToggle = ()=>{
     if(width <= 768){
-      setMobWindow(true)
+      setMobWindow(false)
     }else{
       setMobWindow(true)
     }
