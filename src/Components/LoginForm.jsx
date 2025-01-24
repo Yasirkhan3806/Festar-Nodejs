@@ -190,7 +190,7 @@ export default function LoginForm() {
   return (
     <div className="flex min-h-screen">
       {/* Left Side Image and Background */}
-    <div className={`w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12 ${darkMode?"bg-white":"bg-white"}`}></div>
+    <div className={`w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12 ${darkMode?"bg-white":"bg-blue-500"}`}></div>
       <div
         id="Login-Picture"
         className={`${darkMode?"bg-white":"bg-blue-500"} w-[100%] md:w-[514px] h-[506px] z-[2] rounded-r-lg  L-animation`}

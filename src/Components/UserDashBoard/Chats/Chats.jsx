@@ -1,4 +1,5 @@
 import React ,{useEffect, useState} from 'react';
+import DashNav from '../DashNav';
 import { useNavigate } from 'react-router-dom';
 import ChatsSearch from './ChatsSearch';
 import GrpChats from './GrpChats';
@@ -9,7 +10,6 @@ import useWindowSize from '../WindowSize';
 
 
 export default function Chats() {
-  const [currentChat, setCurrentChat] = useState([]); 
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const [chatId, setChatId] = useState(''); 
   const[navData,setNavData]=useState([]);
@@ -55,6 +55,7 @@ export default function Chats() {
   
   <div id='main' className='flex w-[99%] h-screen '>
     <div id='chats' className='flex flex-col md:w-1/2 lg:w-1/2 w-full h-full  gap-2 overflow-y-auto scroll-left'>
+    {width<= 768 && <DashNav/>}
     <div id='navbar' className='mt-2'>
       <ChatsSearch />
     </div>

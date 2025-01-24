@@ -9,7 +9,6 @@ import Chats from "./Chats/Chats";
 export default function MainDashboard() {
   const [user, setUser] = useState("Guest");
   const [activeItem, setActiveItem] = useState("RegisterEvents"); // Track the active item
-
   // Function to render content based on active item
   const renderContent = () => {
     switch (activeItem) {

@@ -227,11 +227,11 @@
     opacity: 1;
   }
 }
-@media (min-width: 768px) and (max-width: 1023px){
+@media (min-width: 1024px){
   .L-animation {
     position: absolute;
     top: 80px;
-    right: 63px;
+    right: 635px;
     padding: 0px;
     animation: slide-right 1s 0.8s 1 forwards, pad-animation 1s 0.3s 1 forwards;
   }
@@ -257,7 +257,7 @@
   .L-animation-left{
     position: absolute;
     top: 80px;
-    right: 635px;
+    right: 125px;
     padding: 0px;
     animation: slide-left 1s 1 forwards;
   }

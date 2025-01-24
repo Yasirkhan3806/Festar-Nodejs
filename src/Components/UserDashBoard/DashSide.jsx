@@ -8,6 +8,7 @@ import registerEventsLightIcon from "./icons/registerEventsLight.png"
 import { useTheme } from "../../ThemeContext";
 import SignoutButton from "./SignoutButton";
 import DarkmodeToggler from "../DarkmodeToggler";
+import UserName from "./settings/UserName";
 
 export default function DashSide({ activeItem, setActiveItem }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function DashSide({ activeItem, setActiveItem }) {
     <div className="relative">
       {/* Hamburger Icon */}
       <a
-        className={`block mt-[1.3rem] ml-3 md:hidden p-2  `}
+        className={`block mt-[1.3rem] ml-3 md:hidden p-2 ${darkMode?"dark-mode":"bg-blue-500"} w-[32px]`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="w-6 h-1 bg-white mb-1"></div>
@@ -47,6 +48,7 @@ export default function DashSide({ activeItem, setActiveItem }) {
         </a>
         <h1 className="text-white text-2xl block md:hidden lg:hidden">Menu</h1>
         <ul className="flex flex-col justify-center text-white gap-4 md:gap-5">
+          <li className="blockmd:hidden lg:hidden "><UserName/></li>
           {sidebarItems.map((item) => (
             <li
               key={item.name}

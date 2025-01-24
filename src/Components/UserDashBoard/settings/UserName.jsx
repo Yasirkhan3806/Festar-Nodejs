@@ -6,7 +6,9 @@ import userIcon from "../icons/userIcon.png";
 import editIcon from "../icons/EditIcon.png";
 import editIconDark from '../icons/editIconDark.png'
 import doneIcon from "../icons/doneIcon.png";
+import doneIconDark from "../icons/doneIconDark.png"
 import { useTheme } from "../../../ThemeContext";
+
 
 export default function UserName() {
   const { userName } = useUser();
@@ -52,7 +54,7 @@ export default function UserName() {
               {userName}
             </h1>
             <input
-              className={`outline-blue-500 border-b-2 border-blue-500 ${showInput ? "block" : "hidden"}`}
+              className={`outline-blue-500 w-1/2 border-b-2 ${darkMode?"dark-mode":""} border-blue-500 ${showInput ? "block" : "hidden"}`}
               type="text"
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
@@ -60,7 +62,7 @@ export default function UserName() {
             <button className={`${darkMode?"dark-mode":""}`} onClick={updateName}>
             {showInput ? (
               <img
-                src={doneIcon}
+                src={darkMode?doneIconDark:doneIcon}
                 className="h-4 rounded-full"
                 alt="user icon"
               />
