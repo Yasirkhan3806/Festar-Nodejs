@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, db } from "../Config/firebase";
+import {useTheme} from "../ThemeContext";
 import useWindowSize from "./UserDashBoard/WindowSize";
 import {
   createUserWithEmailAndPassword,
@@ -21,6 +22,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const userCollectionRef = collection(db, "userData");
+  const {darkMode} = useTheme();
 
   // Navigation hook
   const navigate = useNavigate();
@@ -188,22 +190,22 @@ export default function LoginForm() {
   return (
     <div className="flex min-h-screen">
       {/* Left Side Image and Background */}
-      <div className="w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12"></div>
+    <div className={`w-1/2 bg-blue-500 flex flex-col justify-center px-16 py-12 ${darkMode?"bg-white":"bg-white"}`}></div>
       <div
         id="Login-Picture"
-        className="w-[354px] md:w-[514px] h-[506px] z-[2] rounded-r-lg bg-blue-500 L-animation"
+        className={`${darkMode?"bg-white":"bg-blue-500"} w-[100%] md:w-[514px] h-[506px] z-[2] rounded-r-lg  L-animation`}
       >
         <img
           src={teamMember}
           alt="Illustration"
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover"
         />
       </div>
 
       {/* Main Container for Login and Sign-up forms */}
       <div
         id="L-m-cont"
-        className="flex absolute top-20 md:left-[10.6rem] bg-white rounded-lg shadow-slate-600 shadow-xl L-D-animation"
+        className={`flex absolute top-20 md:left-[10.6rem]  ${darkMode?"dark-mode":"bg-white"} rounded-lg shadow-slate-600 shadow-xl L-D-animation`}
       >
         {/* Left side - Login Form */}
         <div className="p-2 md:w-2/4 lg:w-2/4 flex flex-col justify-center items-center L-F-animation" id="login-form">
@@ -213,7 +215,7 @@ export default function LoginForm() {
 
             {/* Google Sign-In Button */}
             <button
-              className="w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4"
+              className={`w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4  ${darkMode?"dark-mode border-2 border-white":""}`}
               onClick={handleGoogleSignIn}
             >
               <img
@@ -238,14 +240,14 @@ export default function LoginForm() {
               <input
                 type="email"
                 placeholder="Your Email"
-                className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400  ${darkMode?"dark-mode":""}`}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <input
                 type="password"
                 placeholder="Your Password"
-                className="w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400  ${darkMode?"dark-mode":""}`}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
@@ -283,7 +285,7 @@ export default function LoginForm() {
         {/* Right side - Sign-up Form */}
         <div
           id="sign-up"
-          className="w-full md:w-2/4 bg-white flex flex-col justify-center items-center p-4 md:p-8 hidden md:block lg:block"
+          className={`w-full md:w-2/4 bg-white ${darkMode?"text-black":""} flex flex-col justify-center items-center p-4 md:p-8 hidden md:block lg:block`}
         >
           <h1 className="text-4xl font-bold mb-2 text-blue-800">Festar</h1>
           <h2 className="text-2xl font-semibold mb-2">Create an Account</h2>

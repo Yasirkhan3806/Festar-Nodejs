@@ -6,6 +6,8 @@ import chatsIconLight from "./icons/chatsLightIcon.png"
 import registerEventsIcon from "./icons/registerEventsIcon.png";
 import registerEventsLightIcon from "./icons/registerEventsLight.png"
 import { useTheme } from "../../ThemeContext";
+import SignoutButton from "./SignoutButton";
+import DarkmodeToggler from "../DarkmodeToggler";
 
 export default function DashSide({ activeItem, setActiveItem }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,9 +55,12 @@ export default function DashSide({ activeItem, setActiveItem }) {
               }}
               className="flex items-center gap-2 cursor-pointer p-2"
             >
+             
               <img className="h-6" src={item.icon} alt={`${item.name} icon`} />
             </li>
           ))}
+          <li> <SignoutButton/></li>
+          <li className="block md:hidden"><DarkmodeToggler/></li>
         </ul>
       </div>
     </div>

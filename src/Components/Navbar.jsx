@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/Pictures/logo_primary_V17oRtSd.png";
+import logoWhite from "../assets/Pictures/logo-inverted-color.png"
 import { Link } from "react-router-dom";
 import DarkmodeToggler from "./DarkmodeToggler";
 import { useTheme } from "../ThemeContext";
@@ -32,7 +33,7 @@ function Navbar() {
         id="nav-bar"
         className={`"justify-between flex flex-wrap pl-2 pr-2 md:justify-around items-center w-full sticky top-0 ${darkMode?"dark-mode":"bg-white"} h-20 z-[2] "`}
       >
-        <img src={logo} alt="Logo" className="mt-0" />
+        <img src={darkMode?logoWhite:logo} alt="Logo" className="mt-0" />
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex md:space-x-8 space-x-14 space-y-3">

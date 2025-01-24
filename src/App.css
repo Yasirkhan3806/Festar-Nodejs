@@ -161,14 +161,7 @@
     height: 0px;
     }
   }
-  /* @keyframes pad-animation {
-    from {
-      padding: 0px;
-    }
-    to {
-      padding: 10px;
-    }
-  } */
+
   .L-animation-left{
     position: absolute;
     top: 80px;
@@ -211,7 +204,7 @@
   }
   @keyframes inc-width {
     from {
-      width: 95%;
+      width: 100%;
       height: 505px;
       margin-left: 10px;
     }
@@ -234,6 +227,55 @@
     opacity: 1;
   }
 }
+@media (min-width: 768px) and (max-width: 1023px){
+  .L-animation {
+    position: absolute;
+    top: 80px;
+    right: 63px;
+    padding: 0px;
+    animation: slide-right 1s 0.8s 1 forwards, pad-animation 1s 0.3s 1 forwards;
+  }
+  
+  @keyframes slide-right {
+    from {
+      right: 635px;
+  
+    }
+    to {
+      right: 125px;
+    }
+  }
+  @keyframes pad-animation {
+    from {
+      padding: 0px;
+    }
+    to {
+      padding: 30px;
+    }
+  }
+  
+  .L-animation-left{
+    position: absolute;
+    top: 80px;
+    right: 635px;
+    padding: 0px;
+    animation: slide-left 1s 1 forwards;
+  }
+  @keyframes slide-left {
+    from {
+      right:125px ;
+  
+    }
+    to {
+      right:  630px;
+    }
+  }
+}
+
+
+
+
+
 
 .flex-gap-pointer {
   display: flex;

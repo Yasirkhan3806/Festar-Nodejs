@@ -4,13 +4,16 @@ import { useUserData } from "../../../userContext";
 import { editName } from "./EditingData";
 import userIcon from "../icons/userIcon.png";
 import editIcon from "../icons/EditIcon.png";
+import editIconDark from '../icons/editIconDark.png'
 import doneIcon from "../icons/doneIcon.png";
+import { useTheme } from "../../../ThemeContext";
 
 export default function UserName() {
   const { userName } = useUser();
   const { userData } = useUserData();
   const [newUserName, setNewUserName] = useState(userName);
   const [showInput, setShowInput] = useState(false);
+  const {darkMode} = useTheme();
 
   const getProfilePhoto = () => {
     // Assuming userData is an array and we're getting the first user's profile photo
@@ -54,7 +57,7 @@ export default function UserName() {
               value={newUserName}
               onChange={(e) => setNewUserName(e.target.value)}
             />
-            <button onClick={updateName}>
+            <button className={`${darkMode?"dark-mode":""}`} onClick={updateName}>
             {showInput ? (
               <img
                 src={doneIcon}
@@ -63,7 +66,7 @@ export default function UserName() {
               />
             ) : (
               <img
-                src={editIcon}
+                src={darkMode?editIconDark:editIcon}
                 className="h-4 rounded-full"
                 alt="user icon"
               />
