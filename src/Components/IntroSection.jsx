@@ -1,6 +1,6 @@
 import React from 'react';
-import introPicture from '../assets/Pictures/4814043.jpg';
-import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.png"
+import introPicture from '../assets/Pictures/introPicture.avif';
+import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.avif"
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import { useTheme } from '../ThemeContext';
 

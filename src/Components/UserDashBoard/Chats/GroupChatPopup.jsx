@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import IndividualChat from "./IndividualChats/IndividualChat";
 import CreateGroupChat from "./CreatingChatDB";
 import getMembersDataByEmail from "./gettingMembersData";
+import { useTheme } from "../../../ThemeContext";
 
 export default function GroupChatPopup({ setShowPopup }) {
   const [isGroupChat, setIsGroupChat] = useState(false);
@@ -12,6 +13,7 @@ export default function GroupChatPopup({ setShowPopup }) {
   const [userData, setUserData] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const {darkMode} = useTheme();
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -93,7 +95,7 @@ export default function GroupChatPopup({ setShowPopup }) {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-1/3">
+      <div className={`${darkMode?"dark-mode":""} bg-white p-6 rounded-lg w-[70%] md:w-1/2 lg:w-1/2`}>
         <span className="flex justify-between">
           <h2 className="text-2xl font-semibold text-center mb-4">
             Create Chat
@@ -109,16 +111,16 @@ export default function GroupChatPopup({ setShowPopup }) {
         <div className="flex justify-between mb-4 gap-2">
           <button
             className={`w-1/2 py-2 border rounded-lg ${
-              !isGroupChat ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
+              !isGroupChat ? "bg-blue-500 text-white" : `${darkMode?"dark-mode-btn":"bg-gray-200"}`
+            } ` }
             onClick={() => setIsGroupChat(false)}
           >
             Individual Chat
           </button>
           <button
             className={`w-1/2 py-2 border rounded-lg ${
-              isGroupChat ? "bg-blue-500 text-white" : "bg-gray-200"
-            }`}
+              isGroupChat ? `${darkMode?"dark-mode-btn":"bg-blue-500 text-white"}` : "bg-gray-200"
+            } ${darkMode?"dark-mode-btn":""}`}
             onClick={() => setIsGroupChat(true)}
           >
             Group Chat
@@ -138,32 +140,32 @@ export default function GroupChatPopup({ setShowPopup }) {
                 className="mb-2"
               />
               <p>{isUploading ? "uploading...." : ""}</p>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className={`${darkMode?"dark-mode":""} block text-sm font-medium text-gray-700`}>
                 Group Name
               </label>
               <input
                 type="text"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`${darkMode?"dark-mode":""} mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 `}
                 placeholder="Enter group name"
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className={`${darkMode?"dark-mode":""} block text-sm font-medium text-gray-700`}>
                 Group Description
               </label>
               <textarea
                 value={groupDescription}
                 onChange={(e) => setGroupDescription(e.target.value)}
-                className="mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`${darkMode?"dark-mode":""} mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 `}
                 placeholder="Enter group description"
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className={`${darkMode?"dark-mode":""} block text-sm font-medium text-gray-700`}>
                 Add Members (Email)
               </label>
               {members.map((member, index) => (
@@ -176,7 +178,7 @@ export default function GroupChatPopup({ setShowPopup }) {
                     onChange={(e) =>
                       handleChangeMemberEmail(index, e.target.value)
                     }
-                    className="block w-full p-2 border rounded-lg mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`${darkMode?"dark-mode":""} mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 `}
                     placeholder={`Member ${index + 1} Email`}
                   />
                   {index === members.length - 1 && (

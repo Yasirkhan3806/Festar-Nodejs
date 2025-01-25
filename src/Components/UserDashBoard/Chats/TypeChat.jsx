@@ -76,7 +76,7 @@ export default function TypeChat({ chatId, isGroup }) {
   return (
     <div className={` ${darkMode?"dark-mode border-2 border-white":""} flex items-center gap-4 bg-white p-2 rounded-2xl`}>
       {/* Emoji Icon */}
-      <div className="relative dark-mode">
+      <div className="relative">
         <img
           src={emojiIcon}
           alt="Emoji"
@@ -102,7 +102,7 @@ export default function TypeChat({ chatId, isGroup }) {
         placeholder="Type your message"
         value={messageText}
         onChange={(e) => setMessageText(e.target.value)}
-        className={` ${darkMode?"dark-mode":""} border-2 border-blue-500 focus:outline-none focus:border-blue-700 p-2 w-[81%] h-[50px] rounded-lg dark-mode`}
+        className={` ${darkMode?"dark-mode":""} border-2 border-blue-500 focus:outline-none focus:border-blue-700 p-2 w-[81%] h-[50px] rounded-lg `}
       />
 
       {/* Send Button */}
@@ -111,7 +111,7 @@ export default function TypeChat({ chatId, isGroup }) {
           e.preventDefault();
           sendMessages();
         }}
-        className={` ${darkMode?"dark-mode":""} p-1 bg-white rounded-lg text-white dark-mode`}
+        className={` ${darkMode?"dark-mode":""} p-1 bg-white rounded-lg text-white`}
       >
         <img className="h-[32px] " src={sendMessagesIcon} alt="Send" />
       </button>

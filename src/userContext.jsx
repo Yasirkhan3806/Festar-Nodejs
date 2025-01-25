@@ -227,10 +227,18 @@ export const UserProvider = ({ children }) => {
 // EventsProvider
 export const EventsProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
+  const [userId, setUserId] = useState(null);
 
-  const fetchEvents = async () => {
+  // Fetch events when userId changes
+  const fetchEvents = async (userId) => {
+    if (!userId) {
+      setEvents([]); // Clear events if there's no user
+      return;
+    }
+
     try {
-      const snapshot = await getDocs(collection(db, "UserEvents"));
+      const q = query(collection(db, "UserEvents"), where("userId", "==", userId));
+      const snapshot = await getDocs(q);
       const eventsData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -242,12 +250,26 @@ export const EventsProvider = ({ children }) => {
     }
   };
 
+  // Listen for authentication state changes
   useEffect(() => {
-    fetchEvents();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid); // Set userId if user is logged in
+      } else {
+        setUserId(null); // Clear userId if user is logged out
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup the listener on unmount
   }, []);
 
+  // Fetch events when userId changes
+  useEffect(() => {
+    fetchEvents(userId);
+  }, [userId]);
+
   return (
-    <EventsContext.Provider value={{ events }}>
+    <EventsContext.Provider value={{ events, fetchEvents }}>
       {children}
     </EventsContext.Provider>
   );

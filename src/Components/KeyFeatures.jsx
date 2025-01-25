@@ -1,7 +1,7 @@
 import React from 'react';
-import dashboard from '../assets/Pictures/dashboard.jpg';
-import integration from '../assets/Pictures/integration.jpg';
-import security from '../assets/Pictures/security.jpg';
+import dashboard from '../assets/Pictures/dashboard.avif';
+import integration from '../assets/Pictures/integration.avif';
+import security from '../assets/Pictures/security.avif';
 import { useTheme } from '../ThemeContext';
 
 

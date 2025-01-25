@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createIndividualChat } from '../CreatingChatDB';
 import getMembersDataByEmail from '../gettingMembersData';
 import {useUser} from '../../../../userContext'
+import { useTheme } from '../../../../ThemeContext';
 
 
 
@@ -10,15 +11,12 @@ const IndividualChat = () => {
   const [initialMessage, setInitialMessage] = useState("");
   const [userDataList, setUserDataList] = useState([]); // State to store the fetched user data
   const {userName} = useUser()
+  const {darkMode} = useTheme()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createIndividualChat(userDataList[0].userId,userDataList,userName);
     // Handle form submission (e.g., send to Firebase)
-    
-    console.log("Receiver Email:", receiverEmail);
-    console.log("Initial Message:", initialMessage);
-    console.log("User Data List:", userDataList.userId);
     // createIndividualChat(receiverEmail, userDataList) // Call this when the user data is available
   };
 
@@ -45,12 +43,12 @@ const IndividualChat = () => {
     <div className="mb-4">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Receiver Email</label>
+          <label className={`${darkMode?"dark-mode":""} block text-sm font-medium text-gray-700`}>Receiver Email</label>
           <input
             type="email"
             value={receiverEmail}
             onChange={(e) => setReceiverEmail(e.target.value)}
-            className="mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`${darkMode?"dark-mode":""} mt-1 block w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 `}
             placeholder="Enter receiver's email"
             required
           />

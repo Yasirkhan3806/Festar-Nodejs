@@ -1,5 +1,5 @@
 import React from 'react';
-import security from './pictures/security.jpg';
+import security from '../../assets/Pictures/security.avif';
 import dataEncryption from './icons/dataencryption.png';
 import securityChecks from './icons/SecurityChecks.png';
 import secureAuth from './icons/Secureauth.png';

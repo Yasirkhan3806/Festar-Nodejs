@@ -1,4 +1,5 @@
 import React,{useContext} from 'react';
+import DashNav from '../DashNav';
 import ContactHeader from './ChatSectionNav';
 import TypeChat from './TypeChat';
 import MainChat from './MainChat';
@@ -22,7 +23,7 @@ export default function ChatSection({ chatId, navData, isGroup }) {
 
   return (
     <>
-      <div id='main' className='w-[99%] h-[95vh]'>
+      <div id='main' className='w-[99%] h-[95vh] lg:h-screen md:h-screen'>
         <div id='contact-header' className='h-[20%]'>
           <ContactHeader navData={finalNavData} />
         </div>

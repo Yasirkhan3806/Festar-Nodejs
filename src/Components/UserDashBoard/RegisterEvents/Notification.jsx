@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import crossIcon from '../icons/crossIcon.png';
 import notificationIcon from '../icons/notificationsIcon.png';
 import conferenceImage from '../pictures/conferenceImage.png';
-import bgReIntroPicture from "../../../assets/Pictures/bgReIntroPicture.png"
+import bgReIntroPicture from "../../../assets/Pictures/bgReIntroPicture.avif"
 import { useEvents } from '../../../userContext';
 import { useTheme } from '../../../ThemeContext';
 
-export default function Notification({ onClose }) {
+export default function Notification() {
   const [eventNotifications, setEventNotifications] = useState([]);
   const {events} = useEvents()
   const {darkMode} = useTheme();
@@ -49,6 +49,10 @@ export default function Notification({ onClose }) {
     return eventDate.toLocaleDateString("en-US", { timeZone: "Asia/Karachi" });
   };
 
+  const onClose = ()=>{
+    setEventNotifications([])
+  }
+
   return (
     <div >
       {eventNotifications.map((event, index) => (
@@ -68,9 +72,9 @@ export default function Notification({ onClose }) {
             {/* Format the event date to exclude the default time (00:00:00) */}
             {`You have event today at (${event.startTime} - ${event.endTime})`}
           </span>
-          <button onClick={onClose} className="">
+          <a onClick={onClose} className="">
             <img src={crossIcon} alt="" />
-          </button>
+          </a>
           </span>
         </div>
       ))}

@@ -67,7 +67,7 @@ useEffect(() => {
 
   return (
     <div className={`max-w-md mx-auto bg-white rounded-lg shadow-md p-4 border-[2.5px] border-b-4 border-blue-400  ${darkMode?"dark-mode":""}`}>
-      <h2 className={` ${darkMode?"dark-mode":""} text-xl font-bold text-gray-800 mb-4 dark-mode`}>People</h2>
+      <h2 className={` ${darkMode?"dark-mode":""} text-xl font-bold text-gray-800 mb-4`}>People</h2>
       <div className="space-y-4">
         {people.map((person) => {
            const recentMessage = unreadMessages.messages.find(
@@ -87,7 +87,7 @@ useEffect(() => {
               getChats(person.chatId,receiverPicture,receiverName)
                 // console.log("I am clicked")
               }}
-            className="flex items-center justify-between p-2 rounded-md "
+            className="flex items-center justify-between p-2 rounded-md cursor-pointer"
           >
             <div className="flex items-center space-x-4">
               <img
@@ -96,7 +96,7 @@ useEffect(() => {
                 className="h-12 w-12 rounded-full"
               />
               <div>
-                <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800 dark-mode`}>
+                <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800 `}>
                 {person.receiverName === auth.currentUser.displayName ?person.senderName:person.receiverName  || "guest"}
                 </h3>
                 <p className="text-xs text-gray-500 truncate">{recentMessage? recentMessage.message:"No Recent Messages"}</p>
@@ -109,26 +109,6 @@ useEffect(() => {
                       {unreadCount}
                     </span>
                   )}
-              {/* {person.readStatus === "unread" ? (
-                <span className="text-xs text-white bg-blue-500 rounded-full h-5 w-5 flex items-center justify-center">
-                  1
-                </span>
-              ) : (
-                <svg
-                  className="h-4 w-4 text-gray-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              )} */}
             </div>
             <div>
               <DeleteGroup chatId={person.chatId} isGroup={false}/>

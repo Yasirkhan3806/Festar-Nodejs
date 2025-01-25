@@ -27,6 +27,7 @@ export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForM
 
   const getChats = async (chatId, groupPicture, groupName) => {
     try {
+      console.log("i am getting clicked")
       gettingChats(chatId, setCurrentChat,true); // Fetch chat data
       setNavData({
         groupPicture: groupPicture,
@@ -69,8 +70,8 @@ export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForM
   }, [groups]); // Run when groups or the current user changes
 
   return (
-    <div className={`max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 border-[2.5px] border-b-4 border-blue-400 dark-mode  ${darkMode?"dark-mode":""}`}>
-      <h2 className={`text-xl font-bold text-gray-800 mb-4 dark-mode  ${darkMode?"dark-mode":""}`}>Groups</h2>
+    <div className={`max-w-md mx-auto bg-white rounded-xl shadow-lg p-4 border-[2.5px] border-b-4 border-blue-400  ${darkMode?"dark-mode":""}`}>
+      <h2 className={`text-xl font-bold text-gray-800 mb-4  ${darkMode?"dark-mode":""}`}>Groups</h2>
       <div className="space-y-4 ">
         {groups.length > 0 ? (
           groups.map((group) => {
@@ -90,7 +91,7 @@ export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForM
                 onClick={() =>
                   getChats(group.chatid, group.groupPicture, group.chatName)
                 }
-                className="flex items-center justify-between p-2 rounded-md border-b-2 border-gray-200 "
+                className="flex items-center justify-between p-2 rounded-md border-b-2 border-gray-200 cursor-pointer "
               >
                 <div className="flex items-center space-x-4 ">
                   <img
@@ -99,7 +100,7 @@ export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForM
                     className="h-12 w-12 rounded-full "
                   />
                   <div>
-                    <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800 dark-mode`}>
+                    <h3 className={` ${darkMode?"dark-mode":""} text-sm font-semibold text-gray-800`}>
                       {group.chatName || 'Untitled Group'}
                     </h3>
                     <p className="text-xs text-gray-500">

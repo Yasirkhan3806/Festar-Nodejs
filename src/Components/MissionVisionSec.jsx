@@ -1,5 +1,5 @@
 import React from "react";
-import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
+import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.avif';
 import foundingYear from "../assets/icons/icons8-year-2024-48.png";
 import usersPic from "../assets/icons/icons8-users-30.png";
 import teamMembers from "../assets/icons/icons8-team-30.png";

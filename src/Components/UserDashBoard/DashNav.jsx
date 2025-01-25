@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/Pictures/logo_primary_V17oRtSd.png";
 import logoWhite from "../../assets/Pictures/logo-inverted-color.png"
-import userIcon from "./icons/userIcon2.png";
+import DashSide from "./DashSide";
 import { useUserData } from "../../userContext";
 import { useTheme } from "../../ThemeContext";
 import UserName from "./settings/UserName";
@@ -13,19 +13,6 @@ export default function DashNav() {
   const {userData}  = useUserData()
   const {darkMode} = useTheme();
   const [width] = useWindowSize();
-  const [mobWindow,setMobWindow] = useState(false)
- 
-  const renderDarkModeToggle = ()=>{
-    if(width <= 768){
-      setMobWindow(false)
-    }else{
-      setMobWindow(true)
-    }
-  }
-  
-  useEffect(()=>{
-    renderDarkModeToggle()
-  },[width])
 
   return (
     <nav className="w-[100%]">
@@ -34,8 +21,9 @@ export default function DashNav() {
           <img className="h-20" src={darkMode?logoWhite:logo} alt="" />
         </li>
         <li className="flex mt-6 gap-8">
-          {mobWindow && <DarkmodeToggler/>}
-          {mobWindow && <UserName/>}
+          
+          {width >= 768 && <DarkmodeToggler/>}
+          {width >= 768 && <UserName/>}
         </li>
       </ul>
     </nav>
