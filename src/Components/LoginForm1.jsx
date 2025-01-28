@@ -108,8 +108,8 @@ export default function LoginForm1({setSignup}) {
         };
   return (
     <>
-           <div className={`p-2 w-[82%] h-[64%] md:w-[31rem] lg:w-[32rem] lg:h-[31rem] shadow-lg  flex flex-col justify-center items-center 
-           ${darkMode?"dark-mode":"bg-white"} border-2 border-white rounded-lg`} id="login-form">
+           <div className={`p-2 w-[82%] h-[68%] [@media(min-width:535px)]:w-[31rem] md:w-[31rem] lg:w-[32rem] lg:h-[31rem] shadow-lg  flex flex-wrap flex-col justify-center items-center 
+           ${darkMode?"dark-mode":"bg-white"} border-2 border-white rounded-lg `} id="login-form">
           <div className=" mx-auto">
             <h1 className="text-4xl font-bold text-blue-700 mb-6">Festar</h1>
             <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>

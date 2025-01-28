@@ -84,7 +84,7 @@ export default function SignUpForm({ setSignUp }) {
   return (
       <div
         id="sign-up"
-        className={`w-[82%] h-[64%] md:w-[31rem] lg:w-[32rem] lg:h-[31rem]  ${
+        className={`w-[82%] h-[72%] [@media(min-width:535px)]:w-[31rem] md:w-[31rem] lg:w-[32rem] lg:h-[31rem]  ${
           darkMode ? "dark-mode" : "bg-white"
         } flex flex-col justify-center  p-4 md:p-8 rounded-lg shadow-lg border-2 border-white`}
       >
