@@ -1,44 +1,56 @@
 import React, { useState } from 'react';
 import { db } from '../../../Config/firebase'; // Adjust the import based on your Firebase setup
-import { doc,setDoc,collection } from 'firebase/firestore';
+import { doc, setDoc, collection } from 'firebase/firestore';
 import { auth } from '../../../Config/firebase'; // Import Firestore methods
+import 'react-toastify/dist/ReactToastify.css'; // Import the default styles
 
-export default function RegisterEventForm({  onClose }) {
+export default function RegisterEventForm({ onClose,notify }) {
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [notes, setNotes] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
+
+  // Initialize Toastify
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading when the form is submitted
 
     try {
-        // Prepare data to be stored
-        const eventData = {
-            eventName,
-            eventDate,
-            startTime,
-            endTime,
-            notes,
-            userId: auth.currentUser.uid, // Store user ID with the event
-        };
+      // Prepare data to be stored
+      const eventData = {
+        eventName,
+        eventDate,
+        startTime,
+        endTime,
+        notes,
+        userId: auth.currentUser.uid, // Store user ID with the event
+      };
 
-        // Generate a unique document ID (you can use timestamp, or use Firestore's auto-ID)
-        const eventDocRef = doc(collection(db, 'UserEvents'));
+      // Generate a unique document ID (you can use timestamp, or use Firestore's auto-ID)
+      const eventDocRef = doc(collection(db, 'UserEvents'));
 
-        // Store the event data in Firestore with a unique document ID
-        await setDoc(eventDocRef, eventData);
+      // Store the event data in Firestore with a unique document ID
+      await setDoc(eventDocRef, eventData);
 
-        // Optionally, reset the form or close the modal
-        onClose();
+      // Show success toast
+      notify();
+
+      // Optionally, reset the form or close the modal
+      onClose();
     } catch (error) {
-        console.error("Error saving event data: ", error);
+      console.error("Error saving event data: ", error);
+    } finally {
+      setLoading(false); // Stop loading when the event is saved or an error occurs
     }
-};
+  };
 
   return (
     <>
+      {/* ToastContainer for Toastify */}
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center">
         <div className="relative bg-blue-500 p-6 rounded-lg w-80 text-white">
           <h2 className="text-lg font-semibold mb-4">Event Information</h2>
@@ -100,8 +112,16 @@ export default function RegisterEventForm({  onClose }) {
 
             {/* Save Button */}
             <div className="text-center">
-              <button type="submit" className="bg-white text-blue-500 py-2 px-6 rounded-md font-semibold">
-                Save Event
+              <button 
+                type="submit" 
+                className={`bg-white text-blue-500 py-2 px-6 rounded-md font-semibold ${loading ? 'cursor-not-allowed opacity-50' : ''}`} 
+                disabled={loading} // Disable button when loading
+              >
+                {loading ? (
+                  <div className="w-5 h-5 border-4 border-t-4 border-white border-solid rounded-full animate-spin mx-auto"></div> // Loading spinner
+                ) : (
+                  'Save Event'
+                )}
               </button>
             </div>
           </form>
@@ -129,6 +149,9 @@ export default function RegisterEventForm({  onClose }) {
           </button>
         </div>
       </div>
+
+      {/* ToastContainer for notifications */}
+  
     </>
   );
 }

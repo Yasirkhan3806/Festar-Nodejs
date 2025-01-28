@@ -20,7 +20,7 @@ export default function EventsDataColl() {
         <>
             <div className={` bg-blue-200 font-monts  p-6 rounded-lg w-[70%] overflow-x-auto overflow-y-auto h-80  border-blue-500 border-2 shadow-xl  ${darkMode?"dark-mode":""}`}>
                 <h1 className="text-2xl font-bold  text-center text-white mb-4">Upcoming Events & Meetings</h1>
-                <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col gap-3 justify-center items-center">
                     {upcomingEvents.map(event => {
                         // Extract only the day of the month
                         const eventDate = new Date(event.eventDate).getDate(); // Get the day number

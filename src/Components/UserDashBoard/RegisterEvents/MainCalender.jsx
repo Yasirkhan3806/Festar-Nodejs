@@ -4,6 +4,7 @@ import ReusableCalendar from './ReusableCalender';
 import EventsDates from './eventsDates';
 import RegisterEventForm from './RegisterEventForm';
 import { useTheme } from '../../../ThemeContext';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast and ToastContainer from React Toastify
 
 export default function MainCalendar() {
   const [showForm, setShowForm] = useState(false);
@@ -14,6 +15,12 @@ export default function MainCalendar() {
 
   const handleCloseForm = () => { 
     setShowForm(false);
+  };
+
+  const notify = () => {
+    toast.success('Meeting data is set up! Please refresh the page.',{
+      className:'custom-toast'
+    });
   };
   return (
     <div className="md:flex h-screen p-4">
@@ -32,10 +39,11 @@ export default function MainCalendar() {
       </button>
 
       {/* Popup Form */}
-      {showForm && <RegisterEventForm onClose={handleCloseForm}  />}
+      {showForm && <RegisterEventForm onClose={handleCloseForm} notify={notify}  />}
       </div>
 
       {/* Main Calendar View */}
+      <ToastContainer />
       <div className={` ${darkMode?"dark-mode":""} w-full md:w-3/4 bg-white p-4 rounded-lg md:ml-4 shadow-lg`}>
       <EventsDates/>
       </div>

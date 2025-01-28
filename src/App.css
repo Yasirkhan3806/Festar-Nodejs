@@ -162,4 +162,30 @@ background: #ffffff;
   color: black;
   font-weight: 600;
 }
+
+.custom-toast{
+  background-color: white;
+}
+.custom-toast .Toastify__progress-bar {
+  background-color: rgb(0, 132, 255) !important; /* White progress bar */
+}
+
+/* Add this in your global CSS to make the three dots appear */
+.dot {
+  display: inline-block;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
   

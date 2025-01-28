@@ -95,7 +95,7 @@ export default function GroupChatPopup({ setShowPopup }) {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className={`${darkMode?"dark-mode":""} bg-white p-6 rounded-lg w-[70%] md:w-1/2 lg:w-1/2`}>
+      <div className={`${darkMode?"dark-mode":""} bg-white p-6 rounded-lg w-[70%] md:w-1/2 lg:w-[30%]`}>
         <span className="flex justify-between">
           <h2 className="text-2xl font-semibold text-center mb-4">
             Create Chat

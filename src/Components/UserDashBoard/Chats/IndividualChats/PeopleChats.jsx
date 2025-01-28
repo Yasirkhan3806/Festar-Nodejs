@@ -5,7 +5,7 @@ import DeleteGroup from "../DeleteChats/deleteGroup";
 import personIcon from '../icons/personIcon.png';
 import { gettingChats } from "../gettingChatsData";
 import { auth } from "../../../../Config/firebase";
-import { useUser } from "../../../../userContext";
+import useWindowSize from "../../WindowSize";
 import { useTheme } from "../../../../ThemeContext";
 import ChatContext from "../ChatsContext";
 
@@ -14,6 +14,7 @@ export default function PeopleChats({setNavData,setChatId,setIsGroup,navigateFor
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
    const {darkMode} = useTheme();
    const {setCurrentChat} = useContext(ChatContext)
+   const [width] = useWindowSize()
 
 useEffect(()=>{
 gettingChatsDataIndividual(setPeople)
@@ -31,7 +32,9 @@ setNavData({
 setChatId(chatId)
 setIsGroup(false)
 settingRead(chatId,false); // Mark messages as read
+if(width <= 768){
 navigateForMobiles(receiverName,receiverPicture)
+}
   }catch(error){
     console.log("error in getting chats",error)
   }

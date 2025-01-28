@@ -11,6 +11,7 @@ const StartMeetingPopup = ({ setOpen }) => {
   const [meetingName, setMeetingName] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
   const [host, setHost] = useState(false);
+  const [loading, setLoading] = useState(false); // Added loading state
   const db = getFirestore();
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
@@ -26,12 +27,6 @@ const StartMeetingPopup = ({ setOpen }) => {
     return `${formattedHours}:${minutes} ${period}`;
   };
 
-  /**
-   * Generates a random unique ID.
-   * @param {string} prefix - Optional prefix for the ID.
-   * @param {string} suffix - Optional suffix for the ID.
-   * @returns {string} A random unique ID.
-   */
   function generateUniqueId(prefix = "", suffix = "") {
     const timestamp = Date.now(); // Current timestamp in milliseconds
     const randomNumber = Math.floor(Math.random() * 1_000_000); // Random number up to 999,999
@@ -49,9 +44,10 @@ const StartMeetingPopup = ({ setOpen }) => {
       return;
     }
 
-    // Extract date and time separately from the datetime-local input
     const [date, time] = startDateTime.split("T");
     const formattedTime = formatTime12Hour(time);
+
+    setLoading(true); // Set loading to true when the button is clicked
 
     try {
       await addDoc(collection(db, "UserMeetingData"), {
@@ -63,26 +59,22 @@ const StartMeetingPopup = ({ setOpen }) => {
         uniqueId,
       });
 
-      // Wait until the uniqueId is set in the provider
       setUniqueIdFilter(uniqueId);
       localStorage.setItem("uniqueId", uniqueId);
-      alert("Meeting saved successfully!");
       setHost(true);
-      navigate("/MeetingRoom", {
-        state: { host: true },
-      });
+      navigate("/MeetingRoom", { state: { host: true } });
     } catch (error) {
       console.error("Error saving meeting:", error);
       alert("Failed to save meeting. Please try again.");
+    } finally {
+      setLoading(false); // Set loading back to false after the operation completes
     }
   };
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
       <div className={`bg-white rounded-lg p-6 shadow-lg w-96 ${darkMode ? "dark-mode" : ""}`}>
-        <h2 className={`text-lg font-semibold mb-4 ${darkMode ? "dark-mode" : ""}`}>
-          Create a Meeting
-        </h2>
+        <h2 className={`text-lg font-semibold mb-4 ${darkMode ? "dark-mode" : ""}`}>Create a Meeting</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className={`block text-sm font-medium text-gray-700 mb-1 ${darkMode ? "dark-mode" : ""}`}>
@@ -118,8 +110,17 @@ const StartMeetingPopup = ({ setOpen }) => {
             <button
               type="submit"
               className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${darkMode ? "dark-mode-btn" : ""}`}
+              disabled={loading} // Disable button when loading
             >
-              Save Meeting
+              {loading ? (
+                <span className="flex justify-center items-center space-x-1">
+                  <span className={`${darkMode?"dark-mode":"bg-white"} dot animate-pulse w-2.5 h-2.5 rounded-full`}></span>
+                  <span className={`${darkMode?"dark-mode":"bg-white"} dot animate-pulse w-2.5 h-2.5 rounded-full`}></span>
+                  <span className={`${darkMode?"dark-mode":"bg-white"} dot animate-pulse w-2.5 h-2.5 rounded-full`}></span>
+                </span>
+              ) : (
+                "Save Meeting"
+              )}
             </button>
           </div>
         </form>

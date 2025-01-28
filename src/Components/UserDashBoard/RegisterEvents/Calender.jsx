@@ -18,6 +18,8 @@ export function UserProfile({ setUser }) {
 }
 
 
+
+
 export default function Calendar() {
   const {darkMode} = useTheme();
   const handleDateClick = (date) => {
@@ -40,7 +42,7 @@ export default function Calendar() {
       />
 
       {/* Create Event Button */}
-      <Link to="/Register-event" className={` ${darkMode?"dark-mode-btn":""} mt-6 flex w-[180px] md:w-[175px] lg:w-[40%] bg-blue-500 hover:bg-white  text-white hover:text-blue-500 font-bold py-2 px-4 rounded-full shadow-md transition duration-500`}>
+      <Link to="/Register-event" className={` ${darkMode?"dark-mode-btn":""} mt-6 flex w-[180px] md:w-[175px] lg:w-[40%] bg-blue-500 hover:bg-white  text-white hover:text-blue-500 font-bold py-2 px-4 rounded-full shadow-md transition duration-500 cursor-pointer`}>
         <BsPlus className="text-2xl mr-2" /> Create Event
       </Link>
     </div>

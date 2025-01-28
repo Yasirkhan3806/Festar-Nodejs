@@ -1,11 +1,13 @@
 import React from 'react';
 import introPicture from '../assets/Pictures/introPicture.avif';
-import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.avif"
+import introPictureJpg from '../assets/Pictures/introPicture.jpg';
+import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.avif";
+import bgReIntroPicturePng from "../assets/Pictures/bgReIntroPicture.png";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import { useTheme } from '../ThemeContext';
 
 export default function IntroSection() {
-  const {darkMode} = useTheme()
+  const { darkMode } = useTheme();
   const [text] = useTypewriter({
     words: ['Meetings', 'Calls', 'Collabs'],
     loop: true,
@@ -19,19 +21,31 @@ export default function IntroSection() {
             Plan Your <span className="text-blue-500">{text}</span> <Cursor /> <br />
             with Festar
           </h1>
-          
+
           {/* Image for small screens */}
           <div className="w-full block md:hidden">
-            <img
-              data-aos="fade-left"
-              data-aos-delay="100"
-              data-aos-duration="2000"
-              className="max-h-25"
-              src={darkMode?bgReIntroPicture:introPicture}
-              alt="Meeting illustration"
-            />
+            <picture>
+              <source
+                media="(max-width: 767px)"
+                srcSet={darkMode ? bgReIntroPicture : introPicture}
+                type="image/avif"
+              />
+              <source
+                media="(max-width: 767px)"
+                srcSet={darkMode ? bgReIntroPicturePng : introPictureJpg}
+                type="image/jpeg"
+              />
+              <img
+                data-aos="fade-left"
+                data-aos-delay="100"
+                data-aos-duration="2000"
+                className="max-h-25"
+                src={darkMode ? bgReIntroPicturePng : introPictureJpg}
+                alt="Meeting illustration"
+              />
+            </picture>
           </div>
-          
+
           <p className="text-lg text-center">
             Welcome to Festar, your ultimate solution for seamless and efficient meeting planning.
             Experience the ease of organizing meetings just like Zoom or Google Meet.
@@ -49,14 +63,26 @@ export default function IntroSection() {
 
         {/* Image for larger screens */}
         <div className="hidden md:block w-2/4">
-          <img
-            data-aos="fade-left"
-            data-aos-delay="100"
-            data-aos-duration="2000"
-            className="max-h-25"
-            src={darkMode?bgReIntroPicture:introPicture}
-            alt="Meeting illustration"
-          />
+          <picture>
+            <source
+              media="(min-width: 768px)"
+              srcSet={darkMode ? bgReIntroPicture : introPicture}
+              type="image/avif"
+            />
+            <source
+              media="(min-width: 768px)"
+              srcSet={darkMode ? bgReIntroPicturePng : introPictureJpg}
+              type="image/jpeg"
+            />
+            <img
+              data-aos="fade-left"
+              data-aos-delay="100"
+              data-aos-duration="2000"
+              className="max-h-25"
+              src={darkMode ? bgReIntroPicturePng : introPictureJpg}
+              alt="Meeting illustration"
+            />
+          </picture>
         </div>
       </div>
     </>

@@ -6,12 +6,15 @@ import { settingRead } from './sendingMessages';
 import DeleteGroup from './DeleteChats/deleteGroup';
 import { useTheme } from '../../../ThemeContext';
 import ChatContext from './ChatsContext';
+import useWindowSize from '../WindowSize';
 
 export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForMobiles }) {
   const [groups, setGroups] = useState([]); // Initialize with an empty array
   const [unreadMessages, setUnreadMessages] = useState({ count: 0, messages: [] }); // Store unread messages and their count
   const {darkMode} = useTheme();
   const {setCurrentChat} = useContext(ChatContext)
+  const [width] = useWindowSize()
+  console.log(width)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +39,9 @@ export default function GrpChats({ setChatId, setNavData,setIsGroup,navigateForM
       setChatId(chatId); // Set the chatId to the state
       setIsGroup(true);
       settingRead(chatId,true); // Mark messages as read
+      if(width <= 768){
       navigateForMobiles(groupName,groupPicture)
+      }
     } catch (error) {
       console.error('Error fetching chat data:', error);
     }

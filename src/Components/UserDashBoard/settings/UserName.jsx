@@ -79,7 +79,7 @@ export default function UserName() {
           
             </span>
             <p className="text-xs text-gray-600">
-              {userData.length > 0 && userData[0].profilePicture
+              {userData.length > 0 
                 ? userData[0].email
                 : "No Email given"}
             </p>

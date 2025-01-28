@@ -1,5 +1,6 @@
 import React from "react";
-import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.avif';
+import missionpic from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic - Copy.avif';
+import missionpicJpg from '../assets/Pictures/colleagues-having-video-conference-coronavirus-pandemic.jpg';
 import foundingYear from "../assets/icons/icons8-year-2024-48.png";
 import usersPic from "../assets/icons/icons8-users-30.png";
 import teamMembers from "../assets/icons/icons8-team-30.png";
@@ -32,7 +33,11 @@ export default function MissionVisionSec() {
     <>
     <div className="flex flex-col w-full h-full gap-4 p-2 mb-16 lg:flex-row">
       <div className="w-2/4 h-3/4 mt-24 flex justify-center align-middle hidden lg:block">
-        <img data-aos ="fade-right"  className="" src={missionpic} alt="" />
+      <picture>
+            <source srcSet={missionpic} type="image/avif" />
+            <source srcSet={missionpicJpg} type="image/jpeg" />
+            <img data-aos="fade-right" className="" src={missionpicJpg} alt="Mission and Vision" />
+          </picture>
       </div>
       <div className="w-full sm:p-3  flex flex-col gap-2 lg:w-2/4 p-0 ">
       <div className="w-full">
@@ -40,7 +45,11 @@ export default function MissionVisionSec() {
         <p data-aos = "fade-up" className="mb-3 sm:text-center sm:mb-1">At Festar, we strive to simplify virtual meeting arrangements making them accessible for everyone. Our vision is to create engaging and productive online gatherings that foster collaboration across borders.</p>
         </div>
         <div className="w-full h-3/4 mt-16 flex justify-center align-middle block lg:hidden lg:w-2/4 lg:mt-34 ">
-        <img data-aos ="fade-up"  className="" src={missionpic} alt="" />
+        <picture>
+            <source srcSet={missionpic} type="image/avif" />
+            <source srcSet={missionpicJpg} type="image/jpeg" />
+            <img data-aos="fade-right" className="" src={missionpicJpg} alt="Mission and Vision" />
+          </picture>
       </div>
         {/* <img className="max-h-2/4" src={missionpic} alt="" /> */}
         <div className="flex flex-row flex-wrap gap-2">
