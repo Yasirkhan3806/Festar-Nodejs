@@ -23,7 +23,7 @@ const VideoCall = ({ appId, channelName, uid,meetingRName, mStartTime,mMeetingDa
   const fetchToken = async (channelName, uid, role) => {
     try {
       console.log(`Fetching token for channel: ${channelName}, UID: ${uid}, Role: ${role}`);
-      const response = await axios.get("http://localhost:3000/rtcToken", {
+      const response = await axios.get("https://token-generator-rest-api.vercel.app/rtcToken", {
         params: { channelName, uid, role },
         headers: { "ngrok-skip-browser-warning": "true" },
       });

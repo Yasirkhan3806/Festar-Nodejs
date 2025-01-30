@@ -29,7 +29,7 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
   const fetchToken = async (channelName, uid, role) => {
     try {
       console.log(`Fetching token for channel: ${channelName}, uid: ${uid}, role: ${role}`);
-      const response = await axios.get(`http://localhost:3000/rtcToken`, {
+      const response = await axios.get(`https://token-generator-rest-api.vercel.app/rtcToken`, {
         params: {
           channelName: channelName,
           uid: uid,
