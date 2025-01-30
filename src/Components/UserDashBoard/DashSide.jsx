@@ -40,9 +40,10 @@ export default function DashSide({ activeItem, setActiveItem }) {
 
       {/* Sidebar */}
       <div
-        className={`mt-[-2rem] md:mt-0 lg:mt-0 font-monts font-bold p-6 py-9 flex flex-col gap-7 md:gap-14 w-64 absolute top-0 left-0 h-screen transform ${
+        className={` mt-[-2rem] md:mt-0 lg:mt-0 font-monts font-bold p-6 py-9 flex flex-col gap-7 md:gap-14 w-64 
+          absolute top-0 left-0 h-screen transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 md:relative md:translate-x-0 ${
+        } transition-transform duration-300 md:fixed md:top-16 md:translate-x-0 ${
           darkMode ? "bg-black text-black" : "bg-blue-500"
         } md:bg-transparent`}
       >
