@@ -3,14 +3,16 @@ import teamMember from "../pictures/conferenceImage.png";
 import { BsPlus } from "react-icons/bs";
 import StartMeetingPopup from "./MeetingRoomComponents/StartMeetingPopup";
 import { useTheme } from "../../../ThemeContext";
+import BackgroundAnimation from "../../BoxMoveAnimations";
 
 export default function CreateMenuOpt() {
   const [open,setOpen] = useState(false)
   const {darkMode} = useTheme();
   return (
-    <div className={` ${darkMode?"dark-mode":""} flex flex-col justify-center items-center bg-blue-500 min-h-screen py-8 px-4 dark-mode `}>
-      {/* Card Container */}
-      <div className={`  ${darkMode?"dark-mode  border-2 border-white":""} w-full max-w-5xl flex flex-col md:flex-row gap-6 bg-white p-6 rounded-lg shadow-xl`}>
+    <div className="relative">
+    <BackgroundAnimation />
+    <div className="absolute inset-0 flex items-center justify-center">
+    <div className={`  ${darkMode?"dark-mode  border-2 border-white":""} w-full max-w-5xl flex flex-col md:flex-row gap-6 bg-white p-6 rounded-lg shadow-xl`}>
         {/* Image Section */}
         <div className="flex-1 flex justify-center items-center bg-blue-100 rounded-lg overflow-hidden">
           <img
@@ -56,19 +58,21 @@ export default function CreateMenuOpt() {
                 most out of your time together.
               </p>
             </li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Start Meeting Button */}
-      <button
+            <button
       onClick={()=>setOpen(true)}
-        className="mt-6 flex items-center justify-center bg-white hover:bg-blue-600 text-blue-500 hover:text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 focus:outline-none focus:ring focus:ring-blue-300"
+        className="mt-6 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white hover:text-white font-bold py-3 px-6 rounded-full shadow-lg transition duration-300 focus:outline-none focus:ring focus:ring-blue-300"
         aria-label="Start Meeting"
       >
         <BsPlus className="text-2xl mr-2" /> Start Meeting
       </button>
       {open && <StartMeetingPopup setOpen = {setOpen}/> }
-    </div>
+          </ul>
+        </div>
+      </div>
+
+      {/* Start Meeting Button */}
+     
+      </div>
+      </div>
   );
 }

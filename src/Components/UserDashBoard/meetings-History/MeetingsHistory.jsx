@@ -9,10 +9,7 @@ export default function MeetingsHistory() {
   useEffect(() => {
     const fetchData = async () => {
       const meetings = await fetchMeetings();
-      const MeetingData = meetings
-  .filter((data) => data.meetingData) // Filter out elements where `meetingData` is falsy
-  .map((data) => data.meetingData); // Extract `meetingData` from the filtered elements
-      setMeetingData(MeetingData[0]);
+      setMeetingData(meetings);
     };
 
     fetchData();
@@ -21,7 +18,7 @@ export default function MeetingsHistory() {
   return (
     <div className={`max-w-full h-[20rem] mx-auto p-6 bg-white shadow-lg rounded-lg border-2 border-white  ${darkMode?"dark-mode":""}`}>
       <h2 className="text-2xl font-semibold text-blue-500 mb-4">Meetings History</h2>
-      <div className="space-y-4 overflow-y-auto h-[16rem] overflow-x-hidden">
+      <div className="space-y-4 overflow-y-auto h-[15rem] overflow-x-hidden hide-scrollbar">
         {meetingData && meetingData.length > 0 ?(meetingData.map((meeting) => (
           <div
             key={meeting.id}

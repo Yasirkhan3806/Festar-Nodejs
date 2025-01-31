@@ -98,7 +98,7 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
           return prevUsers;
         });
 
-        // Call setRemoteUsers instead of setParticipants
+        // // Call setRemoteUsers instead of setParticipants
         // setRemoteUsersState((prevUsers) => {
         //   if (!prevUsers.find((u) => u.uid === user.uid)) {
         //     return [...prevUsers, user];
@@ -127,30 +127,30 @@ const Participant = ({ appId, channelName, uid, userStringId,mStartTime,meetingR
       console.log("Call started!");
 
       // Monitor remote video element
-      // const checkRemoteVideo = async () => {
-      //   // Check if the remote player div exists
-      //   const remoteDiv = document.getElementById(`remote-player-${userId}`);
+      const checkRemoteVideo = async () => {
+        // Check if the remote player div exists
+        const remoteDiv = document.getElementById(`remote-player-${userId}`);
         
-      //   if (remoteDiv) {
-      //     const remoteVideoElements = remoteDiv.querySelectorAll('video'); 
+        if (remoteDiv) {
+          const remoteVideoElements = remoteDiv.querySelectorAll('video'); 
           
-      //     if (remoteVideoElements.length === 0 && retryCount < 3) {
-      //       console.log(`Remote video element not found, retrying call...`);
-      //       setRetryCount((prev) => prev + 1);
-      //       await leaveCall();
-      //       await startCall(); // Retry starting the call
-      //     }
-      //   } else {
-      //     console.log(`Remote div not found for user ${userId}, retrying call...`);
-      //     setRetryCount((prev) => prev + 1);
-      //     await leaveCall();
-      //     await startCall(); // Retry starting the call
-      //   }
-      // };
+          if (remoteVideoElements.length === 0 && retryCount < 3) {
+            console.log(`Remote video element not found, retrying call...`);
+            setRetryCount((prev) => prev + 1);
+            await leaveCall();
+            await startCall(); // Retry starting the call
+          }
+        } else {
+          console.log(`Remote div not found for user ${userId}, retrying call...`);
+          setRetryCount((prev) => prev + 1);
+          await leaveCall();
+          await startCall(); // Retry starting the call
+        }
+      };
       
 
       // Set a timeout to check remote video availability after 3 seconds
-      // setTimeout(checkRemoteVideo, 3000);
+      setTimeout(checkRemoteVideo, 3000);
 
     } catch (error) {
       console.error("Error starting call:", error);

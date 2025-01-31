@@ -5,7 +5,6 @@ import { useTheme } from '../../../../ThemeContext';
 export default function EventsDataColl() {
     const {events} = useEvents();
     const {darkMode} = useTheme();
-    console.log(events)
 
     // Get today's date for comparison
     const today = new Date().setHours(0, 0, 0, 0); // Normalize to midnight to ignore time part
