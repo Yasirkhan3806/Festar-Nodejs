@@ -38,7 +38,7 @@ export default function KeyFeatures() {
       </p>
       <div className='flex flex-col justify-around mb-16 md:flex-row'>
         {data.map((item, index) => (
-          <div key={index} className={`flex flex-col gap-3 w-[100%] md:w-[30%] m-1 ${darkMode ? "dark-mode-shadow" : "div-shadow"} rounded-3xl p-2 cursor-pointer ${darkMode ? "dark-mode dark-mode-shadow" : ""}`}>
+          <div key={index} className={`flex flex-col gap-5 w-[100%] md:w-[30%] m-1 ${darkMode ? "dark-mode-shadow" : "div-shadow"} rounded-3xl p-2 cursor-pointer ${darkMode ? "dark-mode dark-mode-shadow" : ""}`}>
             <picture className="h-2/3 w-full rounded-lg">
               <source
                 srcSet={item.fallback}
@@ -56,9 +56,9 @@ export default function KeyFeatures() {
             </picture>
             <h2 className="text-2xl font-bold">{item.title}</h2>
             <p className="text-sm">{item.description}</p>
-            <button className='w-2/4 md:w-[65%] lg:w-2/5 self-center bg-white hover:bg-blue-500 font-semibold transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4'>
+            {/* <button className='w-2/4 md:w-[65%] lg:w-2/5 self-center bg-white hover:bg-blue-500 font-semibold transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4'>
               Learn More
-            </button>
+            </button> */}
           </div>
         ))}
       </div>

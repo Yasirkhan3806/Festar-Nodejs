@@ -5,8 +5,10 @@ import bgReIntroPicture from "../assets/Pictures/bgReIntroPicture.avif";
 import bgReIntroPicturePng from "../assets/Pictures/bgReIntroPicture.png";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import { useTheme } from '../ThemeContext';
+import LearnMoreButton from './LearnMoreSection';
 
 export default function IntroSection() {
+
   const { darkMode } = useTheme();
   const [text] = useTypewriter({
     words: ['Meetings', 'Calls', 'Collabs'],
@@ -52,9 +54,7 @@ export default function IntroSection() {
           </p>
 
           <ul className="flex space-x-3 space-y-8 w-90 justify-center">
-            <button className="bg-blue-500 hover:bg-white transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 rounded-md h-12 text-white hover:text-blue-500 leading-normal font-monts shadow-sm mt-8">
-              Learn More
-            </button>
+           <LearnMoreButton/>
             <button className="bg-white hover:bg-blue-500 transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 text-blue-400 hover:text-white leading-normal font-monts shadow-sm">
               Get Started
             </button>
