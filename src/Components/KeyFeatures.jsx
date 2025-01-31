@@ -6,6 +6,7 @@ import integrationJpg from '../assets/Pictures/integration.jpg';
 import security from '../assets/Pictures/security.avif';
 import securityJPG from '../assets/Pictures/security.jpg';
 import { useTheme } from '../ThemeContext';
+import LearnMoreButton from './LearnMoreSection';
 
 export default function KeyFeatures() {
   const { darkMode } = useTheme();
@@ -56,6 +57,9 @@ export default function KeyFeatures() {
             </picture>
             <h2 className="text-2xl font-bold">{item.title}</h2>
             <p className="text-sm">{item.description}</p>
+            <div className='flex justify-center items-center'>
+            <LearnMoreButton buttonFor={item.title}/>
+            </div>
             {/* <button className='w-2/4 md:w-[65%] lg:w-2/5 self-center bg-white hover:bg-blue-500 font-semibold transition duration-300 pl-6 pr-6 pt-2 pb-2 border-2 border-black border-opacity-10 border-t-0 rounded-md h-12 text-blue-400 hover:text-white leading-normal font-monts shadow-lg mt-4'>
               Learn More
             </button> */}
