@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../APIContext";
+import axios from "axios";
 import { auth, googleProvider, db } from "../Config/firebase";
 import { useTheme } from "../ThemeContext";
 import {
@@ -18,154 +20,195 @@ export default function LoginForm1({ setSignup }) {
   const [error, setError] = useState(""); // Error state
 
   const navigate = useNavigate();
+  const api = useApi();
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/auth/login",
+        { email:email, password: password },
+        { headers: { "Content-Type": "application/json" } } // Explicitly set content type
+      );
+      if(response) navigate("/Dashboard")
+  
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+    }
+  };
+  
+
+
 
   // Effect to handle redirect sign-in results (e.g., from Google)
-  useEffect(() => {
-    const fetchRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result?.user) {
-          const userId = result.user.uid;
-          await fetchUserData(userId); // Retrieve user data after login
-          navigate("/Dashboard"); // Redirect to Dashboard
-        }
-      } catch (error) {
-        console.error("Error fetching redirect result:", error);
-      }
-    };
-    fetchRedirectResult();
-  }, [navigate]);
+  // useEffect(() => {
+  //   const fetchRedirectResult = async () => {
+  //     try {
+  //       const result = await getRedirectResult(auth);
+  //       if (result?.user) {
+  //         const userId = result.user.uid;
+  //         await fetchUserData(userId); // Retrieve user data after login
+  //         navigate("/Dashboard"); // Redirect to Dashboard
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching redirect result:", error);
+  //     }
+  //   };
+  //   fetchRedirectResult();
+  // }, [navigate]);
 
-  // Fetch user data from Firestore
-  const fetchUserData = async (userId) => {
-    const userDocRef = doc(db, "userData", userId);
-    const userDoc = await getDoc(userDocRef);
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      console.log("User data fetched:", userData);
-    } else {
-      console.log("No user data found for this user ID.");
-    }
-  };
+  // // Fetch user data from Firestore
+  // const fetchUserData = async (userId) => {
+  //   const userDocRef = doc(db, "userData", userId);
+  //   const userDoc = await getDoc(userDocRef);
+  //   if (userDoc.exists()) {
+  //     const userData = userDoc.data();
+  //     console.log("User data fetched:", userData);
+  //   } else {
+  //     console.log("No user data found for this user ID.");
+  //   }
+  // };
 
-  const handleEmailSignIn = async (e) => {
-    e.preventDefault();
-    setLoading(true); // Start loading
-    setError(""); // Clear any previous error messages
+  // const handleEmailSignIn = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true); // Start loading
+  //   setError(""); // Clear any previous error messages
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userId = userCredential.user.uid;
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(
+  //       auth,
+  //       email,
+  //       password
+  //     );
+  //     const userId = userCredential.user.uid;
 
-      // Check if user document exists, create if not
-      const userDocRef = doc(db, "userData", userId);
-      const userDoc = await getDoc(userDocRef);
-      if (!userDoc.exists()) {
-        await setDoc(userDocRef, {
-          userId,
-          email: userCredential.user.email,
-          userName: userCredential.user.displayName || "",
-        });
-        console.log("User document created for:", userCredential.user.displayName);
-      } else {
-        console.log("User already exists:", userDoc.data());
-      }
+  //     // Check if user document exists, create if not
+  //     const userDocRef = doc(db, "userData", userId);
+  //     const userDoc = await getDoc(userDocRef);
+  //     if (!userDoc.exists()) {
+  //       await setDoc(userDocRef, {
+  //         userId,
+  //         email: userCredential.user.email,
+  //         userName: userCredential.user.displayName || "",
+  //       });
+  //       console.log(
+  //         "User document created for:",
+  //         userCredential.user.displayName
+  //       );
+  //     } else {
+  //       console.log("User already exists:", userDoc.data());
+  //     }
 
-      await fetchUserData(userId); // Fetch user data
-      navigate("/Dashboard"); // Redirect after successful sign-in
-    } catch (error) {
-      console.error("Error during email sign-in:", error);
-      if (error.code === "auth/invalid-credential") {
-        setError("Incorrect Email/password. Please try again.");
-      } else if (error.code === "auth/user-not-found") {
-        setError("No account found with this email.");
-      } else {
-        setError("An error occurred during sign-in. Please try again.");
-      }
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
+  //     await fetchUserData(userId); // Fetch user data
+  //     navigate("/Dashboard"); // Redirect after successful sign-in
+  //   } catch (error) {
+  //     console.error("Error during email sign-in:", error);
+  //     if (error.code === "auth/invalid-credential") {
+  //       setError("Incorrect Email/password. Please try again.");
+  //     } else if (error.code === "auth/user-not-found") {
+  //       setError("No account found with this email.");
+  //     } else {
+  //       setError("An error occurred during sign-in. Please try again.");
+  //     }
+  //   } finally {
+  //     setLoading(false); // Stop loading
+  //   }
+  // };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true); // Start loading
-    setError(""); // Clear any previous error messages
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const userId = result.user.uid;
+  // const handleGoogleSignIn = async () => {
+  //   setLoading(true); // Start loading
+  //   setError(""); // Clear any previous error messages
+  //   try {
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     // const userId = result.user.uid;
 
-      // Check if user document exists in Firestore, create if not
-      const userDocRef = doc(db, "userData", userId);
-      const userDoc = await getDoc(userDocRef);
-      if (!userDoc.exists()) {
-        await setDoc(userDocRef, {
-          userId,
-          email: result.user.email,
-          userName: result.user.displayName || "",
-          profilePicture: result.user.photoURL,
-        });
-        console.log("User document created:", result.user.displayName);
-      } else {
-        console.log("User already exists:", userDoc.data());
-      }
+  //     // // Check if user document exists in Firestore, create if not
+  //     // const userDocRef = doc(db, "userData", userId);
+  //     // const userDoc = await getDoc(userDocRef);
+  //     // if (!userDoc.exists()) {
+  //     //   await setDoc(userDocRef, {
+  //     //     userId,
+  //     //     email: result.user.email,
+  //     //     userName: result.user.displayName || "",
+  //     //     profilePicture: result.user.photoURL,
+  //     //   });
+  //     //   console.log("User document created:", result.user.displayName);
+  //     // } else {
+  //     //   console.log("User already exists:", userDoc.data());
+  //     // }
 
-      await fetchUserData(userId); // Fetch user data
-      navigate("/Dashboard"); // Redirect after Google sign-in
-    } catch (error) {
-      console.error("Error during Google sign-in:", error);
-      setError("An error occurred during Google sign-in. Please try again.");
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
+  //     // await fetchUserData(userId); // Fetch user data
+  //     navigate("/Dashboard"); // Redirect after Google sign-in
+  //   } catch (error) {
+  //     console.error("Error during Google sign-in:", error);
+  //     setError("An error occurred during Google sign-in. Please try again.");
+  //   } finally {
+  //     setLoading(false); // Stop loading
+  //   }
+  // };
 
   return (
     <>
       <div
         className={`p-2 w-[82%] h-[68%] [@media(min-width:535px)]:w-[31rem] md:w-[31rem] lg:w-[32rem] lg:h-[31rem] shadow-lg flex flex-wrap flex-col justify-center items-center 
-        ${darkMode ? "dark-mode" : "bg-white"} border-2 border-white rounded-lg `}
+        ${
+          darkMode ? "dark-mode" : "bg-white"
+        } border-2 border-white rounded-lg `}
         id="login-form"
       >
         <div className="mx-auto">
           <h1 className="text-4xl font-bold text-blue-700 mb-6">Festar</h1>
           <h2 className="text-2xl font-semibold mb-2">Welcome Back</h2>
 
-          {/* Google Sign-In Button */}
+          {/* Google Sign-In Button
           <button
-            className={`w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4 ${darkMode ? "dark-mode border-2 border-white" : ""}`}
+            className={`w-full py-2 bg-gray-200 rounded-md text-sm font-medium mb-4 ${
+              darkMode ? "dark-mode border-2 border-white" : ""
+            }`}
             onClick={handleGoogleSignIn}
             disabled={loading} // Disable Google Sign-In while loading
           >
-            <img src={google} alt="Google Logo" className="inline-block h-6 mr-2" />
+            <img
+              src={google}
+              alt="Google Logo"
+              className="inline-block h-6 mr-2"
+            />
             Log in with Google
-          </button>
+          </button> */}
 
           {/* Divider */}
           <div className="flex items-center mb-4">
             <hr className="flex-grow border-t border-gray-300" />
-            <span className="mx-2 text-sm text-gray-500">or log in with email</span>
+            <span className="mx-2 text-sm text-gray-500">
+              or log in with email
+            </span>
             <hr className="flex-grow border-t border-gray-300" />
           </div>
 
           {/* Email and Password Login */}
-          <form className="space-y-4" onSubmit={handleEmailSignIn}>
+          <form className="space-y-4" onSubmit={login}>
             <input
               type="email"
               placeholder="Your Email"
-              className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${darkMode ? "dark-mode" : ""}`}
+              className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                darkMode ? "dark-mode" : ""
+              }`}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Your Password"
-              className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${darkMode ? "dark-mode" : ""}`}
+              className={`w-full py-2 px-4 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                darkMode ? "dark-mode" : ""
+              }`}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <div className="flex items-center justify-between text-sm">
               <label className="inline-flex items-center">
-                <input type="checkbox" className="form-checkbox text-blue-600" />
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                />
                 <span className="ml-2">Keep me logged in</span>
               </label>
               <a href="#" className="text-blue-600">

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "devstart": "nodemon server.js",
     "deploy": "npm run build && firebase deploy",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -30,6 +31,7 @@
     "framer-motion": "^12.0.6",
     "mongoose": "^8.9.6",
     "ngrok": "^5.0.0-beta.2",
+    "nodemon": "^3.1.9",
     "process": "^0.11.10",
     "react": "^18.3.1",
     "react-agora": "^0.7.3",
