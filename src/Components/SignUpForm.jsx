@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useApi } from "../APIContext";
 import { auth, googleProvider, db } from "../Config/firebase";
 import { useTheme } from "../ThemeContext";
 import { signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
@@ -14,83 +16,51 @@ export default function SignUpForm({ setSignUp }) {
   const [error, setError] = useState(""); // Error state
   const { darkMode } = useTheme();
   const navigate = useNavigate();
+  const api = useApi()
 
-  const settingUserData = async (userId, email, userName, profilePicture = null) => {
-    try {
-      const userDocRef = doc(db, "userData", userId);
-      await setDoc(userDocRef, {
-        email,
-        userName: userName || "Guest",
-        userId,
-        profilePicture,
-      });
-      console.log("User data set successfully!");
-      return true;
-    } catch (e) {
-      console.error("Cannot set data:", e);
-      return false;
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const signUp = async(e)=>{
     e.preventDefault();
-    setLoading(true); // Start loading
-    setError(""); // Clear any previous errors
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const userId = userCredential.user.uid;
-      const success = await settingUserData(userId, email, userName);
-
-      if (success) {
-        console.log("User created and data stored successfully!");
+    setLoading(true)
+    setError(" ")
+    try{
+      const response = await api.post("/auth/signUp",{
+        name:userName,
+        email: email,
+        password: password
+      })
+      console.log(response)
+      if(response.status === 201){
         navigate("/Dashboard");
-      } else {
-        console.error("Failed to store user data.");
       }
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        setError("This email is already registered. Try logging in instead.");
+    }  catch (error) {
+      // Handle errors
+      if (error.response) {
+        console.error("Login failed:", error.response.data); // Log the error response data
+  
+        // Set an error message based on the status code or response data
+ if (error.response.status === 401) {
+          setError("User Already Exists, Please Login");
+        } else if (error.response.status === 500) {
+          setError("Server error. Please try again later.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        setError("No response from the server. Please check your connection.");
       } else {
-        console.error("Error during sign-up:", error);
-        setError("An error occurred during sign-up. Please try again.");
+        // Something happened in setting up the request that triggered an error
+        console.error("Error setting up the request:", error.message);
+        setError("An error occurred. Please try again.");
       }
     } finally {
       setLoading(false); // Stop loading
     }
-  };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true); // Start loading
-    setError(""); // Clear any previous errors
+  }
 
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const userId = result.user.uid;
-
-      const userDocRef = doc(db, "userData", userId);
-      const userDoc = await getDoc(userDocRef);
-
-      if (!userDoc.exists()) {
-        await settingUserData(
-          userId,
-          result.user.email,
-          result.user.displayName,
-          result.user.photoURL
-        );
-        console.log("User document created:", result.user.displayName);
-      } else {
-        console.log("User already exists:", userDoc.data());
-      }
-
-      navigate("/Dashboard"); // Redirect after Google sign-in
-    } catch (error) {
-      console.error("Error during Google sign-in:", error);
-      setError("An error occurred during sign-in. Please try again.");
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
+ 
 
   return (
     <div
@@ -108,26 +78,10 @@ export default function SignUpForm({ setSignUp }) {
         </div>
       )}
 
-      {error && (
-        <div className="text-red-600 text-sm mb-4">
-          {error}
-        </div>
-      )}
+   
 
-      <button
-        className={`${
-          darkMode ? "dark-mode" : "bg-gray-200"
-        } text-black border-2 border-gray-200 rounded-lg py-2 px-4 w-full mb-4 flex items-center justify-center ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={handleGoogleSignIn}
-        disabled={loading} // Disable during loading
-      >
-        <img src={google} alt="Google" className="w-6 h-6 mr-2" />
-        Sign up with Google
-      </button>
 
-      <form className="w-full" onSubmit={handleSubmit}>
+      <form className="w-full" onSubmit={signUp}>
         <input
           type="text"
           placeholder="Your Name"
@@ -158,6 +112,11 @@ export default function SignUpForm({ setSignUp }) {
           required
           disabled={loading} // Disable during loading
         />
+           {error && (
+        <div className="text-red-600 text-sm mb-4">
+          {error}
+        </div>
+      )}
         <div className="flex items-center mb-4">
           <input type="checkbox" className="mr-2" disabled={loading} />
           <span>Keep me logged in</span>

@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 
 // Create an Axios instance
 const api = axios.create({
-  baseURL: 'https://localhost:4000',
+  baseURL: 'http://localhost:4000',
   headers: { 'Content-Type': 'application/json' }
 });
 

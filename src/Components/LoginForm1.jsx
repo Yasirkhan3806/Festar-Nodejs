@@ -21,17 +21,51 @@ export default function LoginForm1({ setSignup }) {
 
   const navigate = useNavigate();
   const api = useApi();
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/auth/login",
-        { email:email, password: password },
-        { headers: { "Content-Type": "application/json" } } // Explicitly set content type
-      );
-      if(response) navigate("/Dashboard")
+  const login = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Start loading
+    setError(""); // Clear any previous error messages
   
+    try {
+      const response = await api.post(
+        "/auth/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+  
+      console.log("Login response:", response); // Log the response for debugging
+  
+      if (response.status === 200) {
+        navigate("/Dashboard"); // Navigate to the Dashboard on success
+      }
     } catch (error) {
-      console.error("Login failed:", error.response?.data || error.message);
+      // Handle errors
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx (e.g., 400, 401, 500, etc.)
+        console.error("Login failed:", error.response.data); // Log the error response data
+  
+        // Set an error message based on the status code or response data
+        if (error.response.status === 400) {
+          setError("Incorrect Credientials, Try Again");
+        } else if (error.response.status === 401) {
+          setError("Invalid email or password. Please try again.");
+        } else if (error.response.status === 500) {
+          setError("Server error. Please try again later.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        setError("No response from the server. Please check your connection.");
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.error("Error setting up the request:", error.message);
+        setError("An error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
   
