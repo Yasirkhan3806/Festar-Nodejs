@@ -11,6 +11,7 @@ import LoginForm from './Components/LoginForm';
 import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { ApiProvider } from './APIContext';
+import { TokenProvider } from './APIContext';
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
@@ -37,6 +38,7 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once after the initial render
 
   return (
+    // <TokenProvider>
     <ApiProvider>
     <ChatProvider>
     <ThemeProvider>
@@ -86,6 +88,7 @@ function App() {
     </ThemeProvider>
     </ChatProvider>
     </ApiProvider>
+    // {/* </TokenProvider> */}
   );
 }
 

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { db } from '../../../Config/firebase'; // Adjust the import based on your Firebase setup
 import { doc, setDoc, collection } from 'firebase/firestore';
 import { auth } from '../../../Config/firebase'; // Import Firestore methods
@@ -12,8 +14,39 @@ export default function RegisterEventForm({ onClose,notify }) {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
 
+const fetchToken = async () => {
+  try {
+    const response = await axios.post(
+      'http://localhost:4000/create-event/store-event-data',
+      {
+        endTime:endTime ,
+        startTime: startTime,
+        eventDate: eventDate,
+        eventName: eventName,
+        eventNotes: notes,
+      },
+      {
+        withCredentials: true, // Include cookies
+      }
+    );
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error('Error fetching token:', error);
+    throw error; // Re-throw the error if needed
+  }
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    const token = await fetchToken();
+    console.log(token);
+  };
+
+  fetchData(); // Call the async function
+}, []);
+
   // Initialize Toastify
- 
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,21 +54,19 @@ export default function RegisterEventForm({ onClose,notify }) {
 
     try {
       // Prepare data to be stored
-      const eventData = {
-        eventName,
-        eventDate,
-        startTime,
-        endTime,
-        notes,
-        userId: auth.currentUser.uid, // Store user ID with the event
-      };
-
-      // Generate a unique document ID (you can use timestamp, or use Firestore's auto-ID)
-      const eventDocRef = doc(collection(db, 'UserEvents'));
-
-      // Store the event data in Firestore with a unique document ID
-      await setDoc(eventDocRef, eventData);
-
+      const response = await axios.post(
+        'http://localhost:4000/create-event/store-event-data',
+        {
+          endTime:endTime ,
+          startTime: startTime,
+          eventDate: eventDate,
+          eventName: eventName,
+          eventNotes: notes,
+        },
+        {
+          withCredentials: true, // Include cookies
+        }
+      );
       // Show success toast
       notify();
 

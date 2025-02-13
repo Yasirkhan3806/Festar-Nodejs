@@ -25,16 +25,19 @@ export default function LoginForm1({ setSignup }) {
     e.preventDefault();
     setLoading(true); // Start loading
     setError(""); // Clear any previous error messages
-  
+
     try {
       const response = await api.post(
         "/auth/login",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
+        { email, password }, // Request payload
+        {
+          withCredentials: true, // Include cookies
+          headers: { "Content-Type": "application/json" }, // Set headers
+        }
       );
-  
+
       console.log("Login response:", response); // Log the response for debugging
-  
+
       if (response.status === 200) {
         navigate("/Dashboard"); // Navigate to the Dashboard on success
       }
@@ -44,7 +47,7 @@ export default function LoginForm1({ setSignup }) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx (e.g., 400, 401, 500, etc.)
         console.error("Login failed:", error.response.data); // Log the error response data
-  
+
         // Set an error message based on the status code or response data
         if (error.response.status === 400) {
           setError("Incorrect Credientials, Try Again");
@@ -68,9 +71,6 @@ export default function LoginForm1({ setSignup }) {
       setLoading(false); // Stop loading
     }
   };
-  
-
-
 
   // Effect to handle redirect sign-in results (e.g., from Google)
   // useEffect(() => {

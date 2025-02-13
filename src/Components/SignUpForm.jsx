@@ -16,29 +16,33 @@ export default function SignUpForm({ setSignUp }) {
   const [error, setError] = useState(""); // Error state
   const { darkMode } = useTheme();
   const navigate = useNavigate();
-  const api = useApi()
+  const api = useApi();
 
-  const signUp = async(e)=>{
+  const signUp = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    setError(" ")
-    try{
-      const response = await api.post("/auth/signUp",{
-        name:userName,
-        email: email,
-        password: password
-      })
-      console.log(response)
-      if(response.status === 201){
+    setLoading(true);
+    setError(" ");
+    try {
+      const response = await api.post(
+        "/auth/signUp",
+        {
+          name: userName,
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      console.log(response);
+      if (response.status === 201) {
         navigate("/Dashboard");
       }
-    }  catch (error) {
+    } catch (error) {
       // Handle errors
       if (error.response) {
         console.error("Login failed:", error.response.data); // Log the error response data
-  
+
         // Set an error message based on the status code or response data
- if (error.response.status === 401) {
+        if (error.response.status === 401) {
           setError("User Already Exists, Please Login");
         } else if (error.response.status === 500) {
           setError("Server error. Please try again later.");
@@ -57,10 +61,7 @@ export default function SignUpForm({ setSignUp }) {
     } finally {
       setLoading(false); // Stop loading
     }
-
-  }
-
- 
+  };
 
   return (
     <div
@@ -77,9 +78,6 @@ export default function SignUpForm({ setSignUp }) {
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
         </div>
       )}
-
-   
-
 
       <form className="w-full" onSubmit={signUp}>
         <input
@@ -112,11 +110,7 @@ export default function SignUpForm({ setSignUp }) {
           required
           disabled={loading} // Disable during loading
         />
-           {error && (
-        <div className="text-red-600 text-sm mb-4">
-          {error}
-        </div>
-      )}
+        {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
         <div className="flex items-center mb-4">
           <input type="checkbox" className="mr-2" disabled={loading} />
           <span>Keep me logged in</span>

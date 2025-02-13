@@ -17,3 +17,14 @@ export const useApi = () => useContext(ApiContext);
 export const ApiProvider = ({ children }) => {
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 };
+
+const token = api.get("/auth/access-token")
+
+const TokenContext = createContext(token)
+
+export const usetoken = ()=> useContext(TokenContext)
+
+export const TokenProvider = ({children})=>{
+<TokenContext.Provider value={token}>{children}</TokenContext.Provider>
+}
+
