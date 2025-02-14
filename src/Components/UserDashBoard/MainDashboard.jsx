@@ -6,6 +6,7 @@ import Meetings from "./Meetings/MainMeetings";
 import Chats from "./Chats/Chats";
 import useWindowSize from "./WindowSize";
 import { useLocation } from "react-router-dom";
+import { useSocket } from "../../WebsocketApi";
 
 
 export default function MainDashboard() {
@@ -13,6 +14,20 @@ export default function MainDashboard() {
   const [activeItem, setActiveItem] = useState("RegisterEvents"); // Track the active item
   const [width] = useWindowSize()
   const location = useLocation()
+  const socket = useSocket()
+
+
+  useEffect(() => {
+    // socket.on("message", (data) => {
+    //   console.log("Received message:", data);
+    // });
+
+    return () => {
+      socket.off("message"); // Cleanup event listener
+      socket.disconnect();   // Close WebSocket connection
+    };
+}, []);
+
 
   useEffect(() => {
     if (location.state?.activeItem) {

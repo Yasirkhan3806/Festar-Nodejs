@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useApi } from "../APIContext";
-import { auth, googleProvider, db } from "../Config/firebase";
 import { useTheme } from "../ThemeContext";
-import { signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import google from "../assets/icons/google.svg";
+import { useSocket } from "../WebsocketApi";
 
 export default function SignUpForm({ setSignUp }) {
   const [email, setEmail] = useState("");
@@ -17,6 +13,9 @@ export default function SignUpForm({ setSignUp }) {
   const { darkMode } = useTheme();
   const navigate = useNavigate();
   const api = useApi();
+  const socket = useSocket()
+
+
 
   const signUp = async (e) => {
     e.preventDefault();
@@ -32,8 +31,8 @@ export default function SignUpForm({ setSignUp }) {
         },
         { withCredentials: true }
       );
-      console.log(response);
       if (response.status === 201) {
+        socket.connect()
         navigate("/Dashboard");
       }
     } catch (error) {

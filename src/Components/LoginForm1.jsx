@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../APIContext";
-import axios from "axios";
-import { auth, googleProvider, db } from "../Config/firebase";
+import { useSocket } from "../WebsocketApi";
 import { useTheme } from "../ThemeContext";
-import {
-  signInWithPopup,
-  getRedirectResult,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import google from "../assets/icons/google.svg";
 
 export default function LoginForm1({ setSignup }) {
   const [email, setEmail] = useState("");
@@ -18,9 +10,13 @@ export default function LoginForm1({ setSignup }) {
   const { darkMode } = useTheme();
   const [loading, setLoading] = useState(false); // Loading state
   const [error, setError] = useState(""); // Error state
-
   const navigate = useNavigate();
   const api = useApi();
+  const socket = useSocket()
+
+
+
+
   const login = async (e) => {
     e.preventDefault();
     setLoading(true); // Start loading
@@ -39,6 +35,7 @@ export default function LoginForm1({ setSignup }) {
       console.log("Login response:", response); // Log the response for debugging
 
       if (response.status === 200) {
+        socket.connect()
         navigate("/Dashboard"); // Navigate to the Dashboard on success
       }
     } catch (error) {
