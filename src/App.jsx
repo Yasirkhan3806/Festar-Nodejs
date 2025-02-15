@@ -12,6 +12,7 @@ import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { ApiProvider } from './APIContext';
 import { SocketProvider } from './WebsocketApi';
+import { EventProvider } from './APIContext';
 import { UserProvider } from './userContext';// Import UserProvider
 import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
@@ -40,6 +41,7 @@ function App() {
   return (
    <SocketProvider>
     <ApiProvider>
+      {/* <EventProvider> */}
     <ChatProvider>
     <ThemeProvider>
     <ParticipantStateProvider>
@@ -87,6 +89,7 @@ function App() {
     </ParticipantStateProvider>
     </ThemeProvider>
     </ChatProvider>
+    {/* </EventProvider> */}
     </ApiProvider>
     </SocketProvider>
   );

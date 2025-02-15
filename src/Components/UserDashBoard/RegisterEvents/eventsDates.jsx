@@ -1,12 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "./ReusableCalender";
 import { useEvents } from "../../../userContext";
+// import { useEvent } from "../../../APIContext";
 import { useTheme } from "../../../ThemeContext";
+import { useApi } from "../../../APIContext";
 
 
 export default function EventsDates() {
 const {events } = useEvents();
+// const {event} = useEvent();
 const {darkMode} = useTheme();
+const api = useApi();
+
+
+const fetchData = async()=>{
+  const response = await api.get("/create-event/get-event-data",{
+    withCredentials: true
+  })
+  console.log(response)
+}
+
+useEffect(()=>{
+  fetchData()
+},[event])
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

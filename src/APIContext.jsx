@@ -18,13 +18,24 @@ export const ApiProvider = ({ children }) => {
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 };
 
-const token = api.get("/auth/access-token")
+// const token = api.get("/auth/access-token")
 
-const TokenContext = createContext(token)
+// const TokenContext = createContext(token)
 
-export const usetoken = ()=> useContext(TokenContext)
+// export const usetoken = ()=> useContext(TokenContext)
 
-export const TokenProvider = ({children})=>{
-<TokenContext.Provider value={token}>{children}</TokenContext.Provider>
+// export const TokenProvider = ({children})=>{
+// <TokenContext.Provider value={token}>{children}</TokenContext.Provider>
+// }
+
+const eventData = api.get("/create-event/get-event-data")
+
+const EventContext = createContext()
+
+export const useEvent = ()=> useContext(EventContext)
+
+export const EventProvider = ({children})=>{
+<EventContext.Provider value={eventData}>{children}</EventContext.Provider>
 }
+
 
