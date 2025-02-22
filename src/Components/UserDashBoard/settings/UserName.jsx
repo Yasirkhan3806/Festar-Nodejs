@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useUser } from "../../../userContext";
 import { useUserData } from "../../../userContext";
 import { editName } from "./EditingData";
@@ -8,11 +8,13 @@ import editIconDark from '../icons/editIconDark.png'
 import doneIcon from "../icons/doneIcon.png";
 import doneIconDark from "../icons/doneIconDark.png"
 import { useTheme } from "../../../ThemeContext";
+import axios from "axios";
 
 
 export default function UserName() {
-  const { userName } = useUser();
   const { userData } = useUserData();
+  const [userName,setUserName] = useState("Guest");
+  const [email,setEmail] = useState("");
   const [newUserName, setNewUserName] = useState(userName);
   const [showInput, setShowInput] = useState(false);
   const {darkMode} = useTheme();
@@ -25,6 +27,29 @@ export default function UserName() {
       return userIcon; // Default user icon if no profile photo is available
     }
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async()=>{
+      try {
+        const response = await axios.get("http://localhost:4000/user-data/get-user-data", {withCredentials:true});
+        setUserName(response.data.response.name)
+        setEmail(response.data.response.email)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchUserProfile()
+  }, []);
+
+  const updateName2 = (updatedName)=>{
+    axios.post("http://localhost:4000/user-data/update-user-name", {
+      name: updatedName,
+    }, {withCredentials:true})
+   .then((response) => {
+      console.log(response.data);
+      setUserName(updatedName);
+    })
+  }
 
   const updateName = () => {
     if (showInput) {
@@ -79,9 +104,7 @@ export default function UserName() {
           
             </span>
             <p className="text-xs text-gray-600">
-              {userData.length > 0 
-                ? userData[0].email
-                : "No Email given"}
+              {email}
             </p>
           </div>
         </div>
