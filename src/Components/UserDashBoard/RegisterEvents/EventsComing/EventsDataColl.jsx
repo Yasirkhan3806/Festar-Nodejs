@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useEvents } from '../../../../userContext';
+import React from 'react';
 import { useTheme } from '../../../../ThemeContext';
+import { useEvent } from '../../../../WebsocketApi';
 
 export default function EventsDataColl() {
-    const {events} = useEvents();
+    const {eventData} = useEvent();
     const {darkMode} = useTheme();
 
     // Get today's date for comparison
     const today = new Date().setHours(0, 0, 0, 0); // Normalize to midnight to ignore time part
 
     // Filter only upcoming events
-    const upcomingEvents = events.filter(event => {
+    const upcomingEvents = eventData.filter(event => {
         const eventDate = new Date(event.eventDate);
         return eventDate >= today;
     });

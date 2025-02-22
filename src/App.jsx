@@ -12,9 +12,8 @@ import MainDashboard from './Components/UserDashBoard/MainDashboard';
 import MainCalendar from './Components/UserDashBoard/RegisterEvents/MainCalender';
 import { ApiProvider } from './APIContext';
 import { SocketProvider } from './WebsocketApi';
-import { EventProvider } from './APIContext';
+import { EventProvider } from './WebsocketApi';
 import { UserProvider } from './userContext';// Import UserProvider
-import { EventsProvider } from './userContext';
 import { UserDataProvider } from './userContext';
 import { ParticipantActiveDataProvider } from './userContext';
 import {UserMeetingDataProvider } from './userContext';
@@ -41,14 +40,13 @@ function App() {
   return (
    <SocketProvider>
     <ApiProvider>
-      {/* <EventProvider> */}
+      <EventProvider>
     <ChatProvider>
     <ThemeProvider>
     <ParticipantStateProvider>
     <ParticipantActiveDataProvider>
     <UserMeetingDataProvider>
 <UserDataProvider>
-    <EventsProvider>
     <UserProvider> {/* Wrap the entire app with UserProvider */}
       <Router>
         <Routes>
@@ -82,14 +80,13 @@ function App() {
         </Routes>
       </Router>
     </UserProvider>
-    </EventsProvider>
     </UserDataProvider>
     </UserMeetingDataProvider>
     </ParticipantActiveDataProvider>
     </ParticipantStateProvider>
     </ThemeProvider>
     </ChatProvider>
-    {/* </EventProvider> */}
+    </EventProvider>
     </ApiProvider>
     </SocketProvider>
   );

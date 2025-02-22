@@ -32,7 +32,7 @@ export default function SignUpForm({ setSignUp }) {
         { withCredentials: true }
       );
       if (response.status === 201) {
-        socket.connect()
+        // socket.connect()
         navigate("/Dashboard");
       }
     } catch (error) {

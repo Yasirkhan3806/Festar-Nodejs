@@ -35,7 +35,7 @@ export default function LoginForm1({ setSignup }) {
       console.log("Login response:", response); // Log the response for debugging
 
       if (response.status === 200) {
-        socket.connect()
+        // socket.connect()
         navigate("/Dashboard"); // Navigate to the Dashboard on success
       }
     } catch (error) {

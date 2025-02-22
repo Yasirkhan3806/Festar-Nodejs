@@ -18,14 +18,15 @@ export default function MainDashboard() {
 
 
   useEffect(() => {
+  socket.connect()
     // socket.on("message", (data) => {
     //   console.log("Received message:", data);
     // });
 
-    return () => {
-      socket.off("message"); // Cleanup event listener
-      socket.disconnect();   // Close WebSocket connection
-    };
+    // return () => {
+    //   socket.off("message"); // Cleanup event listener
+    //   socket.disconnect();   // Close WebSocket connection
+    // };
 }, []);
 
 

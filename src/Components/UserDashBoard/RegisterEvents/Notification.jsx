@@ -3,20 +3,26 @@ import crossIcon from '../icons/crossIcon.png';
 import notificationIcon from '../icons/notificationsIcon.png';
 import conferenceImage from '../pictures/conferenceImage.png';
 import bgReIntroPicture from "../../../assets/Pictures/bgReIntroPicture.avif"
-import { useEvents } from '../../../userContext';
 import { useTheme } from '../../../ThemeContext';
+import { useEvent } from '../../../WebsocketApi';
 
 export default function Notification() {
   const [eventNotifications, setEventNotifications] = useState([]);
-  const {events} = useEvents()
+  const {eventData,fetchData} = useEvent();
   const {darkMode} = useTheme();
+
+
+  useEffect(() => {
+    fetchData()
+   
+  }, [])
 
 
 
   // Filter and set notifications for events within the next 24 hours
   useEffect(() => {
     const currentDate = new Date();
-    const upcomingEvents = events.map(event => {
+    const upcomingEvents = eventData.map(event => {
       const eventDate = new Date(event.eventDate); // Initial event date without time
 
       // Check if startTime is defined before trying to split it
@@ -29,7 +35,6 @@ export default function Notification() {
 
       const timeDiff = eventDate - currentDate; // Time difference in milliseconds
       const hoursDiff = timeDiff / (1000 * 60 * 60); // Convert to hours
-
       if (hoursDiff > 0 && hoursDiff <= 24) {
         let alertLevel = 'yellow'; // Medium alert within 24 hours
         if (hoursDiff <= 1) {
@@ -41,7 +46,7 @@ export default function Notification() {
     }).filter(event => event !== null); // Filter out null values
 
     setEventNotifications(upcomingEvents);
-  }, [events]);
+  }, [eventData]);
 
   // Format the event date without the time (default 00:00:00)
   const formatEventDate = (date) => {

@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "./ReusableCalender";
-import { useEvents } from "../../../userContext";
-// import { useEvent } from "../../../APIContext";
+import { useEvent } from "../../../WebsocketApi";
 import { useTheme } from "../../../ThemeContext";
 import { useApi } from "../../../APIContext";
 
 
 export default function EventsDates() {
-const {events } = useEvents();
-// const {event} = useEvent();
+
+const {eventData,fetchData} = useEvent();
 const {darkMode} = useTheme();
 const api = useApi();
 
+useEffect(() => {
+  fetchData(); // Fetch data on component mount
+}, []);
 
-const fetchData = async()=>{
-  const response = await api.get("/create-event/get-event-data",{
-    withCredentials: true
-  })
-  console.log(response)
-}
 
-useEffect(()=>{
-  fetchData()
-},[event])
 
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -160,7 +153,7 @@ useEffect(()=>{
       <CalendarGrid
   dates={calendarDates}
   onDateClick={handleDateClick}
-  events={events}
+  events={eventData}
   currentMonthIndex={currentMonthIndex}
   currentYear={currentYear}
 />

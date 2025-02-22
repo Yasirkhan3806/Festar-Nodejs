@@ -5,7 +5,6 @@ import { onAuthStateChanged } from "firebase/auth";
 
 // Create contexts
 const UserContext = createContext();
-const EventsContext = createContext();
 const UserDataContext = createContext();
 const UserMeetingDataContext = createContext();
 const ParticipantActiveContext = createContext();
@@ -13,7 +12,6 @@ const ParticipantActiveContext = createContext();
 
 // Custom hooks for accessing contexts
 export const useUser = () => useContext(UserContext);
-export const useEvents = () => useContext(EventsContext);
 export const useUserData = () => useContext(UserDataContext);
 export const useMeetingData = () => useContext(UserMeetingDataContext);
 export const useParticipantActiveData = () => useContext(ParticipantActiveContext);
@@ -221,56 +219,5 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider value={{ userName }}>
       {children}
     </UserContext.Provider>
-  );
-};
-
-// EventsProvider
-export const EventsProvider = ({ children }) => {
-  const [events, setEvents] = useState([]);
-  const [userId, setUserId] = useState(null);
-
-  // Fetch events when userId changes
-  const fetchEvents = async (userId) => {
-    if (!userId) {
-      setEvents([]); // Clear events if there's no user
-      return;
-    }
-
-    try {
-      const q = query(collection(db, "UserEvents"), where("userId", "==", userId));
-      const snapshot = await getDocs(q);
-      const eventsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setEvents(eventsData);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      setEvents([]);
-    }
-  };
-
-  // Listen for authentication state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid); // Set userId if user is logged in
-      } else {
-        setUserId(null); // Clear userId if user is logged out
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup the listener on unmount
-  }, []);
-
-  // Fetch events when userId changes
-  useEffect(() => {
-    fetchEvents(userId);
-  }, [userId]);
-
-  return (
-    <EventsContext.Provider value={{ events, fetchEvents }}>
-      {children}
-    </EventsContext.Provider>
   );
 };

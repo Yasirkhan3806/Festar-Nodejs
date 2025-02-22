@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createContext, useContext } from 'react';
+import { createContext, useContext,useState } from 'react';
 
 // Create an Axios instance
 const api = axios.create({
@@ -28,14 +28,6 @@ export const ApiProvider = ({ children }) => {
 // <TokenContext.Provider value={token}>{children}</TokenContext.Provider>
 // }
 
-const eventData = api.get("/create-event/get-event-data")
 
-const EventContext = createContext()
-
-export const useEvent = ()=> useContext(EventContext)
-
-export const EventProvider = ({children})=>{
-<EventContext.Provider value={eventData}>{children}</EventContext.Provider>
-}
 
 

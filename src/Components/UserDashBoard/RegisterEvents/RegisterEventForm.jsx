@@ -14,36 +14,6 @@ export default function RegisterEventForm({ onClose,notify }) {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
 
-const fetchToken = async () => {
-  try {
-    const response = await axios.post(
-      'http://localhost:4000/create-event/store-event-data',
-      {
-        endTime:endTime ,
-        startTime: startTime,
-        eventDate: eventDate,
-        eventName: eventName,
-        eventNotes: notes,
-      },
-      {
-        withCredentials: true, // Include cookies
-      }
-    );
-    return response.data; // Return the response data
-  } catch (error) {
-    console.error('Error fetching token:', error);
-    throw error; // Re-throw the error if needed
-  }
-};
-
-useEffect(() => {
-  const fetchData = async () => {
-    const token = await fetchToken();
-    console.log(token);
-  };
-
-  fetchData(); // Call the async function
-}, []);
 
   // Initialize Toastify
 
