@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { useUser } from "../../../userContext";
+import { useSocket } from "../../../WebsocketApi";
 import { useUserData } from "../../../userContext";
 import { editName } from "./EditingData";
 import userIcon from "../icons/userIcon.png";
@@ -18,6 +19,7 @@ export default function UserName() {
   const [newUserName, setNewUserName] = useState(userName);
   const [showInput, setShowInput] = useState(false);
   const {darkMode} = useTheme();
+  const socket = useSocket();
 
   const getProfilePhoto = () => {
     // Assuming userData is an array and we're getting the first user's profile photo
@@ -33,21 +35,29 @@ export default function UserName() {
       try {
         const response = await axios.get("http://localhost:4000/user-data/get-user-data", {withCredentials:true});
         setUserName(response.data.response.name)
+        console.log(userName)
         setEmail(response.data.response.email)
       } catch (error) {
         console.log(error);
       }
     }
+    const onChangeFetch = ()=>{
+      fetchUserProfile()
+      console.log("nameUpdated is fired ")
+    }
+    socket.on('nameUpdated',onChangeFetch)
     fetchUserProfile()
+   return()=>{
+      socket.off('nameUpdated',onChangeFetch)
+   }
   }, []);
 
-  const updateName2 = (updatedName)=>{
+  const editName = (updatedName)=>{
     axios.post("http://localhost:4000/user-data/update-user-name", {
       name: updatedName,
     }, {withCredentials:true})
    .then((response) => {
-      console.log(response.data);
-      setUserName(updatedName);
+    console.log(response.data)
     })
   }
 
